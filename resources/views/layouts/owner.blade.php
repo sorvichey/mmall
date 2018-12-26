@@ -48,14 +48,26 @@
 
             <nav class="navbar navbar-primary navbar-full nav-bar-custom hidden-md-down">
                 <div class="container">
-                    <nav>
-                        <ul id="menu-secondary-nav" class="secondary-nav">
-                            <li class="menu-item"><a href="{{url('/owner/home')}}"> <i class="fa fa-user"></i>   My Account</a></li>
-                            <li class="menu-item"><a href="{{url('owner/my-shop')}}">My Shop</a></li>
-                            <li class="menu-item"><a href="http://localhost:8000/product/best-seller">Products</a></li>
-                            <li class="menu-item"><a href="http://localhost:8000/product/new-arrival">New Arrivals</a></li>
-                        </ul>
-                    </nav>
+                    <ul class="nav nav-pills" id="shop-menu">
+                      <li class="nav-item">
+                        <a class="nav-link" id="my-account" href="{{url('/owner/home')}}"> <i class="fa fa-user"></i>   My Account</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="my-shop" href="{{url('owner/my-shop')}}"> <i class="fa fa-home"></i> My Shop</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="my-product" href="{{url('owner/my-product')}}"> <i class="fa fa-product-hunt"></i> Products</a></a>
+                      </li>
+                      
+                    </ul>
+                    <u class="nav nav-pills pull-right">
+                        <li class="nav-item">
+                            <a class="nav-link pull-right" id="my-message" href="{{url('owner/message')}}"> <i class="fa fa-envelope"></i> Messages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pull-right" href="{{url('owner/logout')}}"> <i class="fa fa-sign-out"></i> Logout</a>
+                        </li>
+                    </u>
                 </div>
             </nav>
             @yield('content')

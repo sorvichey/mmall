@@ -32,6 +32,7 @@ Route::get('/admin/rate', "ReviewProductController@save");
 Route::get('/buyer/logout', "SecurityController@logout");
 
 //Shop owner
+Route::get('/owner/logout', "ShopOwnerController@logout");
 Route::get('/owner/login', "ShopOwnerController@login");
 Route::post('/owner/sign-up', "ShopOwnerController@shop_owner_sign_up");
 Route::post('/owner/sign-in', "ShopOwnerController@do_login");
@@ -50,6 +51,23 @@ Route::get('/owner/create-shop', "ShopOwnerController@create_shop");
 Route::post('/owner/shop/create', "ShopOwnerController@do_create_shop");
 Route::get('/owner/shop/edit/{id}', "ShopOwnerController@edit_shop");
 Route::post('/owner/shop/update', "ShopOwnerController@do_edit_shop");
+
+Route::get('/owner/my-product', "ShopOwnerController@product");
+Route::get('/owner/new-product', "ShopOwnerController@new_product");
+Route::post('/owner/add-product', "ShopOwnerController@save_product");
+Route::get('/owner/detail-product/{id}', "ShopOwnerController@detail_product");
+Route::get('/owner/edit-product/{id}', "ShopOwnerController@edit_product");
+Route::post('/owner/save-edit-product/', "ShopOwnerController@do_edit_product");
+Route::get('/owner/delete-product/{id}', "ShopOwnerController@delete_product");
+
+Route::get('/owner/product/best-seller/{id}', "ShopOwnerController@best_seller");
+Route::get('/owner/product/best-seller/return/{id}', "ShopOwnerController@best_seller_return");
+Route::get('/owner/product/best-deal/{id}', "ShopOwnerController@best_deal");
+Route::get('/owner/product/best-deal/return/{id}', "ShopOwnerController@best_deal_return");
+
+Route::get('/owner/message/', "OwnerMessageController@index");
+
+
 
 
 

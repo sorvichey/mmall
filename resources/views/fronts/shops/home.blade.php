@@ -8,6 +8,7 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
+                <br>
                 <div class="col-md-2">
                     <img src="{{asset('uploads/owner_profiles/'.$owner->photo)}}" alt="profile" class="img-rounded">
                 </div>
@@ -28,9 +29,22 @@
                         Address : {{$owner->address}}
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <a href="#" class="btn btn-warning"><i class="fa fa-bolt"></i> Upgrade Now!</a>
+                </div>
             </div>
         </div>
     </div>
 </div>       
 <br> 
+@endsection
+@section('js')
+   <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#shop-menu li a").removeClass("active");
+            $("#my-account").addClass("active");
+        });
+    
+    </script>
 @endsection

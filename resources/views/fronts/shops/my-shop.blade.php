@@ -64,8 +64,10 @@
                 <p>Email: <?php echo $shop_email; ?></p>
                 <p>Website: <?php echo $shop_website; ?></p>
                 <p>Address: <?php echo $shop_address; ?></p>
-                <p>Location: <?php echo $shop_location; ?></p>
                 <p>Description: <?php echo $shop_description; ?></p>
+                <p>Location:</p>
+                <span><?php echo $shop_location; ?></span>
+               
 
             </div>
             @endif
@@ -73,4 +75,14 @@
     </div>
 </div>       
 
+@endsection
+@section('js')
+   <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#shop-menu li a").removeClass("active");
+            $("#my-shop").addClass("active");
+        });
+    
+    </script>
 @endsection
