@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use Session;
 use App\Http\Controllers\Right;
+use Intervention\Image\ImageManagerStatic as Image;
 class SecurityController extends Controller
 {
     public function __construct()
@@ -222,6 +223,73 @@ class SecurityController extends Controller
             } 
         }
         return redirect('buyer/login/');
+    }
+
+    public function buyer_account_setting($id){
+        $data['buyer_account'] = DB::table("buyers")->where("id", $id)->first();
+        return view("fronts.buyer-account-setting",$data);
+    }
+
+    public function buyer_account_save_change(Request $r){
+        $data = array(
+            'first_name' => $r->first_name,
+            'last_name' => $r->last_name,
+            'gender' => $r->gender,
+            'phone' => $r->phone,
+            'email' => $r->email
+        );
+
+        
+
+        if($r->hasFile('photo'))
+        {
+            $file = $r->file('photo');
+            $file_name = $file->getClientOriginalName();
+            $ss = substr($file_name, strripos($file_name, '.'), strlen($file_name));
+            $file_name = 'pro' .$r->id . $ss;
+
+            $destinationPath2 = 'uploads/buyer_profiles/';
+            $new_img2 = Image::make($file->getRealPath())->resize(500, null, function ($con) {
+                $con->aspectRatio();
+            });
+            $new_img2->save($destinationPath2 . $file_name, 80);
+            $data['photo'] = $file_name;
+
+            echo "Hello";
+
+        }
+
+        $i = DB::table('buyers')->where("id", $r->id)->update($data);
+        if ($i)
+        {
+            $r->session()->flash("sms", "Your account've modified  successfully!");
+            return redirect("/my-account/setting/".$r->id);
+        } else {
+            $r->session()->flash("sms1", "Fail to save change!");
+            return redirect("/my-account/setting/".$r->id);
+        }
+    }
+
+    public function buyer_account_save_change_pwd(Request $r){
+
+        if($r->password==$r->re_password){
+            $data = array(
+                'password' => password_hash($r->password, PASSWORD_BCRYPT)
+            );
+            $i = DB::table('buyers')->where("id", $r->id)->update($data);
+            if ($i)
+            {
+                $r->session()->flash("sms", "Your password's changed successfully!");
+                return redirect("/my-account/setting/".$r->id);
+            } else {
+                $r->session()->flash("sms1", "Fail to save change!");
+                return redirect("/my-account/setting/".$r->id);
+            }
+        }else{
+            $r->session()->flash("sms1", "Password and Re-Password are not the same!");
+            return redirect("/my-account/setting/".$r->id);
+        }
+        
     }
      // logout function
      public function logout(Request $request)

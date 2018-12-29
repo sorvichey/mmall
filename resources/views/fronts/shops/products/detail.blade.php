@@ -1,7 +1,7 @@
 @extends("layouts.owner")
 @section('content')
 <div class="container">
-    <div class="row">
+    <!-- <div class="row"> -->
     <div class="col-lg-12">
         <strong>Product Detail</strong>&nbsp;&nbsp;
         <a href="{{url('/owner/my-product')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>&nbsp;&nbsp;
@@ -10,6 +10,11 @@
         <hr>
         <form action="#" method="post" id="frm" class="form-horizontal">
             <input type="hidden" name="id" value="{{$product->id}}">
+            <div class="col-md-12">
+                 <div class="row">
+                    <p class="bg-info">&nbsp;&nbsp;Basic info</p>                       
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
@@ -19,7 +24,7 @@
                         </label>
                     </div>
                     <div class="form-group row">
-                        <label for="name" class="control-label col-sm-3 lb">Product Name</label>
+                        <label for="name" class="control-label col-sm-3 lb">Short Description</label>
                         <label class="control-label col-sm-9 lb">
                             : {{$product->short_description}}
                         </label>
@@ -48,12 +53,30 @@
                             : {{$product->price}} $
                         </label>
                     </div>
+
+                    @if($color->color == 1)
                     <div class="form-group row">
-                        <label for="discount" class="control-label col-sm-3 lb">Discount</label>
-                        <label class="control-label col-sm-9 lb">
-                            :  {{$product->discount}} %
+                        <label for="price" class="control-label col-sm-3 lb">Color(s)</label>
+                        <label class="control-label col-sm-9 lb">: 
+                         @foreach($colors as $co)
+                         {{$co->name}},
+                        @endforeach
                         </label>
                     </div>
+                    @endif
+
+                    @if($size->size == 1)
+                    <div class="form-group row">
+                        <label for="price" class="control-label col-sm-3 lb">Size(s)</label>
+                        <label class="control-label col-sm-9 lb">: 
+                         @foreach($sizes as $s)
+                         {{$s->name}},
+                        @endforeach
+                        </label>
+                    </div>
+                    @endif
+
+                   
                 </div>
                 <div class="col-sm-6">
                         <div class="form-group row">
@@ -79,32 +102,48 @@
                             
                             <img src="{{asset('uploads/products/featured_images/600/'.$product->featured_image)}}" alt="" width="200" style="border:1px solid #ccc" id="preview">
                             <p><br>
-                            <a class="btn btn-secondary" href="{{url('admin/product/detail/'.$product->id.'/image')}}"><i class="fa fa-picture-o"></i> Add More Image</a>
+                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.$product->id.'/image')}}"><i class="fa fa-picture-o"></i> Add More Image</a>
                             @if($color->color == 1)
-                            <a class="btn btn-secondary" href="{{url('admin/product/detail/'.$product->id.'/color')}}"><i class="fa fa-paint-brush"></i> Add Color</a>
+                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.$product->id.'/color')}}"><i class="fa fa-paint-brush"></i> Add Color</a>
                            @endif
+
+                           @if($size->size == 1)
+                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.$product->id.'/size')}}"><i class="fa fa-plus"></i> Add Size</a>
+                           @endif
+
+
                             </p>
                         </div>
                     </div>
                     
                 </div>
+
             </div>
-        </form>
-        <hr>
-            <div class="row">
-                <div class="col-sm-12">
-                    <p><strong>Description</strong></p>
-                    <label class="control-label col-sm-12 lb">
-                            {!! $product->description !!}
-                    </label>
+            <div class="col-md-12">
+                 <div class="row">
+                    <p class="bg-info">&nbsp;&nbsp;Promotions</p>
+                    <p class="col-sm-2">Discount</p>
+                    <p class="col-sm-10">: {{$product->discount}} %</p>
+                    <p class="col-sm-2">Number product discount</p>
+                    <p class="col-sm-10">: {{$product->discount}} </p>
+                    <p class="col-sm-2">Date </p>
+                    <p class="col-sm-3">: {{$product->discount}} to {{$product->discount}} </p>
+                   
                 </div>
             </div>
-        
+            <div class="col-md-12">
+                <div class="row">
+                    <p class="bg-info"><strong>&nbsp;&nbsp;Description:</strong></p>
+                    <p class="col-sm-12"> {!!$product->description!!}</p>
+                </div>
+               
+            </div>
+        </form>
            
              
         <br>
     </div>
-</div>
+<!-- </div> -->
 </div>
 @endsection
 @section('js')

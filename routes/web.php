@@ -11,6 +11,7 @@ Route::get('/product/best-seller', "FrontProductListController@best_seller");
 Route::get('/product/best-seller/list-view', "FrontProductListController@best_seller_list_view");
 Route::get('/product/new-arrival', "FrontProductListController@new_arrival");
 Route::get('/product/new-arrival/list-view', "FrontProductListController@new_arrival_list_view");
+// Buyer 
 Route::post('/buyer/sign-up', "SecurityController@buyer_sign_up");
 Route::post('/buyer/sign-in', "SecurityController@do_login");
 Route::post('/buyer/wish/save', "WishController@save");
@@ -22,12 +23,18 @@ Route::get('/buyer/service/activated/{id}', "SecurityController@buyer_activated_
 Route::post('buyer/activated/save', "SecurityController@buyer_activated_save");
 Route::get('/buyer/wishlist', "WishController@index");
 Route::get('/buyer/wishlist/delete/{id}', "WishController@delete");
+Route::get('/my-account/setting/{id}', "SecurityController@buyer_account_setting");
+Route::post('/my-account/setting/save/{id}', "SecurityController@buyer_account_save_change");
+Route::post('/my-account/setting/pwd/{id}', "SecurityController@buyer_account_save_change_pwd");
+
+// Product category
 Route::get('product/category/{id}', "FrontProductListController@product_by_category");
 Route::get('product/category/list-view/{id}', "FrontProductListController@product_by_category_list_view");
+
 Route::get('product-search', "FrontProductListController@product_search");
 Route::post('/product/rate', "ReviewProductController@save");
 Route::get('/tracking', "FrontTrackingController@tracking");
-Route::get('/admin/rate', "ReviewProductController@save");
+
 
 Route::get('/buyer/logout', "SecurityController@logout");
 
@@ -60,6 +67,21 @@ Route::get('/owner/edit-product/{id}', "ShopOwnerController@edit_product");
 Route::post('/owner/save-edit-product/', "ShopOwnerController@do_edit_product");
 Route::get('/owner/delete-product/{id}', "ShopOwnerController@delete_product");
 
+// product image for shop owner
+Route::get('/owner/product/detail/{id}/image', "OwnerPhotoController@index");
+Route::get('/owner/product/photo/delete/{id}', "OwnerPhotoController@delete");
+Route::post('/owner/product/photo/save', "OwnerPhotoController@save");
+
+// product color for shop owner
+Route::get('/owner/product/detail/{id}/color', "OwnerProductColorController@index");
+Route::get('/owner/product-color/photo/delete/{id}', "OwnerProductColorController@delete");
+Route::post('/owner/product-color/photo/save', "OwnerProductColorController@save");
+
+// product size for shop owner
+Route::get('/owner/product/detail/{id}/size', "OwnerProductSizeController@index");
+Route::get('/owner/product-size/delete/{id}', "OwnerProductSizeController@delete");
+Route::post('/owner/product-size/save', "OwnerProductSizeController@save");
+// shop owner best seller and best deal
 Route::get('/owner/product/best-seller/{id}', "ShopOwnerController@best_seller");
 Route::get('/owner/product/best-seller/return/{id}', "ShopOwnerController@best_seller_return");
 Route::get('/owner/product/best-deal/{id}', "ShopOwnerController@best_deal");
@@ -296,6 +318,8 @@ Route::post('/admin/buyer/update/', "BuyerController@update");
 Route::get('/admin/rate', "RateController@index");
 Route::get('/admin/rate/delete/{id}', "RateController@delete");
 Route::get('/admin/rate/approve/{id}', "RateController@approve");
+Route::get('/admin/rate', "ReviewProductController@save");
+
 //Sub page
 Route::get('/admin/sub-page', "SubPageController@index");
 Route::get('/admin/sub-page/create', "SubPageController@create");

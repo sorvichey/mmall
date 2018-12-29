@@ -136,7 +136,7 @@
                         				<div class="widget_shopping_cart_content">
                         					<ul class="cart_list product_list_widget ">
                                                 <li class="mini_cart_item">
-                        							<a href="single-product.html">
+                        							<a href="{{url('my-order/'.session('buyer')->id)}}">
                         					            My Orders
                         							</a>
                         						</li>
@@ -146,17 +146,17 @@
                         							</a>
                                                 </li>
                                                 <li class="mini_cart_item">
-                        							<a href="#">
+                        							<a href="{{url('my-message/'.session('buyer')->id)}}">
                         					           Message Center
                         							</a>
                         						</li>
                         						<li class="mini_cart_item">
-                        							<a href="single-product.html">
+                        							<a href="{{url('buyer/favorite-shop/'.session('buyer')->id)}}">
                         					            My Favorite Store
                         							</a>
                                                 </li>
                                                 <li class="mini_cart_item">
-                        							<a href="single-product.html">
+                        							<a href="{{url('my-account/setting/'.session('buyer')->id)}}">
                         					           Account Setting
                         							</a>
                         						</li>

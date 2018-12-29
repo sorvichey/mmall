@@ -428,6 +428,14 @@ class ShopOwnerController extends Controller
             ->where('product_id', $id)
             ->orderBy('id', 'desc')
             ->get();
+        $data['size'] = DB::table('product_categories')
+            ->where('id', $data['product']->category_id)
+            ->select('size')
+            ->first();
+        $data['sizes'] = DB::table('product_sizes')
+            ->where('product_id', $id)
+            ->orderBy('id', 'desc')
+            ->get();
         return view('fronts.shops.products.detail', $data);
     }
 
