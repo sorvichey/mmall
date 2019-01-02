@@ -1,7 +1,7 @@
 @extends('layouts.owner')
 @section('content')
 <?php 
-    $shop_category = DB::table('shop_categories')->where('active',1)->get();
+     $shop_category = DB::table('product_categories')->where('parent_id',0)->where('active',1)->get();
  ?>
 <div class="container">
     <div class="row">
@@ -16,6 +16,7 @@
                     </div>
                 </div>
             @endif
+            
             @if(Session::has('sms1'))
                 <div class="alert alert-danger" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -45,7 +46,7 @@
                                  <select class="form-control option" name="shop_category" id="shop_category">
                                     <option value="">Please choose one</option>
                                     @foreach($shop_category as $value)
-                                      <option value="{{$value->id}}" {{$shops->shop_category==$value->id?'selected':''}}>{{$value->name}}</option>
+                                      <option value="{{$value->id}}" >{{$value->name}}</option>
                                     @endforeach
                                 </select>
                             </div>

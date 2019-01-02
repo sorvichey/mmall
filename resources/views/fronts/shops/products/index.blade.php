@@ -1,8 +1,38 @@
 @extends('layouts.owner')
 @section('content')
+<?php 
+    $owner_id = session('shop_owner')->id;
+    $owner = DB::table('shop_owners')
+    ->join('shops', 'shops.shop_owner_id', 'shop_owners.id')
+    ->select('shops.active as active')
+    ->where('shop_owners.id', $owner_id)->first();
+?>
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
+            @if($owner==null)
+            <br>
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div>
+                        Please create your shop first!
+                    </div>
+                </div>
+            @elseif($owner->active==0)
+            <br>
+                <div class="alert alert-warning" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div>
+                        Before you can post your product(s)!
+                        <br>
+                        You have to wait 24 hours or less than 24 hours for us to evaluate your store.
+                    </div>
+                </div>
+            @else
             <strong>Product List</strong>&nbsp;&nbsp;
             <a href="{{url('/owner/new-product')}}"><i class="fa fa-plus"></i> New</a> 
             <div class="float-right">
@@ -67,6 +97,8 @@
             <nav>
                 {{$products->links()}}
             </nav>
+          
+            @endif
         </div>
     </div>
 </div>

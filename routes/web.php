@@ -113,6 +113,29 @@ Route::get('/admin/shop-owner/reset-password/{id}', "AdminShopOwnerController@re
 Route::post('/admin/shop-owner/change-password', "AdminShopOwnerController@change_password");
 Route::get('/admin/shop-owner/detail/{id}', "AdminShopOwnerController@detail");
 
+//subscription
+Route::get('/admin/subscription/', "AdminSubscriptionController@index");
+Route::get('/admin/subscription/create', "AdminSubscriptionController@create");
+Route::post('/admin/subscription/save', "AdminSubscriptionController@save");
+Route::get('/admin/subscription/detail/{id}', "AdminSubscriptionController@detail");
+Route::get('/admin/subscription/edit/{id}', "AdminSubscriptionController@edit");
+Route::post('/admin/subscription/update', "AdminSubscriptionController@update");
+Route::get('/admin/subscription/delete/{id}', "AdminSubscriptionController@delete");
+
+//shops for admin
+Route::get('/admin/shops/', "AdminShopController@index");
+Route::get('/admin/shops/detail/{id}', "AdminShopController@detail");
+Route::post('/admin/shops/update', "AdminShopController@update");
+Route::get('/admin/shops/delete/{id}', "AdminShopController@delete");
+Route::get('/admin/shops/approve/{id}', "AdminShopController@approve");
+
+//shop subscription
+Route::get('/admin/shop-subscription/', "AdminShopSubscriptionController@index");
+Route::get('/admin/shop-subscription/detail/{id}', "AdminShopSubscriptionController@detail");
+Route::post('/admin/shop-subscription/update', "AdminShopSubscriptionController@update");
+Route::get('/admin/shop-subscription/delete/{id}', "AdminShopSubscriptionController@delete");
+Route::get('/admin/shop-subscription/approve/{id}', "AdminShopSubscriptionController@approve_subscription");
+
 // management layout
 Route::get('/admin/product-management', "ManagementController@product");
 Route::get('/admin/customer-management', "ManagementController@customer");

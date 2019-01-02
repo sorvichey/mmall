@@ -196,8 +196,8 @@ class ShopOwnerController extends Controller
         $data['my_shop'] = DB::table('shops')->where('shop_owner_id', $owner_id)->count();
         if($data['my_shop']==1){
             $data['shop_info'] = DB::table('shops')
-                ->join('shop_categories', 'shop_categories.id', 'shops.shop_category')
-                ->select('shops.*', 'shops.id as id', 'shop_categories.name as shop_category_name', 'shop_categories.id as shop_category_id')
+                ->join('product_categories', 'product_categories.id', 'shops.shop_category')
+                ->select('shops.*', 'shops.id as id', 'product_categories.name as shop_category_name', 'product_categories.id as shop_category_id')
                 ->first();
         }
         return view("fronts.shops.my-shop", $data);
@@ -247,7 +247,7 @@ class ShopOwnerController extends Controller
          $i = DB::table('shops')->insertGetId($data);
         if($i)
         {
-            $r->session()->flash('sms', 'Your shop saved successfully!');
+            $r->session()->flash('sms', 'Your shop saved successfully, thanks!');
             return redirect('/owner/my-shop');
         }
         else{

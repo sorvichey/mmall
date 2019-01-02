@@ -78,7 +78,19 @@
                     <a class="nav-link" href="{{url('/admin/shop-owner')}}" id="menu_shop_owner">Shop Owner</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/rate')}}" id="menu_rate">Rate</a>
+                    <a class="nav-link" href="{{url('/admin/shops')}}" id="menu_shop">Shops</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url('/admin/shop-subscription')}}" id="menu_shop_subscription">Shop Subsription</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url('/admin/rate')}}" id="menu_rate">Rate</a>   
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url('/admin/subscription')}}" id="menu_subscription">Subscriptions</a>
                 </li>
             </ul>
         </nav>
