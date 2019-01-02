@@ -3,6 +3,7 @@
 <?php 
     $owner_id = session('shop_owner')->id;
     $owner = DB::table('shop_owners')->where('id', $owner_id)->first();
+    $shop_owner_id = DB::table('shops')->where('shop_owner_id', $owner_id)->first();
 ?>
 <div class="container">
     <div class="card">
@@ -12,7 +13,7 @@
                 <div class="col-md-2">
                     <img src="{{asset('uploads/owner_profiles/'.$owner->photo)}}" alt="profile" class="img-rounded">
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="pt-10 pb-10">
                         <H4>Hi, {{$owner->last_name}} {{$owner->first_name}} <a href="{{url('/owner/profile/'.$owner->id)}}" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a></H4> 
                     </div>
@@ -29,8 +30,8 @@
                         Address : {{$owner->address}}
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <a href="#" class="btn btn-warning"><i class="fa fa-bolt"></i> Upgrade Now!</a>
+                <div class="col-md-3">
+                     <a href="{{url('/owner/shop-subscribe/'.$shop_owner_id->id)}}" class="btn btn-warning"><i class="fa fa-bolt"></i> Upgrade Shop Now!</a>
                 </div>
             </div>
         </div>

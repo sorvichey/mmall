@@ -17,22 +17,21 @@ class AdminShopSubscriptionController extends Controller
 
   public function index() {
     $data['shops'] = DB::table('shops')
-      ->join('shop_categories', 'shop_categories.id', 'shops.shop_category')
+      ->join('product_categories', 'product_categories.id', 'shops.shop_category')
       ->join('shop_subscriptions', 'shop_subscriptions.shop_id', 'shops.id')
       ->join('subscription', 'subscription.id', 'shop_subscriptions.subscription_id')
       ->select('shops.name',
         'shops.phone',
         'shops.email' ,
         'shops.logo',
-        'shops.status',
         'shops.active',
         'shops.phone',
-        'shop_categories.name as shop_category',
+        'product_categories.name as shop_category',
         'shops.id as id',
         'subscription.name as request_subscription',
         DB::raw("(SELECT name FROM subscription WHERE subscription.id = shops.subscription_id) as current_subscription")
       )
-      ->distinct('shops.id')
+      ->where('shop_subscriptions.status', 0)
       ->orderBy('shops.id', 'desc')
       ->paginate(18);
     return view('shop-subscriptions.index', $data);

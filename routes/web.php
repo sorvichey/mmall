@@ -58,6 +58,8 @@ Route::get('/owner/create-shop', "ShopOwnerController@create_shop");
 Route::post('/owner/shop/create', "ShopOwnerController@do_create_shop");
 Route::get('/owner/shop/edit/{id}', "ShopOwnerController@edit_shop");
 Route::post('/owner/shop/update', "ShopOwnerController@do_edit_shop");
+Route::get('/owner/shop-subscribe/{id}', "ShopOwnerController@shop_subscription");
+Route::post('/owner/shop/subcribe', "ShopOwnerController@do_shop_subscription");
 
 Route::get('/owner/my-product', "ShopOwnerController@product");
 Route::get('/owner/new-product', "ShopOwnerController@new_product");
@@ -125,8 +127,7 @@ Route::get('/admin/subscription/delete/{id}', "AdminSubscriptionController@delet
 //shops for admin
 Route::get('/admin/shops/', "AdminShopController@index");
 Route::get('/admin/shops/detail/{id}', "AdminShopController@detail");
-Route::post('/admin/shops/update', "AdminShopController@update");
-Route::get('/admin/shops/delete/{id}', "AdminShopController@delete");
+Route::get('/admin/shops/disable/{id}', "AdminShopController@disable");
 Route::get('/admin/shops/approve/{id}', "AdminShopController@approve");
 
 //shop subscription

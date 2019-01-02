@@ -41,6 +41,9 @@
                 @endforeach
             </tbody>
         </table>
+        <nav>
+            {{$shop_owners->links()}}
+        </nav>
     </div>
 </div>
 @endsection

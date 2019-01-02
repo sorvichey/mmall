@@ -1,15 +1,18 @@
-@extends("layouts.product")
+@extends("layouts.customer")
 @section('content')
 <div class="row">
     <div class="col-lg-12">
         <strong>Shop Category List</strong>&nbsp;&nbsp;
-        <a href="{{url('/admin/shop-category/create')}}"><i class="fa fa-plus"></i> New</a>
         <hr>
         <table class="tbl">
             <thead>
             <tr>
                 <th>&numero;</th>
                 <th>Name</th>
+                <th>Shop Category</th>
+                <th>phone</th>
+                <th>Email</th>
+                <th>Active</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -17,23 +20,34 @@
             <?php
                 $pagex = @$_GET['page'];
                 if(!$pagex)
-                    $pagex = 1;
+                $pagex = 1;
                 $i = 18 * ($pagex - 1) + 1;
             ?>
-            @foreach($categories as $c)
+            @foreach($shops as $s)
                 <tr>
-                    <td>{{$i++}}</td>
-                    <td>{{$c->name}}</td>
+                    <td>{{$s->id}}</td>
+                    <td>{{$s->name}}</td>
+                    <td>{{$s->category}}</td>
+                    <td>{{$s->phone}}</td>
+                    <td>{{$s->email}}</td>
                     <td>
-                        <a class="btn btn-warning btn-sm" href="{{url('/admin/shop-category/edit/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a  class="btn btn-danger btn-sm" href="{{url('/admin/shop-category/delete/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                        @if($s->active==1)
+                        <span class="text-success">Approved</span>
+                        @else
+                        <span class="text-danger">Pendding</span>
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{url('admin/shops/approve/'.$s->id)}}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure want to approve this shop?')" title="Approve"><i class="fa fa-check"></i></a>
+                        <a href="{{url('admin/shops/disable/'.$s->id."?page=".@$_GET["page"])}}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure want to disable this shop?')" title="Disabl"><i class="fa fa-times"></i></a>
+                        <a href="{{url('/admin/shops/detail/'.$s->id)}}" class="btn btn-sm btn-primary" title="Approve"><i class="fa fa-eye"></i></a>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
         <nav>
-            {{$categories->links()}}
+            {{$shops->links()}}
         </nav>
     </div>
 </div>
@@ -42,7 +56,7 @@
     <script>
         $(document).ready(function () {
             $("#siderbar li a").removeClass("current");
-            $("#menu_shop_category").addClass("current");
+            $("#menu_shop").addClass("current");
         })
     </script>
 @endsection

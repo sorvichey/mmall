@@ -194,11 +194,19 @@ class ShopOwnerController extends Controller
         $owner_id = Session::get("shop_owner")->id;
 
         $data['my_shop'] = DB::table('shops')->where('shop_owner_id', $owner_id)->count();
+        $shop_id = DB::table('shops')->where('shop_owner_id', $owner_id)->first();
         if($data['my_shop']==1){
             $data['shop_info'] = DB::table('shops')
                 ->join('product_categories', 'product_categories.id', 'shops.shop_category')
-                ->select('shops.*', 'shops.id as id', 'product_categories.name as shop_category_name', 'product_categories.id as shop_category_id')
+                ->join('subscription','subscription.id', 'shops.subscription_id')
+                ->select('shops.*', 'shops.id as id', 'product_categories.name as shop_category_name', 'product_categories.id as shop_category_id', 'subscription.name as current_subscribe')
                 ->first();
+            $data['pedding_sub']=DB::table('shop_subscriptions')
+            ->join('subscription', 'subscription.id', 'shop_subscriptions.subscription_id')
+            ->select('subscription.name as sub_name')
+            ->where('shop_id', $shop_id->id)
+            ->where('status', 0)
+            ->first();
         }
         return view("fronts.shops.my-shop", $data);
     }
@@ -210,6 +218,7 @@ class ShopOwnerController extends Controller
 
     public function do_create_shop(Request $r) {
         $owner_id = Session::get("shop_owner")->id;
+        $find_shop = DB::table('shops')->where('name', $r->shop_name)->count();
         $shop = DB::table('shops')->orderBy('id', 'DESC')->first();
          if($shop==null){
             $last_id = 1;
@@ -228,31 +237,43 @@ class ShopOwnerController extends Controller
             'shop_owner_id' => $owner_id,
         );
 
-        if($r->hasFile('logo'))
-        {
-            $file = $r->file('logo');
-            $file_name = $file->getClientOriginalName();
-            $ss = substr($file_name, strripos($file_name, '.'), strlen($file_name));
-            $file_name = 'pro' .$last_id . $ss;
-
-            $destinationPath2 = 'uploads/shop_logos/';
-            $new_img2 = Image::make($file->getRealPath())->resize(500, null, function ($con) {
-                $con->aspectRatio();
-            });
-            $new_img2->save($destinationPath2 . $file_name, 80);
-            $data['logo'] = $file_name;
-
-        }
-
-         $i = DB::table('shops')->insertGetId($data);
-        if($i)
-        {
-            $r->session()->flash('sms', 'Your shop saved successfully, thanks!');
+        if($find_shop>=1){
+             $r->session()->flash('sms1', 'Shop name ['.$r->shop_name.'] is already exist!');
             return redirect('/owner/my-shop');
-        }
-        else{
-            $r->session()->flash('sms1', 'Fail to save!');
-            return redirect('/owner/my-shop');
+        }else{
+
+            if($r->hasFile('logo'))
+            {
+                $file = $r->file('logo');
+                $file_name = $file->getClientOriginalName();
+                $ss = substr($file_name, strripos($file_name, '.'), strlen($file_name));
+                $file_name = 'pro' .$last_id . $ss;
+
+                $destinationPath2 = 'uploads/shop_logos/';
+                $new_img2 = Image::make($file->getRealPath())->resize(500, null, function ($con) {
+                    $con->aspectRatio();
+                });
+                $new_img2->save($destinationPath2 . $file_name, 80);
+                $data['logo'] = $file_name;
+
+            }
+
+             $i = DB::table('shops')->insertGetId($data);
+            if($i)
+            {
+                $shop_sub = array(
+                    'shop_id' => $i,
+                    'subscription_id'=> 1,
+                    'status' => 1
+                 );
+                DB::table('shop_subscriptions')->insertGetId($shop_sub);
+                $r->session()->flash('sms', 'Your shop saved successfully, thanks!');
+                return redirect('/owner/my-shop');
+            }
+            else{
+                $r->session()->flash('sms1', 'Fail to save!');
+                return redirect('/owner/my-shop');
+            }
         }
     }
     public function edit_shop($id) {
@@ -297,6 +318,28 @@ class ShopOwnerController extends Controller
         else{
             $r->session()->flash('sms1', 'Fail to save change!');
             return redirect('/owner/shop/edit/'.$r->id);
+        }
+    }
+
+    public function shop_subscription($id){
+        $data['subscriptions'] = DB::table('subscription')->where('id','>', 1)->get();
+        return view("fronts.shops.shop-subscription",$data);
+    }
+
+    public function do_shop_subscription(Request $r){
+        $shop_sub = array(
+            'shop_id' => $r->id,
+            'subscription_id'=> $r->subscription_id
+         );
+        $i = DB::table('shop_subscriptions')->insertGetId($shop_sub);
+        if($i)
+        {
+            $r->session()->flash('sms', 'Your subscription have been submit successfully!');
+            return redirect('/owner/my-shop');
+        }
+        else{
+            $r->session()->flash('sms1', 'Fail to subscribe!');
+            return redirect('/owner/my-shop');
         }
     }
 
