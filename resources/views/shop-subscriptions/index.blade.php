@@ -55,10 +55,10 @@
                         <td>{{$s->current_subscription}}</td>
                         <td><i class="bg-warning" style="padding: 0px 12px 0px 12px">{{$s->request_subscription}}</i></td>
                         <td>
-                            <a class="btn btn-sm btn-warning" href="{{url('/admin/shop-subscription/approve/'.$s->id)}}" onclick="return confirm('Are sure to approve new subscriptoin to this shop?')" title="Detail"><i class="fa fa-check"></i></a>
-                            <a class="btn btn-sm btn-info" href="{{url('/admin/shop-subscription/detail/'.$s->id)}}" title="Detail"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-sm btn-warning" href="{{url('/admin/shop-subscription/approve/'.$s->id)}}" onclick="return confirm('Are sure to approve new subscriptoin to this shop?')" title="Approve"><i class="fa fa-check"></i></a>
+                            <!-- <a class="btn btn-sm btn-info" href="{{url('/admin/shop-subscription/detail/'.$s->id)}}" title="Detail"><i class="fa fa-eye"></i></a>
                            
-                            <a class="btn btn-sm btn-primary" href="{{url('/admin/shop-subscription/all/'.$s->id ."?page=".@$_GET["page"])}}" title="All subscription"><i class="fa fa"></i>All Subs</a>
+                            <a class="btn btn-sm btn-primary" href="{{url('/admin/shop-subscription/all/'.$s->id ."?page=".@$_GET["page"])}}" title="All subscription"><i class="fa fa"></i>All Subs</a> -->
                         </td>
                     </tr>
                 @endforeach

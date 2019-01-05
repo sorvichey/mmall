@@ -81,9 +81,27 @@ class AdminShopSubscriptionController extends Controller
     $i = DB::table('shop_subscriptions')
           ->where("shop_id", $id)
           ->where("status", 0)
+          ->first();
+    if($i!=null){
+      DB::table('shop_subscriptions')
+          ->where("shop_id", $id)
+          ->where("status", 0)
           ->update($data);
-      
-            return redirect("/admin/shop-subscription");
+
+      $data_shop = array(
+          "subscription_id" => $i->subscription_id
+      );
+
+      DB::table('shops')
+            ->where("id", $id)
+            ->update($data_shop);
+        
+      return redirect("/admin/shops/detail/".$id);
+    }else{
+      // $r->session()->flash('sms', 'New product has been create successfully!');
+      return redirect("/admin/shop-subscription");
+
+    }
         
 
   }
