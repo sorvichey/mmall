@@ -59,7 +59,7 @@ Route::post('/owner/shop/create', "ShopOwnerController@do_create_shop");
 Route::get('/owner/shop/edit/{id}', "ShopOwnerController@edit_shop");
 Route::post('/owner/shop/update', "ShopOwnerController@do_edit_shop");
 Route::get('/owner/shop-subscribe/{id}', "ShopOwnerController@shop_subscription");
-Route::post('/owner/shop/subcribe', "ShopOwnerController@do_shop_subscription");
+Route::get('/owner/shop/subcribe/{id}', "ShopOwnerController@do_shop_subscription");
 
 Route::get('/owner/my-product', "ShopOwnerController@product");
 Route::get('/owner/new-product', "ShopOwnerController@new_product");

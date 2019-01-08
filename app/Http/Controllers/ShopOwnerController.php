@@ -326,19 +326,21 @@ class ShopOwnerController extends Controller
         return view("fronts.shops.shop-subscription",$data);
     }
 
-    public function do_shop_subscription(Request $r){
+    public function do_shop_subscription($id){
+        $owner_id = Session::get("shop_owner")->id;
+        $shops  = DB::table('shops')->where('shop_owner_id',$owner_id)->where('active',1)->first();
         $shop_sub = array(
-            'shop_id' => $r->id,
-            'subscription_id'=> $r->subscription_id
+            'shop_id' => $shops->id,
+            'subscription_id'=> $id
          );
         $i = DB::table('shop_subscriptions')->insertGetId($shop_sub);
         if($i)
         {
-            $r->session()->flash('sms', 'Your subscription have been submit successfully!');
+            Session::flash('sms', 'Your subscription have been submit successfully!');
             return redirect('/owner/my-shop');
         }
         else{
-            $r->session()->flash('sms1', 'Fail to subscribe!');
+            Session::flash('sms1', 'Fail to subscribe!');
             return redirect('/owner/my-shop');
         }
     }

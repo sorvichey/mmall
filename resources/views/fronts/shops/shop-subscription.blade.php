@@ -27,40 +27,29 @@
                 </div>
             @endif
 
+            <div class="col-sm-12">
+                <br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            <br>
             <form action="{{url('owner/shop/subcribe')}}" enctype="multipart/form-data" class="form-horizontal" method="post">
             {{csrf_field()}}
-                <div class="row">
+            <input type="hidden" name="id" value="{{ Request::segment(3)}}">
+                @foreach($subscriptions as $s)
+                    <div class="col-sm-6">
+                        <div class="card" style="padding: 15px;">
+                          <div class="card-body">
+                            <h5 class="card-title">{{$s->name}}</h5>
+                            <hr style="border: 2px solid {{$s->name}};">
+                            <p class="card-text">
+                                {!!$s->description!!}
+                            </p>
 
-                    <br>
-                    <div class="col-sm-12">
-                        <h4>Subscribe to upgrade your shop:</h4>
-                        <hr>
-                        <input type="hidden" name="id" value="{{ Request::segment(3)}}">
-
-
-                         <div class="form-group row">
-                            <label for="shop_category" class="control-label col-sm-3">Subscription Type <span class="text-danger">*</span></label>
-                            <div class="col-sm-9">
-                                <select class="form-control option" name="subscription_id" id="subscription_id">
-                                    <option value="">Please choose one</option>
-                                    @foreach($subscriptions as $value)
-                                      <option value="{{$value->id}}" >{{$value->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <a href="{{url('owner/shop/subcribe/'.$s->id)}}" class="btn btn-success" onclick="return confirm('Are you sure want to subscribe this package?')">Subscribe Now</a>
+                          </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label class="control-label col-sm-3 lb"></label>
-                            <div class="col-sm-9">
-                                <button class="btn btn-primary btn-flat" type="submit">Subscribe</button>
-                                <button class="btn btn-danger btn-flat" type="reset" id="btnCancel">Cancel</button>
-                                <p></p>
-                            </div>
-                        </div>
-
                     </div>
-                </div>
+                @endforeach
             </form>
         </div>
     </div>
@@ -72,6 +61,15 @@
         var output = document.getElementById('preview');
         output.src = URL.createObjectURL(e.target.files[0]);
     }
+
+    $(document).ready (function(){
+        $("#success-alert").hide();
+        $("#myWish").click(function showAlert() {
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+           $("#success-alert").slideUp(500);
+            });   
+        });
+    });
 
 </script> 
 @endsection

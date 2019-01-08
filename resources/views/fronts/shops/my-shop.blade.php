@@ -47,14 +47,11 @@
                 </div>
             </div>
             @else
-            <div class="alert alert-success" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div>
-                   Now you can post your product.
-                </div>
-            </div>
+            <div class="alert alert-success" id="success-alert">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success! </strong>
+    Product have added to your wishlist.
+</div>
             @endif
 
            @if(Session::has('sms'))
@@ -141,6 +138,10 @@
             $("#shop-menu li a").removeClass("active");
             $("#my-shop").addClass("active");
         });
-    
+        $(document).ready (function(){
+                $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+               $("#success-alert").slideUp(500);
+                });   
+        });
     </script>
 @endsection
