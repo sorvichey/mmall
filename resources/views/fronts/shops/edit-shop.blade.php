@@ -39,7 +39,7 @@
                         <div class="form-group row">
                             <label for="shop_name" class="control-label col-sm-3 lb">Shop Name <span class="text-danger">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" id="shop_name" value="{{$shops->name}}" name="shop_name" class="form-control" autofocus required>
+                                <input type="text" id="shop_name" value="{{$shops->name}}" name="shop_name" class="form-control" required readonly>
                             </div>
                         </div>
 

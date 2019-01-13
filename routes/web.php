@@ -68,6 +68,12 @@ Route::get('/owner/detail-product/{id}', "ShopOwnerController@detail_product");
 Route::get('/owner/edit-product/{id}', "ShopOwnerController@edit_product");
 Route::post('/owner/save-edit-product/', "ShopOwnerController@do_edit_product");
 Route::get('/owner/delete-product/{id}', "ShopOwnerController@delete_product");
+Route::post('/owner/product/add-qty/', "ShopOwnerController@add_qty");
+Route::get('/owner/product/out-stock/', "ShopOwnerController@out_stock");
+
+// Product order
+Route::get('/owner/product-order/', "ProductOrderController@index");
+
 
 // product image for shop owner
 Route::get('/owner/product/detail/{id}/image', "OwnerPhotoController@index");

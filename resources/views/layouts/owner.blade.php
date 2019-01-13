@@ -45,7 +45,18 @@
 
         
             </header><!-- #masthead -->
-
+<?php  
+	$owner_id = Session::get("shop_owner")->id;
+	$less_item = DB::table('products')
+	->join('product_categories', 'products.category_id', 'product_categories.id')
+	->join('shops', 'shops.id', 'products.shop_id')
+	->join('shop_owners', 'shop_owners.id', 'shops.shop_owner_id')
+	->where('shop_owners.id', $owner_id)
+	->where('products.quantity', '<=', 10)
+	->where('products.active', 1)
+	->count();
+	
+?>
             <nav class="navbar navbar-primary navbar-full nav-bar-custom hidden-md-down">
                 <div class="container">
                     <ul class="nav nav-pills" id="shop-menu">
@@ -56,7 +67,15 @@
                         <a class="nav-link" id="my-shop" href="{{url('owner/my-shop')}}"> <i class="fa fa-home"></i> My Shop</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" id="my-product" href="{{url('owner/my-product')}}"> <i class="fa fa-product-hunt"></i> Products</a></a>
+                        <a class="nav-link" id="my-product" href="{{url('owner/my-product')}}"> <i class="fa fa-product-hunt"></i> Products</a>
+                      </li>
+
+					  <li class="nav-item">
+                        <a class="nav-link" id="out-stock" href="{{url('owner/product/out-stock')}}"> <i class="fa fa-bookmark"></i> Out Stock <i class="text-danger">{{$less_item}}</i></a>
+                      </li>
+
+					  <li class="nav-item">
+                        <a class="nav-link" id="ordering" href="{{url('owner/product-order')}}"> <i class="fa fa-bookmark-o"></i> Order</a>
                       </li>
                       
                     </ul>

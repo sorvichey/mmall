@@ -347,28 +347,39 @@ class ShopOwnerController extends Controller
 
      // product
     public function product(){
+        $owner_id = Session::get("shop_owner")->id;
         $data['query']= "";
         if(isset($_GET['q']))
         {
             $data['query'] = $_GET['q'];
             $data['products'] = DB::table('products')
                 ->join('product_categories', 'products.category_id', 'product_categories.id')
-                ->where('products.active', 1)
-                ->orderBy('products.id', 'desc')
+                ->join('shops', 'shops.id', 'products.shop_id')
+                ->join('shop_owners', 'shop_owners.id', 'shops.shop_owner_id')
                 ->select('products.*', 'product_categories.name as cname')
                 ->where(function($fn){
                     $fn->where('products.name', 'like', "%{$_GET['q']}%")
                     ->orWhere('product_categories.name', 'like', "%{$_GET['q']}%");
                 })
+                ->where('products.active', 1)
+                ->where('shop_owners.id', $owner_id)
+                ->orderBy('products.id', 'desc')
                 ->paginate(18);
         }
         else{
-        $data['products'] = DB::table('products')
-            ->join('product_categories', 'products.category_id', 'product_categories.id')
-            ->where('products.active', 1)
-            ->orderBy('products.id', 'desc')
-            ->select('products.*', 'product_categories.name as cname')
-            ->paginate(18);
+            
+            $data['products'] = DB::table('products')
+                ->join('product_categories', 'products.category_id', 'product_categories.id')
+                ->join('shops', 'shops.id', 'products.shop_id')
+                ->join('shop_owners', 'shop_owners.id', 'shops.shop_owner_id')
+                ->select(
+                    'products.*', 
+                    'product_categories.name as cname'
+                )
+                ->where('shop_owners.id', $owner_id)
+                ->where('products.active', 1)
+                ->orderBy('products.id', 'desc')
+                ->paginate(18);
         }
         
         return view("fronts.shops.products.index",$data);
@@ -640,6 +651,50 @@ class ShopOwnerController extends Controller
             return redirect('/owner/account-recovery')->withInput();
         }
     }
+
+    // product out of the stock
+    public function out_stock()
+    {
+        $owner_id = Session::get("shop_owner")->id;
+        $data['products'] = DB::table('products')
+            ->join('product_categories', 'products.category_id', 'product_categories.id')
+            ->join('shops', 'shops.id', 'products.shop_id')
+            ->join('shop_owners', 'shop_owners.id', 'shops.shop_owner_id')
+            ->select('products.*', 'product_categories.name as cname')
+            ->where('shop_owners.id', $owner_id)
+            ->where('products.quantity', '<=', 100)
+            ->where('products.active', 1)
+            ->orderBy('products.id', 'desc')
+            ->paginate(18);
+        return view("fronts.shops.products.out-stock", $data);
+    }
+
+    //add more quantities to product that less than 10
+    public function add_qty(Request $r)
+    {
+        $pro_name = DB::table('products')->where('id', $r->id)
+            ->where('shop_id', $r->shop_id)
+            ->select('name', 'quantity')
+            ->first();
+        $total_qty = $pro_name->quantity+$r->qty;
+        $i = DB::table('products')->where('id', $r->id)
+            ->where('shop_id', $r->shop_id)
+            ->update(["quantity"=>$total_qty]);
+        
+        if($i)
+        {
+            $r->session()->flash('sms', 'You have added ['.$r->qty.'] to ['.$pro_name->name.'] !');
+            return redirect('/owner/product/out-stock');
+        }
+        else{
+            $r->session()->flash('sms1', 'Fail to add ['.$r->qty.'] to ['.$pro_name->name.'] !');
+            return redirect("/owner/product/out-stock");
+        }
+    }
+
+
+
+    // shop owner account reset
     public function shop_owner_new_password($id)
     {
         $data['id'] = $id;
