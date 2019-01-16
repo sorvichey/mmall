@@ -1191,10 +1191,12 @@
 
     </div><!-- .container -->
 </div><!-- #content -->
+
+@endsection
+@section('js')
 <script>
     var burl = "{{url('/')}}";
 </script>
-@endsection
-@section('js')
-<script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
+<!-- <script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
+<script src="{{asset('fronts/assets/js/get-wishlist.js')}}"></script> -->
 @endsection

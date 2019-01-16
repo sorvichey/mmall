@@ -1,4 +1,4 @@
-@extends('layouts.buyer')
+@extends('layouts.front')
 @section('content')
 <div tabindex="-1" class="site-content" id="content">
     <div class="container">
@@ -49,7 +49,7 @@
                                         @if($w->quantity > 0 )<span class="text-success">In stock </span> @else<span class="text-danger"> Out Stock </span> @endif</span>
                                         </td>
                                         <td width="170" class="product-add-to-cart ">
-                                            <a href="#" class="button" > Add to Cart</a>
+                                            <a href="#" class="button" onclick="add_to_cart(this, '{{base64_encode($w->p_id)}}')" data-id="{{base64_encode($w->p_id)}}" id="add_to_wishlist"> Add to Cart</a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -71,3 +71,4 @@
     </div>
 </div>
 @endsection
+

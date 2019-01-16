@@ -14,18 +14,24 @@ Route::get('/product/new-arrival/list-view', "FrontProductListController@new_arr
 // Buyer 
 Route::post('/buyer/sign-up', "SecurityController@buyer_sign_up");
 Route::post('/buyer/sign-in', "SecurityController@do_login");
-Route::post('/buyer/wish/save', "WishController@save");
 Route::get('/buyer/account-recovery', "SecurityController@buyer_account_recovery");
 Route::post('/buyer/account-recovery/send', "SecurityController@buyer_send_account_recovery");
 Route::post('/buyer/reset-password/save', "SecurityController@buyer_reset_password");
 Route::get('/buyer/service/reset/{id}', "SecurityController@buyer_new_password");
 Route::get('/buyer/service/activated/{id}', "SecurityController@buyer_activated_account");
 Route::post('buyer/activated/save', "SecurityController@buyer_activated_save");
-Route::get('/buyer/wishlist', "WishController@index");
-Route::get('/buyer/wishlist/delete/{id}', "WishController@delete");
 Route::get('/my-account/setting/{id}', "SecurityController@buyer_account_setting");
 Route::post('/my-account/setting/save/{id}', "SecurityController@buyer_account_save_change");
 Route::post('/my-account/setting/pwd/{id}', "SecurityController@buyer_account_save_change_pwd");
+
+// wishlist
+Route::get('/buyer/wishlist', "WishController@index");
+Route::post('/buyer/wish/save', "WishController@save");
+Route::get('/buyer/wishlist/delete/{id}', "WishController@delete");
+Route::get('/buyer/wishlist/count/', "WishController@wishlist_count");
+
+//add to cart
+Route::post('/buyer/cart/save', "AddToCartController@save");
 
 // Product category
 Route::get('product/category/{id}', "FrontProductListController@product_by_category");

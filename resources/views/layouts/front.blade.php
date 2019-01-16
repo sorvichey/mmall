@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
         <title>M-Mall</title>
 
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/bootstrap.min.css')}}" media="all" />
@@ -20,7 +20,6 @@
     </head>
 
     <body class="page home page-template-default">
-
 	<a href="#" class="scrollToTop" style="display: none;"><i class="fa fa-arrow-up"></i></a>
         <div id="page" class="hfeed site">
             <a class="skip-link screen-reader-text" href="#site-navigation">Skip to navigation</a>
@@ -181,17 +180,28 @@
                         	</li>
                         </ul>
 
-                        <ul class="navbar-wishlist nav navbar-nav pull-right flip">
+                        <!-- <ul class="navbar-wishlist nav navbar-nav pull-right flip">
                         	<li class="nav-item">
 								
-                        		<a href="@if(Session::has('buyer')){{url('buyer/wishlist')}}@else{{url('buyer/login')}}@endif " class="nav-link"><i class="ec ec-favorites"></i></a>
+                        		<a href="@if(Session::has('buyer')){{url('buyer/wishlist')}}@else{{url('buyer/login')}}@endif " class="nav-link">
+                                    <i class="ec ec-favorites"></i>
+                                    <span class="cart-items-count count" id="count_wishlist">0</span>
+                                </a>
                         	</li>
+                        </ul> -->
+                        <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip">
+                            <li class="nav-item dropdown">
+                                <a  href="@if(Session::has('buyer')){{url('buyer/wishlist')}}@else{{url('buyer/login')}}@endif" class="nav-link">
+                                    <i class="ec ec-favorites"></i>
+                                    <span class="cart-items-count count" id="count_wishlist">0</span>
+                                </a>
+                            </li>
                         </ul>
                         <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip">
-                        	<li class="nav-item dropdown">
-                        		<a href="cart.html" class="nav-link" data-toggle="dropdown">
-                        			<i class="ec ec-shopping-bag"></i>
-                        			<span class="cart-items-count count">4</span>
+                            <li class="nav-item dropdown">
+                                <a  href="#" class="nav-link" data-toggle="dropdown">
+                                    <i class="ec ec-shopping-bag"></i>
+                                    <span class="cart-items-count count" id="count_cart">0</span>
                                 </a>
                             </li>
                         </ul>
@@ -392,6 +402,10 @@
             	</div><!-- /.copyright-bar -->
         </div><!-- #page -->
 	
+        <!-- Add your Script below -->
+        <script type="text/javascript">
+            var burl = "{{url('/')}}";
+        </script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/tether.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/bootstrap.min.js')}}"></script>
@@ -403,8 +417,12 @@
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery.waypoints.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/electro.js')}}"></script>
 		<script type="text/javascript" src="{{asset('fronts/assets/js/scroll-to-top.js')}}"></script>
-		<script type="text/javascript" src="{{asset('fronts/assets/js/jquery-3-3-1.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('fronts/assets/js/jquery-3-3-1.min.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/get-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/add-to-cart.js')}}"></script>
 		<script>
+            
 			function chLang(evt, ln)
 			{
 				evt.preventDefault();

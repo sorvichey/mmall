@@ -104,6 +104,7 @@ class SecurityController extends Controller
                 {
                     // save user to session
                     $r->session()->put('buyer', $buyer);
+                   
                     return redirect('/');
                 }
                 else{

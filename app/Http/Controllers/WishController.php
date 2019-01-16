@@ -55,4 +55,13 @@ class WishController extends Controller
 
         return redirect('/buyer/wishlist');
      }
+
+     // count wishlist by buyer
+     public function wishlist_count()
+     {
+        $buyer_id = Session::get("buyer")->id;
+        $resutl = DB::table('wishes')->where('buyer_id', $buyer_id)->count();
+        
+        return response()->json($resutl);
+     }
 }
