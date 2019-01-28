@@ -112,7 +112,8 @@
 
                                         </div><!-- /itemprop -->
 
-                                        <form class="variations_form cart" method="post">
+                                        <form action="{{url('/buyer/cart/save')}}" id="variations_form" class="variations_form cart" method="post">
+                                            {{csrf_field()}}
 
                                               @if(count($colors)>0)
                                                 <div class="row">
@@ -135,9 +136,10 @@
                                                         <label>Quantity:</label>
                                                         <input type="number" name="quantity" value="1" title="Qty" class="input-text qty text"/>
                                                     </div>
-                                                    <button type="submit" class="single_add_to_cart_button button">Add to cart</button>
+                                                    <button type="submit" class="single_add_to_cart_button button" onclick="add_to_cart_m(this, event)">Add to cart</button>
+
                                                     <input type="hidden" name="add-to-cart" value="2452" />
-                                                    <input type="hidden" name="product_id" value="2452" />
+                                                    <input type="hidden" name="p_id" value="{{base64_encode($product->id)}}" />
                                                     <input type="hidden" name="variation_id" class="variation_id" value="0" />
                                                 </div>
                                             </div>
@@ -583,4 +585,5 @@
 @section('js')
 <script src="{{asset('fronts/assets/js/rate.js')}}"></script>
 <script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
+<!-- <script src="{{asset('fronts/assets/js/add-to-cart_multi.js')}}"></script> -->
 @endsection

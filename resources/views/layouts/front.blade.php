@@ -199,7 +199,7 @@
                         </ul>
                         <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip">
                             <li class="nav-item dropdown">
-                                <a  href="#" class="nav-link" data-toggle="dropdown">
+                                <a   href="@if(Session::has('buyer')){{url('buyer/mycart')}}@else{{url('buyer/login')}}@endif" class="nav-link" >
                                     <i class="ec ec-shopping-bag"></i>
                                     <span class="cart-items-count count" id="count_cart">0</span>
                                 </a>
@@ -420,6 +420,7 @@
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery-3-3-1.min.js')}}"></script>
         <script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
         <script src="{{asset('fronts/assets/js/get-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/get-cart.js')}}"></script>
         <script src="{{asset('fronts/assets/js/add-to-cart.js')}}"></script>
 		<script>
             

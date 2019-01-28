@@ -32,6 +32,8 @@ Route::get('/buyer/wishlist/count/', "WishController@wishlist_count");
 
 //add to cart
 Route::post('/buyer/cart/save', "AddToCartController@save");
+Route::get('/buyer/mycart', "AddToCartController@index");
+Route::get('/buyer/mycart/count', "AddToCartController@cart_count");
 
 // Product category
 Route::get('product/category/{id}', "FrontProductListController@product_by_category");

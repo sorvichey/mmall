@@ -20,7 +20,7 @@ class WishController extends Controller
             ->orderBy('wishes.create_at', 'desc')
             ->select('products.id as p_id', 'wishes.id as w_id', 'products.name', 'products.quantity', 'products.discount', 'products.price', 'products.featured_image', 'wishes.*')
             ->paginate(20);
-        return view('fronts.buyer-wishlist', $data);
+        return view('fronts.buyers.wishlists.buyer-wishlist', $data);
     }
   
     // save new social
@@ -60,7 +60,7 @@ class WishController extends Controller
      public function wishlist_count()
      {
         $buyer_id = Session::get("buyer")->id;
-        $resutl = DB::table('wishes')->where('buyer_id', $buyer_id)->count();
+        $resutl = DB::table('wishes')->where(array('buyer_id' =>$buyer_id , "active" =>1))->count();
         
         return response()->json($resutl);
      }

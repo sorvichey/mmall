@@ -14,6 +14,7 @@ function add_to_cart(obj, id)
            url:'/buyer/cart/save',
            data:{p_id:id},
            success:function(data){
+              alert(data);
               $('#count_cart').text(data);
            },
            error:function(e){
