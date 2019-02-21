@@ -4,7 +4,7 @@
     $owner_id = session('shop_owner')->id;
     $owner = DB::table('shop_owners')
     ->join('shops', 'shops.shop_owner_id', 'shop_owners.id')
-    ->select('shops.active as active')
+    ->select('shops.active as active', 'shops.id as s_id')
     ->where('shop_owners.id', $owner_id)->first();
 ?>
 <div class="container">
@@ -33,17 +33,8 @@
                     </div>
                 </div>
             @else
-            <strong>Product List</strong>&nbsp;&nbsp;
+            <strong>List of Product Out of Stock </strong>&nbsp;&nbsp;
             <a href="{{url('/owner/new-product')}}"><i class="fa fa-plus"></i> New</a> 
-            <div class="float-right">
-            <form action="{{url('/owner/my-product')}}" class="form-inline" method="get">
-                <div class="form-group">
-                    <label for="name">Search&nbsp;&nbsp;</label>
-                    <input type="text" class="form-control" id="q" name="q" value="{{$query}}" >
-                    <button type="submit"  style="padding:3px 8px 3px 8px;" class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-            </div>
            
             <hr>
             <table class="tbl display table-bordered"  id="table_id">
@@ -54,9 +45,7 @@
                     <th>Product Name</th>
                     <th>Category</th>
                     <th>Price ($)</th>
-                    <th>Items</th>
-                    <!-- <th>Best Deal</th>
-                    <th>Best Seller</th> -->
+                    <th>Quantity (item)</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -70,26 +59,16 @@
                 @foreach($products as $c)
                     <tr>
                         <td width="20">{{$i++}}</td>
-                        <td width="100"><img src="{{asset('uploads/products/featured_images/180/'.$c->featured_image)}}" alt="" width="50"></td>
+                        <td width="200"><img src="{{asset('uploads/products/featured_images/180/'.$c->featured_image)}}" alt="" width="50"></td>
                         <td>
                             <a href="{{url('/owner/detail-product/'.$c->id)}}">{{$c->name}}</a>
                         </td>
-                        <td>{{$c->cname}} </td>
-                        <td>{{$c->price}} $</td>
-                        <td>{{$c->quantity}} </td>
-                        <!-- <td width="30">@if($c->best_deal== 0)
-                            <a class="btn btn-danger btn-xs" href="{{url('owner/product/best-deal/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('Add to best deal?')" title="your want to add to best deal?"><i class="fa fa-star-o"></i></a>
-                            @else
-                            <a class="btn btn-success btn-xs" href="{{url('owner/product/best-deal/return/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('you want to return to best deal?')" title="return to best deal"><i class="fa fa-star-o"></i></a>
-                            @endif </td>
+                        <td width="150">{{$c->cname}}</td>
+                        <td width="150">{{$c->price}} $</td>
+                        <td width="150">{{$c->quantity}} </td>
                         
-                        <td width="30"> 
-                            @if($c->best_seller == 0)
-                                <a class="btn btn-danger btn-xs" href="{{url('owner/product/best-seller/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('you want to add to best detail?')" title="add to best seller"><i class="fa fa-check"></i></a>
-                            @else
-                                <a class="btn btn-success btn-xs" href="{{url('owner/product/best-seller/return/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('you want to return simple seller?')" title="add to best seller"><i class="fa fa-check"></i></a>
-                            @endif </td> -->
-                        <td width="120">
+                        <td width="150">
+                            <a class="btn btn-success btn-xs open_modal" href="{{url('/owner/detail-product/'.$c->id)}}" data-toggle="modal" data-id="{{$c->id}}" data-target="#add_qty" title="Add Quantity"><i class="fa fa-plus"></i></a>
                             <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.$c->id)}}" title="Detail"><i class="fa fa-eye"></i></a>
                             <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
@@ -106,6 +85,32 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="add_qty" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add Quantities</h4>
+        </div>
+        <form action="{{url('/owner/product/add-qty')}}" method="post">
+            {{csrf_field()}}
+            <div class="modal-body">
+            <input type="hidden" id="product_id" name="id">
+            <input type="hidden" value="{{$owner->s_id}}" name="shop_id">
+                <span>Quantity(add total quantity):</span>
+                <input type="number" class="form-control" id="qty" name="qty" placeholder="100" require autofocus>
+            </div>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-default" name="btn_save_change">Save As</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
 @endsection
 
 @section('js')
@@ -113,8 +118,17 @@
 
         $(document).ready(function () {
             $("#shop-menu li a").removeClass("active");
-            $("#my-product").addClass("active");
+            $("#out-stock").addClass("active");
+
+            // add row id to modal add_qty
+            $(document).on("click", ".open_modal", function () {
+                //get product id form button "data-id" and add to modal
+                var row_id = $(this).data('id');
+                $(".modal-body #product_id").val( row_id );
+            });
         });
+
+        
     
     </script>
 @endsection

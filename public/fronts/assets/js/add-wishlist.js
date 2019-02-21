@@ -7,7 +7,6 @@ function add_wish_list(obj, evt) {
         form_data.append('product_id', $(obj).data('id'));
         form_data.append("buyer_id", $("#buyer_id").val());
         $.ajax({
-            type: 'POST',
             url:burl + '/buyer/wish/save',
             data: form_data,
             type: 'POST',
