@@ -2,15 +2,14 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <strong>Product Category List</strong>&nbsp;&nbsp;
-        <a href="{{url('/admin/product-category/create')}}"><i class="fa fa-plus"></i> New</a>
+        <strong>Main Menu List</strong>&nbsp;&nbsp;
+        <a href="{{url('/admin/main-menu/create')}}"><i class="fa fa-plus"></i> New</a>
         <hr>
         <table class="tbl">
             <thead>
             <tr>
                 <th>&numero;</th>
                 <th>Name</th>
-                <th>Parent Category</th>
                 <th>Icon</th>
                 <th>Actions</th>
             </tr>
@@ -22,22 +21,21 @@
                     $pagex = 1;
                 $i = 18 * ($pagex - 1) + 1;
             ?>
-            @foreach($categories as $c)
+            @foreach($menu_ones as $c)
                 <tr>
                     <td>{{$i++}}</td>
                     <td>{{$c->name}}</td>
-                    <td>{{$c->parent_name}}</td>
-                    <td><img src="{{asset('uploads/product-categories/'.$c->icon)}}" alt="" width="25"></td>
+                    <td><img src="{{asset('uploads/menu-ones/'.$c->icon)}}" alt="" width="25"></td>
                     <td>
-                        <a class="btn btn-warning btn-sm" href="{{url('/admin/product-category/edit/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a  class="btn btn-danger btn-sm" href="{{url('/admin/product-category/delete/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                        <a class="btn btn-warning btn-sm" href="{{url('/admin/main-menu/edit/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
+                        <a  class="btn btn-danger btn-sm" href="{{url('/admin/main-menu/delete/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
         <nav>
-            {{$categories->links()}}
+            {{$menu_ones->links()}}
         </nav>
     </div>
 </div>
@@ -46,7 +44,7 @@
     <script>
         $(document).ready(function () {
             $("#siderbar li a").removeClass("current");
-            $("#menu_product_category").addClass("current");
+            $("#menu_main_menu").addClass("current");
         })
     </script>
 @endsection

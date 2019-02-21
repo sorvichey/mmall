@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-
-class ProductCategoryController extends Controller
+use Auth;
+class MainMenuController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,14 +19,12 @@ class ProductCategoryController extends Controller
     public function index()
     {
         // select self join company categories
-        $data['categories'] = DB::table('product_categories as a')
-            ->leftjoin('product_categories as b','b.id','=','a.parent_id')
-            ->select('a.*', 'b.name as parent_name')
+        $data['menu_ones'] = DB::table('menu_ones')
             ->orderBy('id', 'desc')
-            ->where('a.active',1)
+            ->where('active',1)
             ->paginate(18);
 
-        return view("product-categories.index", $data);
+        return view("main-menus.index", $data);
     }
 
     /**
@@ -32,14 +34,7 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        // select self join company categories
-        $data['categories'] = DB::table('product_categories')
-            ->where('parent_id', 0)
-            ->where('active', 1)
-            ->orderBy('name')
-            ->get();
-        
-        return view("product-categories.create", $data);
+        return view("main-menus.create");
     }
 
     /**
@@ -53,28 +48,25 @@ class ProductCategoryController extends Controller
         // save data into company categories
         $data = array(
             "name" => $request->name,
-            "parent_id" => $request->parent,
-            "color" => $request->color,
-            "size" => $request->size
         );
-        $i = DB::table('product_categories')->insertGetId($data);
+        $i = DB::table('menu_ones')->insertGetId($data);
         if($request->hasFile('icon'))
         {
             $file = $request->file('icon');
             $file_name = $file->getClientOriginalName();
-            $destinationPath = 'uploads/product-categories/'; // usually in public folder
+            $destinationPath = 'uploads/menu-ones/'; // usually in public folder
             $file->move($destinationPath, $i.$file_name);
             $data['icon'] = $i.$file_name;
           
-            $i = DB::table('product_categories')->where('id', $i)->update($data);
+            $i = DB::table('menu_ones')->where('id', $i)->update($data);
         }
         if ($i)
         {
-            $request->session()->flash("sms", "New product category has been created successfully!");
-            return redirect("/admin/product-category/create");
+            $request->session()->flash("sms", "New Main menu has been created successfully!");
+            return redirect("/admin/main-menu/create");
         } else {
             $request->session()->flash("sms1", "Fail to create new event category!");
-            return redirect("/admin/product-category/create")->withInput();
+            return redirect("/admin/main-menu/create")->withInput();
         }
         
     }
@@ -87,16 +79,10 @@ class ProductCategoryController extends Controller
      */
     public function edit($id)
     {
-        // select self join company categories
-        $data['categories'] = DB::table('product_categories')
-            ->where('parent_id', 0)
-            ->where('active', 1)
-            ->orderBy('name')
-            ->get();
-        $data['category'] = DB::table('product_categories')
+        $data['menu_one'] = DB::table('menu_ones')
             ->where('id', $id)
             ->first();
-        return view("product-categories.edit", $data);
+        return view("main-menus.edit", $data);
     }
 
     /**
@@ -110,26 +96,23 @@ class ProductCategoryController extends Controller
         // update data into company categories
         $data = array(
             "name" => $request->name,
-            "parent_id" => $request->parent,
-            "color" => $request->color,
-            "size" => $request->size
         );
         if($request->hasFile('icon'))
         {
             $file = $request->file('icon');
             $file_name = $file->getClientOriginalName();
-            $destinationPath = 'uploads/product-categories/'; // usually in public folder
+            $destinationPath = 'uploads/menu-ones/'; // usually in public folder
             $file->move($destinationPath, $request->id.$file_name);
             $data['icon'] = $request->id.$file_name;
         }
-        $i = DB::table('product_categories')->where("id", $request->id)->update($data);
+        $i = DB::table('menu_ones')->where("id", $request->id)->update($data);
         if($i)
         {
             $request->session()->flash("sms", "All changes have been saved successfully!");
-            return redirect("/admin/product-category/edit/". $request->id);
+            return redirect("/admin/main-menu/edit/". $request->id);
         } else {
             $request->session()->flash("sms1", "Fail to save change. You might not change any thing!");
-            return redirect("/admin/product-category/edit/". $request->id);
+            return redirect("/admin/main-menu/edit/". $request->id);
         }
     }
 
@@ -141,12 +124,12 @@ class ProductCategoryController extends Controller
      */
     public function destroy($id)
     {
-        DB::table('product_categories')->where('id', $id)->update(["active"=>0]);
+        DB::table('menu_ones')->where('id', $id)->update(["active"=>0]);
         $page = @$_GET['page'];
         if ($page>0)
         {
-            return redirect('/product-category?page='.$page);
+            return redirect('/admin/main-menu?page='.$page);
         }
-        return redirect('/product-category');
+        return redirect('/admin/main-menu');
     }
 }

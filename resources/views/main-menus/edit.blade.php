@@ -2,8 +2,8 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <strong>Edit Product Category</strong>&nbsp;&nbsp;
-        <a href="{{url('/admin/product-category')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
+        <strong>Edit Main Menu</strong>&nbsp;&nbsp;
+        <a href="{{url('/admin/main-menu')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
         <hr>
         @if(Session::has('sms'))
             <div class="alert alert-success" role="alert">
@@ -25,47 +25,25 @@
                 </div>
             </div>
         @endif
-        <form action="{{url('/admin/product-category/update')}}" enctype="multipart/form-data" method="post" id="frm" class="form-horizontal">
+        <form action="{{url('/admin/main-menu/update')}}" enctype="multipart/form-data" method="post" id="frm" class="form-horizontal">
             {{csrf_field()}}
-            <input type="hidden" name="id" value="{{$category->id}}">
+            <input type="hidden" name="id" value="{{$menu_one->id}}">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">
                         <label for="name" class="control-label col-sm-3 lb">Name <span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="text" id="name" name="name" class="form-control" 
-                            value="{{$category->name}}" required>
+                            value="{{$menu_one->name}}" required>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="parent" class="control-label col-sm-3 lb">Parent</label>
-                        <div class="col-sm-9">
-                            <select name="parent" id="parent" class="form-control">
-                                <option value="0"> </option>
-                                @foreach($categories as $c)
-                                    <option value="{{$c->id}}" {{$c->id==$category->parent_id?'selected':''}}>{{$c->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="color" class="control-label col-sm-3 lb">Color</label>
-                        <div class="col-sm-9" style="padding-left: 35px; padding-top: 5px; padding-button: 10px;">
-                            <input class="form-check-input" type="checkbox" name="color" value="1" {{$category->color=='1'?'checked':''}}>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="size" class="control-label col-sm-3 lb">Size</label>
-                        <div class="col-sm-9" style="padding-left: 35px; padding-top: 5px; padding-button: 10px;">
-                            <input class="form-check-input" type="checkbox" name="size" value="1" {{$category->size=='1'?'checked':''}}>
-                        </div>
-                    </div>
+                   
                     <div class="form-group row">
                         <label for="icon" class="control-label col-sm-3 lb">Icon <span class="text-danger">(64x64)</span></label>
                         <div class="col-sm-9">
                             <input type="file" value="" name="icon" id="icon" class="form-control" onchange="loadFile(event)">
                             <br>
-                            <img src="{{asset('uploads/product-categories/'.$category->icon)}}" alt="" width="72" id="preview">
+                            <img src="{{asset('uploads/menu-ones/'.$menu_one->icon)}}" alt="" width="72" id="preview">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -90,7 +68,7 @@
         }
         $(document).ready(function () {
             $("#siderbar li a").removeClass("current");
-            $("#menu_product_category").addClass("current");
+            $("#menu_main_menu").addClass("current");
         })
     </script>
 @endsection

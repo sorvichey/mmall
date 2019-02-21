@@ -170,13 +170,13 @@ Route::get("/admin/scholarship/delete/{id}", "ScholarshipController@destroy");
 Route::post("/admin/scholarship/save", "ScholarshipController@store");
 Route::post("/admin/scholarship/update", "ScholarshipController@update");
 
-// product category
-Route::get("/admin/product-category", "ProductCategoryController@index");
-Route::get("/admin/product-category/create", "ProductCategoryController@create");
-Route::get("/admin/product-category/edit/{id}", "ProductCategoryController@edit");
-Route::get("/admin/product-category/delete/{id}", "ProductCategoryController@destroy");
-Route::post("/admin/product-category/save", "ProductCategoryController@save");
-Route::post("/admin/product-category/update", "ProductCategoryController@update");
+// main menu
+Route::get("/admin/main-menu", "MainMenuController@index");
+Route::get("/admin/main-menu/create", "MainMenuController@create");
+Route::get("/admin/main-menu/edit/{id}", "MainMenuController@edit");
+Route::get("/admin/main-menu/delete/{id}", "MainMenuController@destroy");
+Route::post("/admin/main-menu/save", "MainMenuController@save");
+Route::post("/admin/main-menu/update", "MainMenuController@update");
 
 // shop category
 Route::get("/admin/shop-category", "ShopCategoryController@index");
