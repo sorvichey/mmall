@@ -38,10 +38,10 @@
                                             <td width="5"><input type="checkbox" name="checkbox[]"></td>
                                             <td width="30"><img src="{{asset('uploads/products/180/'.$cart->photo)}}" class="" class="img-responsive" alt="No Image" ></td>
                                             <td>{{$cart->name}}</td>
-                                            <td><input type="number" name="quantity[]" value="{{$cart->pro_qty}}" class="form-control"></td>
-                                            <td align="center">0% </td>
+                                            <td><input type="number" name="quantity[]" value="{{$cart->pro_qty}}" class="form-control" required></td>
+                                            <td align="center">@if($cart->discount!=""){{$cart->discount}} @else 0 @endif% </td>
                                             <td>$ {{$cart->price}}</td>
-                                            <td>$ {{$cart->total_sales}}</td>
+                                            <td>$ @if($cart->discount > 0)  {{$cart->total_sales - ($cart->total_sales / 100 * $cart->discount) }} @else {{$cart->total_sales}}@endif</td>
                                             <td>
                                                 <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
                                             </td>

@@ -970,7 +970,7 @@
                                                                                 <ins><span class="amount">$ @if($best_deal->discount > 0)  {{$best_deal->price - ($best_deal->price / 100 * $best_deal->discount) }} @else {{$best_deal->price}}@endif</span></ins>
                                                                                 @if($best_deal->discount > 0) 
                                                                                 <del><span class="amount">US {{$best_deal->price}} </span></del>
-                                                                                <span style="font-size: 0.6em;"> | {{$best_deal->discount}} % off</span>
+                                                                                <span style="font-size: 0.6em;" > | {{$best_deal->discount}} % off</span>
                                                                                 @endif
                                                                             </span>
                                                                         </span>
@@ -1137,7 +1137,7 @@
                                                                                 <ins><span class="amount">US @if($best_deal->discount > 0)  {{$best_deal->price - ($best_deal->price / 100 * $best_deal->discount) }} @else {{$best_deal->price}}@endif</span></ins>
                                                                                 @if($best_deal->discount > 0) 
                                                                                 <del><span class="amount">US {{$best_deal->price}} </span></del>
-                                                                                <span style="font-size: 0.6em;"> | {{$best_deal->discount}} % off</span>
+                                                                                <span style="font-size: 0.6em;" > | {{$best_deal->discount}} % off</span>
                                                                                 @endif
                                                                             </span>
                                                                         </span>

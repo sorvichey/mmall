@@ -15,7 +15,11 @@ class AddToCartController extends Controller
             ->join('products', 'products.id', 'add_to_carts.product_id')
             ->join('buyers', 'buyers.id', 'add_to_carts.buyer_id')
             ->leftJoin('product_photos', 'products.id', 'product_photos.product_id')
-            ->select("products.name", "product_photos.photo", "products.price", 'add_to_carts.pro_qty as pro_qty', DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',0) ;
+            })
+            ->select("products.name", "product_photos.photo", "products.price", 'promotions.discount', 'add_to_carts.pro_qty as pro_qty', DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
             ->where('add_to_carts.buyer_id', Session::get("buyer")->id)
             ->where('add_to_carts.active',1)
             ->where('add_to_carts.status',1)

@@ -89,7 +89,9 @@
                             @else
                                 <a class="btn btn-success btn-xs" href="{{url('owner/product/best-seller/return/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('you want to return simple seller?')" title="add to best seller"><i class="fa fa-check"></i></a>
                             @endif </td> -->
-                        <td width="120">
+                        <td width="150">
+
+                            <a class="btn btn-primary btn-xs" style="background: #ff4d4d;" href="{{url('/owner/product/promotion/'.md5($c->id))}}" title="Promotion"><i class="fa fa-tag"></i></a>
                             <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.$c->id)}}" title="Detail"><i class="fa fa-eye"></i></a>
                             <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
                             <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>

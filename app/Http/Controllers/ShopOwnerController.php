@@ -93,6 +93,7 @@ class ShopOwnerController extends Controller
         $email = $r->email;
         $pass = $r->password;
         $shop_owner = DB::table('shop_owners')->where('active',1)->where('email', $email)->first();
+        $shop = DB::table('shops')->where('active',1)->where('shop_owner_id', $shop_owner->id)->first();
         
         $shop_owner_activated = 
             DB::table('shop_owners')
@@ -108,6 +109,7 @@ class ShopOwnerController extends Controller
                 {
                     // save user to session
                     $r->session()->put('shop_owner', $shop_owner);
+                    $r->session()->put('shop', $shop);
                     return redirect('/owner/home');
                 }
                 else{

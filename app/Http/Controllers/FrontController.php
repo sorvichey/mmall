@@ -24,7 +24,11 @@ class FrontController extends Controller
             ->get();
         $data['product_new_arrivals'] = DB::table('products')
             ->join('product_categories', 'product_categories.id', 'products.category_id')
-            ->select('products.name', 'products.id as p_id', 'products.price', 'products.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
+            ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',0) ;
+            })
             ->where('products.active',1)
             ->where('products.best_deal', 0)
             ->where('products.best_seller', 0)
@@ -33,7 +37,11 @@ class FrontController extends Controller
             ->get();
         $data['best_seller_products'] = DB::table('products')
             ->join('product_categories', 'product_categories.id', 'products.category_id')
-            ->select('products.name', 'products.id as p_id', 'products.price', 'products.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',0) ;
+            })
+            ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
             ->where('products.best_seller', 1)
             ->orderBy('products.id', 'desc')
@@ -41,7 +49,11 @@ class FrontController extends Controller
             ->get();
         $data['best_deal_products'] = DB::table('products')
             ->join('product_categories', 'product_categories.id', 'products.category_id')
-            ->select('products.name','products.id as p_id', 'products.price', 'products.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',0) ;
+            })
+            ->select('products.name','products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
             ->where('products.best_deal', 1)
             ->orderBy('products.id', 'desc')
@@ -71,12 +83,20 @@ class FrontController extends Controller
     public function product_detail($id) {
         $data['product'] = DB::table('products')
             ->join('product_categories', 'products.category_id', 'product_categories.id')
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',0) ;
+            })
             ->where('products.id', $id)
-            ->select('products.*', 'product_categories.name as category_name', 'products.id as p_id')
+            ->select('products.*', 'promotions.discount', 'product_categories.name as category_name', 'products.id as p_id')
             ->first();
         $data['related_products'] = DB::table('products')
             ->join('product_categories', 'product_categories.id', 'products.category_id')
-            ->select('products.name', 'products.id as p_id', 'products.price', 'products.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',0) ;
+            })
+            ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
             ->where('products.category_id', $data['product']->category_id)
             ->where('products.id', '!=', $id)

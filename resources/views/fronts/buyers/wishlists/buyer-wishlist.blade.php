@@ -24,6 +24,9 @@
                                         <th class="product-price">
                                             <span class="nobr">Unit Price</span>
                                         </th>
+                                        <th class="product-price">
+                                            <span class="nobr">Discount</span>
+                                        </th>
                                         <th class="product-stock-stauts">
                                             <span class="nobr">Stock Status</span>
                                         </th>
@@ -43,7 +46,10 @@
                                             <a href="{{url('product/detail/'.$w->p_id)}}">{{$w->name}}</a>
                                         </td>
                                         <td class="product-price">
-                                            <span class="electro-price"><span class="amount">$ @if($w->discount > 0)  {{$w->price - ($w->price / 100 * $w->discount) }} @else {{$w->price}}@endif</span></span>
+                                            <span class="electro-price"><span class="amount">${{$w->price}}</span></span>
+                                        </td>
+                                        <td class="product-price">
+                                            <span class="electro-price"><span class="amount">{{$w->discount}}%  (Exp:{{$w->end_date}})</span></span>
                                         </td>
                                         <td class="product-stock-status">
                                         @if($w->quantity > 0 )<span class="text-success">In stock </span> @else<span class="text-danger"> Out Stock </span> @endif</span>

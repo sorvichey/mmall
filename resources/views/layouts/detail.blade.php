@@ -106,7 +106,7 @@
                             <label class="sr-only screen-reader-text" for="search">Search for:</label>
                             <div class="input-group">
                                 <input type="text"  class="form-control search-field" dir="ltr" name="product_name" placeholder="Search for products" />
-                                <div class="input-group-addon search-categories">
+                                <div class="input-group-addon search-categories search-custom">
                                     <select name='product_cat' id='product_cat' class='postform resizeselect' >
                                         <option value='' selected='selected'>All Categories</option>
                                         @foreach($categories as $c)
@@ -115,71 +115,96 @@
                                     </select>
                                 </div>
                                 <div class="input-group-btn">
-                                    <button type="submit" class="btn btn-secondary"><i class="ec ec-search"></i></button>
+                                    <button type="submit" class="btn btn-search btn-secondary"><i class="ec ec-search"></i></button>
                                 </div>
                             </div>
                         </form>
                         <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip">
-                        <li class="nav-item dropdown">
-                            <a href="cart.html" class="nav-link" data-toggle="dropdown">
-                            <i class="ec ec-user"></i>
-                            @if(Session::has('buyer'))
-                                Hi, {{session('buyer')->first_name}}
-                            @else 
-                                    {{trans("labels.sign_in")}}
-                            @endif
-                            </a>
-                            @if(Session::has('buyer'))
-                            <ul class="dropdown-menu dropdown-menu-mini-cart">
-                                <li>
-                                    <div class="widget_shopping_cart_content">
-                                        <ul class="cart_list product_list_widget ">
-                                            <li class="mini_cart_item">
-                                                <a href="single-product.html">
-                                                    My Orders
-                                                </a>
-                                            </li>
-                                            <li class="mini_cart_item">
-                                                <a href="{{url('buyer/wishlist')}}">
-                                                   Wish List
-                                                </a>
-                                            </li>
-                                            <li class="mini_cart_item">
-                                                <a href="#">
-                                                   Message Center
-                                                </a>
-                                            </li>
-                                            <li class="mini_cart_item">
-                                                <a href="single-product.html">
-                                                    My Favorite Store
-                                                </a>
-                                            </li>
-                                            <li class="mini_cart_item">
-                                                <a href="single-product.html">
-                                                   Account Setting
-                                                </a>
-                                            </li>
-                                        </ul><!-- end product list -->
-                                        <p class="buttons">
-                                            <a class="button btn-danger checkout wc-forward" href="{{url('buyer/logout')}}">Sign Out</a>
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                            @else 
-                            <ul class="dropdown-menu dropdown-menu-mini-cart">
-                                <li>
-                                    <div class="widget_shopping_cart_content">
-                                        <p class="buttons">
-                                            <a class="button btn-danger checkout wc-forward" href="{{url('buyer/login')}}">Sign in</a>
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                            @endif
-                        </li>
-                    </ul>
+                            <li class="nav-item dropdown">
+                                <a href="cart.html" class="nav-link" data-toggle="dropdown">
+                                <i class="ec ec-user"></i>
+                                @if(Session::has('buyer'))
+                                    Hi, {{session('buyer')->first_name}}
+                                @else 
+                                        {{trans("labels.sign_in")}}
+                                @endif
+                                </a>
+                                @if(Session::has('buyer'))
+                                <ul class="dropdown-menu dropdown-menu-mini-cart">
+                                    <li>
+                                        <div class="widget_shopping_cart_content">
+                                            <ul class="cart_list product_list_widget ">
+                                                <li class="mini_cart_item">
+                                                    <a href="{{url('my-order/'.session('buyer')->id)}}">
+                                                        My Orders
+                                                    </a>
+                                                </li>
+                                                <li class="mini_cart_item">
+                                                    <a href="{{url('buyer/wishlist')}}">
+                                                       Wish List
+                                                    </a>
+                                                </li>
+                                                <li class="mini_cart_item">
+                                                    <a href="{{url('my-message/'.session('buyer')->id)}}">
+                                                       Message Center
+                                                    </a>
+                                                </li>
+                                                <li class="mini_cart_item">
+                                                    <a href="{{url('buyer/favorite-shop/'.session('buyer')->id)}}">
+                                                        My Favorite Store
+                                                    </a>
+                                                </li>
+                                                <li class="mini_cart_item">
+                                                    <a href="{{url('my-account/setting/'.session('buyer')->id)}}">
+                                                       Account Setting
+                                                    </a>
+                                                </li>
+                                            </ul><!-- end product list -->
+                                            <p class="buttons">
+                                                <a class="button btn-danger checkout wc-forward" href="{{url('buyer/logout')}}">Sign Out</a>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                @else 
+                                <ul class="dropdown-menu dropdown-menu-mini-cart">
+                                    <li>
+                                        <div class="widget_shopping_cart_content">
+                                            <p class="buttons">
+                                                <a class="button btn-danger checkout wc-forward" href="{{url('buyer/login')}}">Sign in</a>
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                                @endif
+                            </li>
+                        </ul>
 
+                        <!-- <ul class="navbar-wishlist nav navbar-nav pull-right flip">
+                            <li class="nav-item">
+                                
+                                <a href="@if(Session::has('buyer')){{url('buyer/wishlist')}}@else{{url('buyer/login')}}@endif " class="nav-link">
+                                    <i class="ec ec-favorites"></i>
+                                    <span class="cart-items-count count" id="count_wishlist">0</span>
+                                </a>
+                            </li>
+                        </ul> -->
+                        <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip" style="margin-right: 15px;">
+                            <li class="nav-item dropdown">
+                                <a  href="@if(Session::has('buyer')){{url('buyer/wishlist')}}@else{{url('buyer/login')}}@endif" class="nav-link">
+                                    <i class="ec ec-favorites"></i>
+                                    <span class="cart-items-count count" id="count_wishlist">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip" style="margin-right: 15px;">
+                            <li class="nav-item dropdown">
+                                <a   href="@if(Session::has('buyer')){{url('buyer/mycart')}}@else{{url('buyer/login')}}@endif" class="nav-link" >
+                                    <i class="ec ec-shopping-bag"></i>
+                                    <span class="cart-items-count count" id="count_cart">0</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div><!-- /.row -->
                 </div>
 
@@ -1373,6 +1398,10 @@
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery.waypoints.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/electro.js')}}"></script>
 		<script type="text/javascript" src="{{asset('fronts/assets/js/jquery-3-3-1.min.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/get-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/get-cart.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/add-to-cart.js')}}"></script>
         @yield('js')
     </body>
 

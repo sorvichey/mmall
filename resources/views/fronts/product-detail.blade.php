@@ -19,7 +19,9 @@
                                         <span class="onsale">{{$product->condiction}}</span>
                                         <div class="images electro-gallery">
                                             <div class="thumbnails-single owl-carousel">
-                                                <a href="{{asset('uploads/products/featured_images/600/'.$product->featured_image)}}" class="zoom" title="" data-rel="prettyPhoto[product-gallery]"><img src="{{asset('uploads/products/featured_images/600/'.$product->featured_image)}}" class="wp-post-image" alt=""></a>
+                                                <a href="{{asset('uploads/products/featured_images/600/'.$product->featured_image)}}" class="zoom" title="" data-rel="prettyPhoto[product-gallery]">
+                                                    <img src="{{asset('uploads/products/featured_images/600/'.$product->featured_image)}}" class="wp-post-image" alt="">
+                                                </a>
                                                 @foreach($photos as $p)
                                                 <a href="{{asset('uploads/products/600/'.$p->photo)}}" class="zoom" title="" data-rel="prettyPhoto[product-gallery]"><img src="{{asset('uploads/products/600/'.$p->photo)}}" class="wp-post-image" alt=""></a>
                                                 @endforeach

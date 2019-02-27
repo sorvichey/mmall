@@ -63,12 +63,14 @@ Route::post('/owner/update', "ShopOwnerController@update");
 Route::get('/owner/my-shop', "ShopOwnerController@my_shop");
 Route::get('/owner/create-shop', "ShopOwnerController@create_shop");
 
+//Make shop
 Route::post('/owner/shop/create', "ShopOwnerController@do_create_shop");
 Route::get('/owner/shop/edit/{id}', "ShopOwnerController@edit_shop");
 Route::post('/owner/shop/update', "ShopOwnerController@do_edit_shop");
 Route::get('/owner/shop-subscribe/{id}', "ShopOwnerController@shop_subscription");
 Route::get('/owner/shop/subcribe/{id}', "ShopOwnerController@do_shop_subscription");
 
+// Manage product
 Route::get('/owner/my-product', "ShopOwnerController@product");
 Route::get('/owner/new-product', "ShopOwnerController@new_product");
 Route::post('/owner/add-product', "ShopOwnerController@save_product");
@@ -78,6 +80,14 @@ Route::post('/owner/save-edit-product/', "ShopOwnerController@do_edit_product");
 Route::get('/owner/delete-product/{id}', "ShopOwnerController@delete_product");
 Route::post('/owner/product/add-qty/', "ShopOwnerController@add_qty");
 Route::get('/owner/product/out-stock/', "ShopOwnerController@out_stock");
+
+// Promotion
+Route::get('/owner/product/promotion/', "ShopPromotionController@index");
+Route::get('/owner/product/promotion/{id}', "ShopPromotionController@add");
+Route::post('/owner/product/promotion/save', "ShopPromotionController@save");
+Route::get('/owner/product/promotion/edit/{id}', "ShopPromotionController@edit");
+Route::post('/owner/product/promotion/update', "ShopPromotionController@update");
+Route::get('/owner/product/promotion/delete/{id}', "ShopPromotionController@delete");
 
 // Product order
 Route::get('/owner/product-order/', "ProductOrderController@index");

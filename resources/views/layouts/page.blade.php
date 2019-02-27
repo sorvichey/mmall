@@ -185,7 +185,7 @@
                         <li class="nav-item dropdown">
                             <a href="cart.html" class="nav-link" data-toggle="dropdown">
                                 <i class="ec ec-shopping-bag"></i>
-                                <span class="cart-items-count count">4</span>
+                                <span class="cart-items-count count"></span>
                             </a>
                         </li>
                     </ul>
@@ -1183,6 +1183,10 @@
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery.waypoints.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/electro.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery-3-3-1.min.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/add-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/get-wishlist.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/get-cart.js')}}"></script>
+        <script src="{{asset('fronts/assets/js/add-to-cart.js')}}"></script>
         <script>
 			function chLang(evt, ln)
 			{

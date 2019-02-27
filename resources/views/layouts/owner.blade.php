@@ -11,6 +11,10 @@
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/owl-carousel.css')}}" media="all" />
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/style.css')}}" media="all" />
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/colors/black.css')}}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{{asset('bootstrap-datepicker/css/bootstrap-datepicker.css')}}" media="all" />
+        <link rel="stylesheet" type="text/css" href="{{asset('datepicker/daterangepicker.css')}}" media="all" />
+       
+
     </head>
    <body class="page home page-template-default">
 <a href="#" class="scrollToTop" style="display: none;"><i class="fa fa-arrow-up"></i></a>
@@ -68,6 +72,10 @@
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" id="my-product" href="{{url('owner/my-product')}}"> <i class="fa fa-product-hunt"></i> Products</a>
+                      </li>
+
+                      <li class="nav-item">
+                        <a class="nav-link" id="my-promotion" href="{{url('owner/product/promotion')}}"> <i class="fa fa-tag"></i> Promotion</a>
                       </li>
 
 					  <li class="nav-item">
@@ -298,6 +306,9 @@
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery.waypoints.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/electro.js')}}"></script>
         <script type="text/javascript" src="{{asset('fronts/assets/js/jquery-3-3-1.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('datepicker/moment.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('datepicker/daterangepicker.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bootstrap-datepicker/js/bootstrap-datepicker.js')}}"></script>
         <script>
 			function chLang(evt, ln)
 			{
