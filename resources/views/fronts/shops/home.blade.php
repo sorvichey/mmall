@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                     <a href="{{url('/owner/shop-subscribe/'.$shop_owner_id->id)}}" class="btn btn-warning"><i class="fa fa-bolt"></i> Upgrade Shop Now!</a>
+                     
                 </div>
             </div>
         </div>

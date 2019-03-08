@@ -43,7 +43,7 @@
                                             <td>$ {{$cart->price}}</td>
                                             <td>$ @if($cart->discount > 0)  {{$cart->total_sales - ($cart->total_sales / 100 * $cart->discount) }} @else {{$cart->total_sales}}@endif</td>
                                             <td>
-                                                <a href="#" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                                <a href="{{url('/buyer/mycart/delete/'.md5($cart->cart_id) ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         @endforeach

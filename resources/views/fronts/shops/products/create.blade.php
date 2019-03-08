@@ -64,12 +64,7 @@
                             <input type="number" class="form-control" id="price" name="price"  step="0.1"  min="0" value="0" required>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="discount" class="control-label col-sm-3 lb">Discount %</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" id="discount" name="discount" step="0.1"  min="0" value="0" required>
-                        </div>
-                    </div>
+                   
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">

@@ -122,12 +122,18 @@
             <div class="col-md-12">
                  <div class="row">
                     <p class="bg-info">&nbsp;&nbsp;Promotions</p>
-                    <p class="col-sm-2">Discount</p>
-                    <p class="col-sm-10">: {{$product->discount}} %</p>
-                    <p class="col-sm-2">Number product discount</p>
-                    <p class="col-sm-10">: {{$product->discount}} </p>
-                    <p class="col-sm-2">Date </p>
-                    <p class="col-sm-3">: {{$product->discount}} to {{$product->discount}} </p>
+                    <div class="col-md-12">
+                        <a href="{{url('/owner/product/promotion/'.md5($product->id))}}"><i class="fa fa-plus"></i>Click to add promotion</a>
+                        <p class="">Promotion Code: {{$product->discount_code}}</p>
+                        <p class="">Discount: {{$product->discount}}</p>
+                        <p class="">Discount Quantity: {{$product->number_product}}</p>
+                        <p class="">Promotion Date: {{$product->start_date}} to {{$product->end_date}}</p>
+                    </div>
+
+                    
+                  
+
+                  
                    
                 </div>
             </div>

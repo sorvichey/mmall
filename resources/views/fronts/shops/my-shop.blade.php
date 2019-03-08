@@ -46,12 +46,7 @@
                     You have to wait 24 hours or less than 24 hours for us to evaluate your store.
                 </div>
             </div>
-            @else
-            <div class="alert alert-success" id="success-alert">
-    <button type="button" class="close" data-dismiss="alert">x</button>
-    <strong>Success! </strong>
-    Product have added to your wishlist.
-</div>
+          
             @endif
 
            @if(Session::has('sms'))

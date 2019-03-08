@@ -19,7 +19,7 @@ class AddToCartController extends Controller
                 $join->on('promotions.product_id', '=' , 'products.id') ;
                 $join->where('promotions.active','=',0) ;
             })
-            ->select("products.name", "product_photos.photo", "products.price", 'promotions.discount', 'add_to_carts.pro_qty as pro_qty', DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
+            ->select("products.name", "product_photos.photo", "products.price", 'promotions.discount', 'add_to_carts.id as cart_id', 'add_to_carts.pro_qty as pro_qty', DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
             ->where('add_to_carts.buyer_id', Session::get("buyer")->id)
             ->where('add_to_carts.active',1)
             ->where('add_to_carts.status',1)
@@ -113,15 +113,20 @@ class AddToCartController extends Controller
      // delete
      public function delete($id)
      {
-        DB::table('wishes')->where('id', $id)->update(['active'=>0]);
+        DB::table('add_to_carts')->where(DB::raw('md5(add_to_carts.id)'),$id)->update(['active'=>0]);
+        // $dd=DB::table('add_to_carts')->select(DB::raw('md5(add_to_carts.id)'))->get();
+        // dd($dd);
+        // exit();
         $page = @$_GET['page'];
         if ($page>0)
         {
-            return redirect('/buyer/wishlist?page='.$page);
+            return redirect('/buyer/mycart?page='.$page);
         }
 
-        return redirect('/buyer/wishlist');
+        return redirect('/buyer/mycart');
      }
+
+
 
      // count wishlist by buyer
      public function cart_count()

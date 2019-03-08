@@ -93,7 +93,7 @@ class ShopOwnerController extends Controller
         $email = $r->email;
         $pass = $r->password;
         $shop_owner = DB::table('shop_owners')->where('active',1)->where('email', $email)->first();
-        $shop = DB::table('shops')->where('active',1)->where('shop_owner_id', $shop_owner->id)->first();
+        $shop = DB::table('shops')->where('shop_owner_id', $shop_owner->id)->first();
         
         $shop_owner_activated = 
             DB::table('shop_owners')
@@ -197,6 +197,7 @@ class ShopOwnerController extends Controller
 
         $data['my_shop'] = DB::table('shops')->where('shop_owner_id', $owner_id)->count();
         $shop_id = DB::table('shops')->where('shop_owner_id', $owner_id)->first();
+        $data['shop_active'] = $shop_id->active;
         if($data['my_shop']==1){
             $data['shop_info'] = DB::table('shops')
                 ->join('product_categories', 'product_categories.id', 'shops.shop_category')
@@ -268,7 +269,9 @@ class ShopOwnerController extends Controller
                     'subscription_id'=> 1,
                     'status' => 1
                  );
+                $shop = DB::table('shops')->where('active',1)->where('id', $i)->first();
                 DB::table('shop_subscriptions')->insertGetId($shop_sub);
+                $r->session()->put('shop', $shop);
                 $r->session()->flash('sms', 'Your shop saved successfully, thanks!');
                 return redirect('/owner/my-shop');
             }
@@ -388,9 +391,11 @@ class ShopOwnerController extends Controller
     }
 
     public function new_product(){
+        $shop_category = Session::get("shop")->shop_category;
          $data['categories'] = DB::table('product_categories')
             ->where('active', 1)
             ->orderBy('name')
+            ->where('id', $shop_category)
             ->get();
         $data['brands'] = DB::table('product_brands')
             ->where('active', 1)
@@ -417,7 +422,6 @@ class ShopOwnerController extends Controller
                     'brand_id' => $r->brand,
                     'price' => $r->price,
                     'quantity' => $r->quantity,
-                    'discount' => $r->discount,
                     'description' => $r->description,
                     'short_description'=> $r->short_description,
                 ];
@@ -470,8 +474,12 @@ class ShopOwnerController extends Controller
         $data['product'] = DB::table('products')
             ->join('product_categories', 'products.category_id', 'product_categories.id')
             ->join('product_brands', 'products.brand_id', 'product_brands.id')
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',1) ;
+            })
             ->where('products.id', $id)
-            ->select('products.*', 'product_categories.name as cname', 'products.id as p_id', 'product_brands.name as brand')
+            ->select('products.*', 'product_categories.name as cname', 'products.id as p_id', 'product_brands.name as brand', 'promotions.discount', 'promotions.number_product', 'promotions.start_date', 'promotions.end_date', 'promotions.discount_code')
             ->first();
         $data['photos'] = DB::table('product_photos')
             ->where('product_id', $id)
@@ -498,17 +506,21 @@ class ShopOwnerController extends Controller
     }
 
     function edit_product($id){
+        $shop_category = Session::get("shop")->shop_category;
          $data['product'] = DB::table('products')
-            ->where('id', $id)
+            ->leftJoin('promotions',function ($join) {
+                $join->on('promotions.product_id', '=' , 'products.id') ;
+                $join->where('promotions.active','=',1) ;
+            })
+            ->select('products.*','promotions.discount')
+            ->where('products.id', $id)
             ->first();
-        $data['categories'] = DB::table('product_categories')
+         $data['categories'] = DB::table('product_categories')
             ->where('active', 1)
             ->orderBy('name')
+            ->where('id', $shop_category)
             ->get();
-        $data['categories'] = DB::table('product_categories')
-            ->where('active', 1)
-            ->orderBy('name')
-            ->get();
+        
         $data['brands'] = DB::table('product_brands')
             ->where('active', 1)
             ->orderBy('name')
@@ -529,7 +541,6 @@ class ShopOwnerController extends Controller
                 'brand_id' => $r->brand,
                 'price' => $r->price,
                 'quantity' => $r->quantity,
-                'discount' => $r->discount,
                 'description' => $r->description,
                 'short_description'=> $r->short_description
             ];
@@ -560,8 +571,8 @@ class ShopOwnerController extends Controller
             $data['featured_image'] = $file_name;
 
         }
-        $i = DB::table('products')->where('id', $r->id)->update($data);
-        if($i)
+        $affected = DB::table('products')->where('id', $r->id)->update($data);
+        if($affected)
         {
             $r->session()->flash('sms', 'All changes have been saved!');
             return redirect('/owner/edit-product/'.$r->id);

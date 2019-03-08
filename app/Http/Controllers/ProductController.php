@@ -98,7 +98,6 @@ class ProductController extends Controller
                     'brand_id' => $r->brand,
                     'price' => $r->price,
                     'quantity' => $r->quantity,
-                    'discount' => $r->discount,
                     'description' => $r->description,
                     'short_description'=> $r->short_description,
                 ];
@@ -175,7 +174,6 @@ class ProductController extends Controller
                 'brand_id' => $r->brand,
                 'price' => $r->price,
                 'quantity' => $r->quantity,
-                'discount' => $r->discount,
                 'description' => $r->description,
                 'short_description'=> $r->short_description
             ];

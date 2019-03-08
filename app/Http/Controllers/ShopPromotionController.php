@@ -33,7 +33,7 @@ class ShopPromotionController extends Controller
     }
     // Random string 
     private function promotion_code($product_id) { 
-        $token = $this->getToken(3, $product_id);
+        $token = $this->getToken(4, $product_id);
         $code = 'P'.$product_id. $token . substr(strftime("%Y", time()),2);
         return $code;
     }
@@ -143,9 +143,6 @@ class ShopPromotionController extends Controller
                 'description' => $r->description,
             );
 
-         echo Carbon::createFromFormat('Y-m-d H:i:s', $r->start_date.date(' H:i:s'));
-         echo "<br>";
-         echo Carbon::createFromFormat('Y-m-d H:i:s', $r->end_date.date(' H:i:s'));
         // update
         $i = DB::table('promotions')->where(DB::raw('md5(promotions.id)'), $r->id)->update($data);
 

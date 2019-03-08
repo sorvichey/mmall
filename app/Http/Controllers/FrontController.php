@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Session;
+use Carbon\Carbon;
 class FrontController extends Controller
 {
 
@@ -14,9 +15,17 @@ class FrontController extends Controller
            app()->setLocale(Session::get("lang"));
             return $next($request);
         });
+        date_default_timezone_set('Asia/Phnom_Penh');
     }
     public function index()
     {
+        // disable all promotions are expired
+        $now_date=Carbon::now()->toDateString();
+        $data_update = array(
+                'active' => 0
+            );
+        DB::table('promotions')->where('end_date', $now_date)->update($data_update);
+
         $data['slides'] = DB::table('slides')
             ->select('title', 'photo', 'short_description', 'discount', 'order', 'url')
             ->where('active', 1)
@@ -27,7 +36,7 @@ class FrontController extends Controller
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->where('products.active',1)
             ->where('products.best_deal', 0)
@@ -39,7 +48,7 @@ class FrontController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -51,7 +60,7 @@ class FrontController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name','products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -85,7 +94,7 @@ class FrontController extends Controller
             ->join('product_categories', 'products.category_id', 'product_categories.id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->where('products.id', $id)
             ->select('products.*', 'promotions.discount', 'product_categories.name as category_name', 'products.id as p_id')
@@ -94,7 +103,7 @@ class FrontController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
