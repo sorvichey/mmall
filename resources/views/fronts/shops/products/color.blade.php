@@ -34,7 +34,7 @@
                         <p></p>
                         <div class="row">   
                         <div class="col-md-12">                   
-                        <input type="hidden" name="product_id" value="{{$p_id}}">
+                        <input type="hidden" name="product_id" value="{{request()->route('id')}}">
                         <div class="form-group row">
                             <label for="name" class="control-label col-sm-2 lb">Color Name <span class="text-danger">*</span></label>
                             <div class="col-sm-5">
@@ -70,7 +70,7 @@
                                 <img src="{{asset('uploads/products/colors/180/'.$p->photo)}}" alt="" width="100">
                             </td>
                             <td>
-                                <a href="{{url('owner/product-color/photo/delete/'.$p->id . '?pid='.$p_id)}}" onclick="return confirm('You want to delete?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                <a href="{{url('owner/product-color/photo/delete/'.Crypt::encryptString($p->id) . '?pid='.Crypt::encryptString($p_id))}}" onclick="return confirm('You want to delete?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                     @endforeach

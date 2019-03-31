@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{asset('chosen/chosen.css')}}">
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet">
     <link href="{{asset('css/custom.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset("css/table.css")}}">
+    <link rel="stylesheet" href="{{asset('css/table.css')}}">
 </head>
 <body>
 <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
@@ -78,14 +78,17 @@
                 <li class="nav-item">
                     <strong><i class="fa fa-cogs"></i> Settings</strong>
                 </li>
-                <!-- <li class="nav-item">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url('/admin/product-category')}}" id="menu_product_status">Product Category</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{url('/admin/product-status')}}" id="menu_product_status">Product Status</a>
-                </li> -->
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url('/admin/brand')}}" id="menu_product_brand">Brand</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/main-menu')}}" id="menu_main_menu">Main menu</a>
+                    <!-- <a class="nav-link" href="{{url('/admin/main-menu')}}" id="menu_main_menu">Main menu</a> -->
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url('/admin/shop-category')}}" id="menu_shop_category">Shop Category</a>

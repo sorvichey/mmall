@@ -72,7 +72,7 @@
                         <td width="20">{{$i++}}</td>
                         <td width="100"><img src="{{asset('uploads/products/featured_images/180/'.$c->featured_image)}}" alt="" width="50"></td>
                         <td>
-                            <a href="{{url('/owner/detail-product/'.$c->id)}}">{{$c->name}}</a>
+                            <a href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id))}}">{{$c->name}}</a>
                         </td>
                         <td>{{$c->cname}} </td>
                         <td>{{$c->price}} $</td>
@@ -91,10 +91,10 @@
                             @endif </td> -->
                         <td width="150">
 
-                            <a class="btn btn-primary btn-xs" style="background: #ff4d4d;" href="{{url('/owner/product/promotion/'.md5($c->id))}}" title="Promotion"><i class="fa fa-tag"></i></a>
-                            <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.$c->id)}}" title="Detail"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                            <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            <a class="btn btn-primary btn-xs" style="background: #ff4d4d;" href="{{url('/owner/product/promotion/'.Crypt::encryptString($c->id))}}" title="Promotion"><i class="fa fa-tag"></i></a>
+                            <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id)) }}" title="Detail"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.Crypt::encryptString($c->id))}}" title="Edit"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.Crypt::encryptString($c->id) ."?page=".@$_GET['page'])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>
                 @endforeach

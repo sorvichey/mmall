@@ -36,7 +36,7 @@
                     <p></p>
                     <div class="row">   
                     <div class="col-md-12">                   
-                    <input type="hidden" name="product_id" value="{{$p_id}}">
+                    <input type="hidden" name="product_id" value="{{Crypt::encryptString($p_id)}}">
                     <div class="form-group row">
                         <label for="photo" class="control-label col-sm-2 lb">Image  (<span class="text-danger">600px <span style="color:#022;">x</span> 600px</span>)</label>
                         <div class="col-sm-5">
@@ -64,7 +64,7 @@
                             <img src="{{asset('uploads/products/180/'.$p->photo)}}" alt="" width="100">
                         </td>
                         <td>
-                            <a href="{{url('owner/product/photo/delete/'.$p->id . '?pid='.$p_id)}}" onclick="return confirm('You want to delete?')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                            <a href="{{url('owner/product/photo/delete/'.Crypt::encryptString($p->id) . '/pid/'.Crypt::encryptString($p_id))}}" onclick="return confirm('You want to delete?')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 @endforeach

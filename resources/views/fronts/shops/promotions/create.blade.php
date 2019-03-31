@@ -46,8 +46,8 @@
                                     {{csrf_field()}}
                                   <div class="form-group">
                                     <label for="Product_Name">Product Name (Selected Product):</label>
-                                    <input type="text" class="form-control"  value="{{$product->name}}" required>
-                                    <input type="hidden" id="Product_Name" name="Product_Name" value="{{base64_encode($product->id)}}" required>
+                                    <input type="text" class="form-control" style="background:#fff;"  value="{{$product->name}}" required readonly>
+                                    <input type="hidden" id="product_id" name="product_id" value="{{Crypt::encryptString($product->id)}}" required>
                                  
                                   </div>
 

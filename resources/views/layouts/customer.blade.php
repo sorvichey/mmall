@@ -86,7 +86,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/rate')}}" id="menu_rate">Rate</a>   
+                    <a class="nav-link" href="{{url('/admin/rating')}}" id="menu_rate">Rate</a>   
                 </li>
 
                 <li class="nav-item">

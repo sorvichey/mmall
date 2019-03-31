@@ -4,7 +4,7 @@
     <div class="row">
     <div class="col-lg-12">
         <strong>Edit Product</strong>&nbsp;&nbsp;
-        <a href="{{url('/owner/detail-product/'.$product->id)}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
+        <a href="{{url('/owner/detail-product/'.Crypt::encryptString($product->id))}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
         <hr>
         @if(Session::has('sms'))
             <div class="alert alert-success" role="alert">
@@ -28,7 +28,7 @@
         @endif
         <form action="{{url('/owner/save-edit-product')}}" method="post" id="frm" class="form-horizontal" enctype="multipart/form-data">
             {{csrf_field()}}
-            <input type="hidden" name="id" value="{{$product->id}}">
+            <input type="hidden" name="id" value="{{Crypt::encryptString($product->id)}}">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group row">

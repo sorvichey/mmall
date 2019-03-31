@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\owner;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use DB;
 use Auth;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -15,21 +16,32 @@ class ProductColorController extends Controller
     }
     public function index($id)
     {
+        $encrypted_id = $id;
+        $decrypted_id = Crypt::decryptString($encrypted_id);
         $data['colors'] = DB::table('product_colors')
-            ->where('product_id', $id)
+            ->where('product_id', $decrypted_id)
             ->orderBy('id', 'desc')
             ->get();
         $data['p_id'] = $id;
-        return view('products.color', $data);
+        return view('shops.products.color', $data);
     }
     public function delete($id)
     {
         $pid = $_GET['pid'];
-        DB::table("product_colors")->where('id', $id)->delete();
-        return redirect('/admin/product/detail/'.$pid.'/color');
+        $encrypted_pid = $pid;
+        $decrypted_pid = Crypt::decryptString($encrypted_pid);
+
+        $encrypted_id = $id;
+        $decrypted_id = Crypt::decryptString($encrypted_id);
+        
+        
+        DB::table("product_colors")->where('id', $decrypted_id)->delete();
+        return redirect('/admin/product/detail/'.$decrypted_pid.'/color');
     }
     public function save(Request $r)
     {
+        $encrypted_id = $r->id;
+        $decrypted_id = Crypt::decryptString($encrypted_id);
         $data = array(
             'name' => $r->name,
             'product_id' => $r->product_id

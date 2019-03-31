@@ -5,11 +5,11 @@
     <div class="col-lg-12">
         <strong>Product Detail</strong>&nbsp;&nbsp;
         <a href="{{url('/owner/my-product')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>&nbsp;&nbsp;
-        <a href="{{url('/owner/edit-product/'.$product->id)}}" class="text-danger"><i class="fa fa-pencil"></i> Edit</a>&nbsp;&nbsp;
+        <a href="{{url('/owner/edit-product/'.Crypt::encryptString($product->id))}}" class="text-danger"><i class="fa fa-pencil"></i> Edit</a>&nbsp;&nbsp;
         <a href="{{url('/owner/new-product/')}}"><i class="fa fa-plus"></i> New</a>
         <hr>
         <form action="#" method="post" id="frm" class="form-horizontal">
-            <input type="hidden" name="id" value="{{$product->id}}">
+            <input type="hidden" name="id" value="{{Crypt::encryptString($product->id)}}">
             <div class="col-md-12">
                  <div class="row">
                     <p class="bg-info">&nbsp;&nbsp;Basic info</p>                       
@@ -102,13 +102,13 @@
                             
                             <img src="{{asset('uploads/products/featured_images/600/'.$product->featured_image)}}" alt="" width="200" style="border:1px solid #ccc" id="preview">
                             <p><br>
-                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.$product->id.'/image')}}"><i class="fa fa-picture-o"></i> Add More Image</a>
+                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.Crypt::encryptString($product->id).'/image')}}"><i class="fa fa-picture-o"></i> Add More Image</a>
                             @if($color->color == 1)
-                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.$product->id.'/color')}}"><i class="fa fa-paint-brush"></i> Add Color</a>
+                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.Crypt::encryptString($product->id).'/color')}}"><i class="fa fa-paint-brush"></i> Add Color</a>
                            @endif
 
                            @if($size->size == 1)
-                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.$product->id.'/size')}}"><i class="fa fa-plus"></i> Add Size</a>
+                            <a class="btn btn-secondary" href="{{url('owner/product/detail/'.Crypt::encryptString($product->id).'/size')}}"><i class="fa fa-plus"></i> Add Size</a>
                            @endif
 
 

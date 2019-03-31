@@ -10,47 +10,113 @@
             <main class="site-main" id="main">
                 <article class="page type-page status-publish hentry">
                     <div itemprop="mainContentOfPage" class="entry-content">
-                        <div id="yith-wcwl-messages"></div>
-                        <form action="" method="">
-                            <button class="btn btn-warning">&nbsp; &nbsp; &nbsp; &nbsp; Buy Selected Item(s)&nbsp; &nbsp; &nbsp; &nbsp; </button>
-                            <br>
-                            <br>
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th width="10"><input type="checkbox" name=""></th>
-                                            <th>Image</th>
-                                            <th>Product Name</th>
-                                            <th width="100">Quantity</th>
-                                            <th>Discount</th>
-                                            <th width="150">Price/Unit</th>
-                                            <th>Total</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php $i =1; ?>
-                                        @foreach($carts as $cart)
-                                        <tr>
-                                            <td width="5">{{$i++}}</td>
-                                            <td width="5"><input type="checkbox" name="checkbox[]"></td>
-                                            <td width="30"><img src="{{asset('uploads/products/180/'.$cart->photo)}}" class="" class="img-responsive" alt="No Image" ></td>
-                                            <td>{{$cart->name}}</td>
-                                            <td><input type="number" name="quantity[]" value="{{$cart->pro_qty}}" class="form-control" required></td>
-                                            <td align="center">@if($cart->discount!=""){{$cart->discount}} @else 0 @endif% </td>
-                                            <td>$ {{$cart->price}}</td>
-                                            <td>$ @if($cart->discount > 0)  {{$cart->total_sales - ($cart->total_sales / 100 * $cart->discount) }} @else {{$cart->total_sales}}@endif</td>
-                                            <td>
-                                                <a href="{{url('/buyer/mycart/delete/'.md5($cart->cart_id) ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                         @if(Session::has('sms'))
+                            <div class="alert alert-success" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div>
+                                    {{session('sms')}}
+                                </div>
                             </div>
-                        </form>
+                        @endif
+                        
+                        @if(Session::has('sms1'))
+                            <div class="alert alert-danger" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div>
+                                    {{session('sms1')}}
+                                </div>
+                            </div>
+                        @endif
+
+                        <div id="yith-wcwl-messages"></div>
+                        <div class="col-md-7">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>ITEMS</td>
+                                </tr>
+                                @foreach($carts as $cart)
+                                <tr>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img src="{{asset('uploads/products/180/'.$cart->photo)}}" class="" class="img-responsive" alt="No Image" >
+                                            </div>
+                                            <div class="col-md-6">
+                                                
+                                                <p>Name: {{$cart->name}}</p>
+                                                <p>Color: {{$cart->color}}</p>
+                                                <p>Size: {{$cart->size}}</p>
+                                                <p>Quantity: {{$cart->pro_qty}}</p>
+                                                <p>Price: {{number_format($cart->price , 2)}} $</p>
+                                                <p>Discount: @if($cart->discount!=""){{$cart->discount}} @else 0 @endif%</p>
+                                                <p>Total:  @if($cart->discount > 0)  {{number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount) , 2)}} @else {{number_format($cart->total_sales , 2)}}@endif $</p>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <a href="{{url('/buyer/mycart/edit/'.Crypt::encryptString($cart->cart_id))}}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
+                                                <a href="{{url('/buyer/mycart/delete/'.Crypt::encryptString($cart->cart_id))}}" onclick="return confirm('Are you sure, you want to delete the item?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a> 
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="col-md-5">
+                            <form action="{{url('buyer/product/order/create')}}" class="form-horizontal" method="post">
+                                {{csrf_field()}}
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td colspan="3"><b>ORDER SUMARY</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Item Name</td>
+                                        <td>Quantity</td>
+                                        <td>Price X Discount</td>
+                                    </tr>
+                                    <?php $total = 0; ?>
+                                    @foreach($carts as $cart)
+
+                                    <tr>
+                                        <td>
+                                            {{$cart->name}}
+                                        </td>
+                                        <td>
+                                            {{$cart->pro_qty}}
+                                        </td>
+                                        <td>
+                                            <?php 
+                                                if($cart->discount > 0){
+                                                   echo number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount),2 )."$";
+                                                }else{
+                                                   echo number_format($cart->total_sales , 2)."$";
+                                                }
+
+                                                if($cart->discount > 0){
+                                                    $total += number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount),2 );
+                                                }else{
+                                                   $total +=  number_format($cart->total_sales , 2);
+                                                }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                      
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            SUB-TOTAL:
+                                        </td>
+                                        <td>
+                                            {{$total}} $
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button class="btn btn-success">ORDER NOW</button>
+                            </form>
+                        </div>
                     </div>
                 </article>
             </main>

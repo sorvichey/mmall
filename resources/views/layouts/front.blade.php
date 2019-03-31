@@ -17,6 +17,12 @@
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,800,800italic,600italic,400italic,300italic' rel='stylesheet' type='text/css'>
 
         <link rel="shortcut icon" href="{{asset('front/assets/images/fav-icon.png')}}">
+
+		<style>
+			.card-body{
+				padding: 15px !important;
+			}
+		</style>
     </head>
 
     <body class="page home page-template-default">

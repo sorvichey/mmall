@@ -12,6 +12,11 @@
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/style.css')}}" media="all" />
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/colors/black.css')}}" media="all" />
 		<link rel="stylesheet" href="{{asset('fronts/assets/css/scroll-to-top.css')}}"  media="all">
+        <style>
+            .card-body{
+                padding: 15px !important;
+            }
+        </style>
     </head>
     <body class="page home page-template-default">
         <div id="page" class="hfeed site">

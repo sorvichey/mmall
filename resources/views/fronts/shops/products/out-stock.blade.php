@@ -10,6 +10,26 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
+        @if(Session::has('sms'))
+                    <div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div>
+                            {{session('sms')}}
+                        </div>
+                    </div>
+                @endif
+                @if(Session::has('sms1'))
+                    <div class="alert alert-danger" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div>
+                            {{session('sms1')}}
+                        </div>
+                    </div>
+                @endif
             @if($owner==null)
             <br>
                 <div class="alert alert-warning" role="alert">
@@ -68,10 +88,10 @@
                         <td width="150">{{$c->quantity}} </td>
                         
                         <td width="150">
-                            <a class="btn btn-success btn-xs open_modal" href="{{url('/owner/detail-product/'.$c->id)}}" data-toggle="modal" data-id="{{$c->id}}" data-target="#add_qty" title="Add Quantity"><i class="fa fa-plus"></i></a>
-                            <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.$c->id)}}" title="Detail"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                            <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            <a class="btn btn-success btn-xs open_modal" href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id))}}" data-toggle="modal" data-id="{{Crypt::encryptString($c->id)}}" data-target="#add_qty" title="Add Quantity"><i class="fa fa-plus"></i></a>
+                            <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id))}}" title="Detail"><i class="fa fa-eye"></i></a>
+                            <!-- <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.$c->id)}}" title="Edit"><i class="fa fa-pencil"></i></a> -->
+                            <!-- <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a> -->
                         </td>
                     </tr>
                 @endforeach
@@ -98,7 +118,7 @@
             {{csrf_field()}}
             <div class="modal-body">
             <input type="hidden" id="product_id" name="id">
-            <input type="hidden" value="{{$owner->s_id}}" name="shop_id">
+            <input type="hidden" value="{{Crypt::encryptString($owner->s_id)}}" name="shop_id">
                 <span>Quantity(add total quantity):</span>
                 <input type="number" class="form-control" id="qty" name="qty" placeholder="100" require autofocus>
             </div>

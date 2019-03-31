@@ -73,8 +73,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a class="btn btn-info btn-xs" href="{{url('/owner/product/promotion/edit/'.md5($promo->promo_id))}}" title="Edit"><i class="fa fa-edit"></i></a>
-                                            <a class="btn btn-danger btn-xs" href="{{url('/owner/product/promotion/delete/'.md5($promo->promo_id) ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                                            <a class="btn btn-info btn-xs" href="{{url('/owner/product/promotion/edit/'.Crypt::encryptString($promo->promo_id))}}" title="Edit"><i class="fa fa-edit"></i></a>
+                                            <a class="btn btn-danger btn-xs" href="{{url('/owner/product/promotion/delete/'.Crypt::encryptString($promo->promo_id) ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
                                         </td>
                                         
                                     </tr>
