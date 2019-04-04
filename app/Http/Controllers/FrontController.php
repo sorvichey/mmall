@@ -16,16 +16,18 @@ class FrontController extends Controller
             return $next($request);
         });
         date_default_timezone_set('Asia/Phnom_Penh');
+        $this->promotion_disable();
     }
-    public function index()
-    {
-        // disable all promotions are expired
+    // disable all promotions are expired
+    protected function promotion_disable(){
         $now_date=Carbon::now()->toDateString();
         $data_update = array(
                 'active' => 0
             );
-        DB::table('promotions')->where('end_date', $now_date)->update($data_update);
-
+        DB::table('promotions')->where(DB::raw('end_date >='.$now_date))->update($data_update);
+    }
+    public function index()
+    {
         $data['slides'] = DB::table('slides')
             ->select('title', 'photo', 'short_description', 'discount', 'order', 'url')
             ->where('active', 1)

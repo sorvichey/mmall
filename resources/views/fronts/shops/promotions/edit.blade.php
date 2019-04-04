@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Create Promotion
+                    Create Promotion  &nbsp;&nbsp;&nbsp;<a class="" href="{{ URL::previous() }}"><i class="fa fa-chevron-left "></i>Go Back</a>
                 </div>
                 <div id="collapseOne" class="collapse show" data-parent="#accordion">
                     <div class="card-body">

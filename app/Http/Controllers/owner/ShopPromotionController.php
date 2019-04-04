@@ -38,7 +38,7 @@ class ShopPromotionController extends Controller
     // Random string 
     private function promotion_code($product_id) { 
         $token = $this->getToken(4, $product_id);
-        $code = 'P'.$product_id. $token . substr(strftime("%Y", time()),2);
+        $code = 'P'. $token . strtotime("now");
         return $code;
     }
 
@@ -58,8 +58,19 @@ class ShopPromotionController extends Controller
     // load add form
     public function add($id)
     {
+        //decrypt id
         $encrypted_id = $id;
         $decrypted_id = Crypt::decryptString($encrypted_id);
+
+        // check if promtion already exist
+        $active_promotion = DB::table('promotions')->where('product_id', $decrypted_id)->where('active',1)->first();
+        if($active_promotion!==null)
+        {
+            $data['promotion_exist']= array("1",Crypt::encryptString($active_promotion->id));
+        }else{
+            $data['promotion_exist']= array("0",);
+        }
+
         $data['promotion_types'] = DB::table('promotion_types')
             ->where('active', 1)
             ->get();
@@ -73,30 +84,44 @@ class ShopPromotionController extends Controller
     // save promotion
     public function save(Request $r)
     {
+        //decrypt id 
+        $encrypted_id = $r->product_id;
+        $decrypted_id = Crypt::decryptString($encrypted_id);
+
+        // check if promtion already exist
+        $active_promotion = DB::table('promotions')->where('product_id', $decrypted_id)->where('active',1)->first();
+        if($active_promotion!==null)
+        {
+            $r->session()->flash('sms', "You could not create a new promotion!");
+            return redirect('/owner/product/promotion/'.$encrypted_id);
+        }
+        // date formart
+        $datetime = $r->datetimes;
+        $date = explode(' - ', $datetime);
+        $start_date = Carbon::createFromFormat('Y-m-d H:i', $date[0]);
+        $end_date = Carbon::createFromFormat('Y-m-d H:i', $date[1]);
+
         // validation form
         $validatedData = $r->validate([
             'promotion_type' => 'required',
             'discount' => 'required',
             'number_product' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'datetimes' => 'required',
             'description' => 'nullable',
         ]);
-
-        $encrypted_id = $r->product_id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
-    
+        
+        // data to be insert
          $data = array(
                 'product_id' => $decrypted_id,
                 'discount_code' =>$this->promotion_code($decrypted_id),
                 'discount_type' => $r->promotion_type,
                 'discount' => $r->discount,
                 'number_product' => $r->number_product,
-                'start_date' => Carbon::createFromFormat('Y-m-d H:i:s', $r->start_date.date(' H:i:s')),
-                'end_date' => Carbon::createFromFormat('Y-m-d H:i:s', $r->end_date.'00:00:00'),
+                'start_date' => $start_date,
+                'end_date' => $end_date,
                 'description' => $r->description,
             );
-        // insert data
+        // query insert data
         $i = DB::table('promotions')->insertGetId($data);
         // message 
         $sms = "Your promotion have been saved successfully";
@@ -104,14 +129,11 @@ class ShopPromotionController extends Controller
 
         if ($i>0) {
             $r->session()->flash('sms', $sms);
-            return redirect('/owner/product/promotion/'.$encrypted_id);
+            return redirect('/owner/product/promotion/');
         }else{
             $r->session()->flash('sms', $sms1);
             return redirect('/owner/product/promotion/'.$encrypted_id);
         }
-
-        
-         
     }
 
     // edit promotion

@@ -1,5 +1,9 @@
 @extends('layouts.owner')
 @section('content')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <div class="container">
     <div class="row">
         <br>
@@ -12,6 +16,16 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div class="col-md-12">
+                                @if($promotion_exist[0]==1)
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            Promotion is running on this product. If you want to edit this promotion [<a href='{{url("/owner/product/promotion/edit/".$promotion_exist[1])}}'>click this link</a>].
+                                        </ul>
+                                        <ul>
+                                            If you want to add new promotion, you have to wait until end of the promotion.
+                                        </ul>
+                                    </div>
+                                @endif
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
                                         <ul>
@@ -63,7 +77,7 @@
 
                                    <div class="form-group">
                                     <label for="number_product">Quantity (Number of product to discount) :</label>
-                                    <input type="number" min="1" class="form-control" id="number_product" name="number_product" value="{{old('number_product')}}" required>
+                                    <input type="number" min="1" max="{{$product->quantity}}" class="form-control" id="number_product" name="number_product" value="{{old('number_product')}}" required>
                                   </div>
 
                                   <div class="form-group">
@@ -73,11 +87,13 @@
 
                                   <div class="form-group">
                                     <label>Promotion Date:</label>
-                                    <div class="input-group input-daterange">
+                                    <!-- <div class="input-group input-daterange">
                                         <input type="text" class="form-control" name="start_date" id="start_date" value="{{old('start_date')}}" required>
+                                        <input type="text" class="form-control" name="start_date" id="start_date" value="" required>
                                         <div class="input-group-addon">to</div>
                                         <input type="text" class="form-control" name="end_date" id="end_date" value="{{old('end_date')}}" required>
-                                    </div>
+                                    </div> -->
+                                    <input type="text" name="datetimes" class="form-control" required/>
                                   </div>
 
                                   <div class="form-group">
@@ -98,17 +114,18 @@
 
 @endsection
 @section('js')
-    <script type="text/javascript">
-        $.fn.datepicker.defaults.format = "yyyy-mm-dd";
-        $('.input-daterange input').each(function() {
-            $(this).datepicker(function(){
-            }).datepicker("setDate",'now');
-        });
 
-        $(document).ready(function () {
-            $("#shop-menu li a").removeClass("active");
-            $("#my-promotion").addClass("active");
-        });
-       
-    </script>
+<script>
+$(function() {
+  $('input[name="datetimes"]').daterangepicker({
+    timePicker: true,
+    timePicker24Hour: true,
+    startDate: moment().startOf('hour'),
+    endDate: moment().startOf('hour').add(32, 'hour'),
+    locale: {
+      format: 'YYYY-MM-DD HH:MM'
+    }
+  });
+});
+</script>
 @endsection

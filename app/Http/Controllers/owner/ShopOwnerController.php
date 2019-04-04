@@ -94,8 +94,12 @@ class ShopOwnerController extends Controller
         $email = $r->email;
         $pass = $r->password;
         $shop_owner = DB::table('shop_owners')->where('active',1)->where('email', $email)->first();
+        if ($shop_owner === null) {
+            $r->session()->flash('sms2', 'Invalide email address!');
+            return redirect('/owner/login')->withInput();
+        }
         $shop = DB::table('shops')->where('shop_owner_id', $shop_owner->id)->first();
-        
+
         $shop_owner_activated = 
             DB::table('shop_owners')
             ->where('active',1)
