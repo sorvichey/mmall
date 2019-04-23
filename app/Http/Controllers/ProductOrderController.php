@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Crypt;
 
 class ProductOrderController extends Controller
 {
@@ -15,12 +16,28 @@ class ProductOrderController extends Controller
     date_default_timezone_set('Asia/Phnom_Penh');
   }
 
+  private function getToken($length, $seed){    
+    $token = "";
+    $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $codeAlphabet.= "0123456789";
+
+    mt_srand($seed);      // Call once. Good since $product_id is unique.
+
+    for($i=0;$i<$length;$i++){
+        $token .= $codeAlphabet[mt_rand(0,strlen($codeAlphabet)-1)];
+    }
+    return $token;
+  }
+  // Random string 
+  private function order_code($id) { 
+      $token = $this->getToken(6, $id);
+      $code = 'PO'. $token . strtotime("now");
+      return $code;
+  }
 
   public function index() {
-    $data['subscriptions'] = DB::table('subscription')
-      ->orderBy('id', 'desc')
-      ->paginate(18);
-    return view('fronts.shops.order.index', $data);
+    $buyers = DB::table('buyers')->where('activated', 1)->orderBy('id', 'DESC')->get();    
+    return view('fronts.shops.order.index', compact('buyers'));
   }
 
   public function detail($id){
@@ -31,77 +48,67 @@ class ProductOrderController extends Controller
   public function create(Request $r){
     // validation form
     $validatedData = $r->validate([
-      'quantity' => 'required'
+      'cart' => 'required'
     ]);
-    $checkbox = $r->checkbox;
- 
-    if (is_null($checkbox)) {
-      
-    }else{
-      $number_item = count($r->quantity);
-      for($i=0; $i<$number_item; $i++){
-        $order_number =    strtotime("now");
-        // $quantity=$r->quantity[$i];
-        // echo $number_item."<br>";
-        // echo $r->quantity[$i].'--'.$r->checkbox[$i]."<br>";
-        // exit();
+    
+    // count item to be insert multiple 
+    $items = count($r->cart);
+    $total = 0;
+    $this->order_code();
+    for($i=0; $i< $items; $i++){
+      // Decrypt the cart id string
+      $cart_id_encrypted = $r->cart[$i];
+      $cart_id_decrypted = Crypt::decryptString($cart_id_encrypted);
 
-        // check to update only checked box
-        // if ($r->checkbox[$i]=="") {
-          
-          
-        // }
-        // else{
-        //   $id = @$r->checkbox[$i]; 
-        //   echo $quantity.'-'.$id;
-        //   // exit();
-        //   // $cart_quantity = array('pro_qty' => $quantity);
-        //   // $update = DB::table('add_to_carts')->where(DB::raw('md5(add_to_carts.id)'), $id)->update($cart_quantity);
-        //   // echo $quantity;
-        //   // dd($update);
-        // }
-        
-        
+      // get product form cart to be order
+      $to_order = DB::table('add_to_carts')
+            ->join('products', 'products.id', 'add_to_carts.product_id')
+            ->leftJoin('promotions',function ($join) {
+              $join->on('promotions.product_id', '=' , 'products.id') ;
+              $join->where('promotions.active','=',1) ;
+            })
+            ->select('add_to_carts.id',
+                    'add_to_carts.buyer_id', 
+                    'add_to_carts.product_id', 
+                    'add_to_carts.color_id', 
+                    'add_to_carts.size_id', 
+                    'add_to_carts.pro_qty',
+                    'promotions.discount',
+                    'products.price',
+                    DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
+            ->where('add_to_carts.id', $cart_id_decrypted)
+            ->where('add_to_carts.active', 1)
+            ->first();
 
-        // $data=DB::table('add_to_carts')
-        //   ->join('products', 'products.id', 'add_to_carts.product_id')
-        //   ->leftJoin('promotions',function ($join) {
-        //       $join->on('promotions.product_id', '=' , 'products.id') ;
-        //       $join->where('promotions.active','=',1);
-        //     })      
-        //   ->select('products.name','add_to_carts.product_id', 'add_to_carts.buyer_id')
-        //   ->where(DB::raw('md5(add_to_carts.id)'), $r->checkbox[$i])->get();
-        //   dd($data);
-      }
+        // check product is discouted or not
+        if($to_order->discount > 0){
+          $total += number_format($to_order->total_sales - ($to_order->total_sales / 100 * $to_order->discount),2 );
+        }else{
+          $total +=  number_format($to_order->total_sales , 2);
+        }
+
+        // prepared data to be insert
+        $data = array(
+          "order_number" => $order_code,
+          "buyer_id" => $to_order->buyer_id,
+          "pro_id" => $to_order->product_id,
+          "color_id" => $to_order->color_id,
+          "size_id" => $to_order->size_id,
+          "pro_qty" => $to_order->pro_qty,
+          "pro_discount" => $to_order->discount,
+          "order_date" => date('Y-m-d H:i:s'),
+          "total" => $total
+        );
+
+        // insert
+        DB::table('orders')->insert($data);
+        //Update Cart
+        DB::table('add_to_carts')->where("id", $to_order->id)->update(array( "status" => 0));
     }
+    return redirect("/product/order/payment");
   }
 
-  public function save(Request $r){
-    $data = array(
-        "name" => $r->name,
-        "price" => $r->price,
-        "posted_product" => $r->product_post,
-        "duration" => $r->duration,
-        "active" => $r->status,
-        "description" => $r->description,
-    );
-    $i = DB::table('subscription')->insert($data);
-    if($i)
-    {
-        $r->session()->flash("sms", "New subscription has been created successfully!");
-        return redirect("/admin/subscription/create");
-    }
-    else{
-        $r->session()->flash("sms1", "Fail to create new subscription!");
-        return redirect("/admin/subscription/create")->withInput();
-    }
-  }
-
-  public function edit($id){
-    $data['subscription'] = DB::table('subscription')->where('id', $id)->first();
-     return view('subscriptions.edit', $data);
-  }
-
+  
   public function update(Request $r){
     $data = array(
         "name" => $r->name,

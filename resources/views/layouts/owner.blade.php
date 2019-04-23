@@ -83,7 +83,7 @@
                       </li>
 
 					  <li class="nav-item">
-                        <a class="nav-link" id="ordering" href="{{url('owner/product-order')}}"> <i class="fa fa-bookmark-o"></i> Order</a>
+                        <a class="nav-link" id="ordering" href="{{url('owner/product/order')}}"> <i class="fa fa-bookmark-o"></i> Order</a>
                       </li>
                       
                     </ul>

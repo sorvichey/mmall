@@ -72,16 +72,17 @@
 
                                   <div class="form-group">
                                     <label>Promotion Date:</label>
-                                    <div class="input-group input-daterange">
+                                    <!-- <div class="input-group input-daterange">
                                         <input type="text" class="form-control" name="start_date" id="start_date" value="{{date('Y-m-d', strtotime($promotion->start_date))}}" required>
                                         <div class="input-group-addon">to</div>
                                         <input type="text" class="form-control" name="end_date" id="end_date" value="{{date('Y-m-d', strtotime($promotion->end_date))}}" required>
-                                    </div>
+                                    </div> -->
+                                    <input type="text" name="datetimes" value="{{$promotion->start_date.' - '.$promotion->end_date}}" class="form-control" required/>
                                   </div>
 
                                   <div class="form-group">
                                       <label for="description">Description:</label>
-                                      <input class="form-control" type="text" name="description" id="description" value="{{old('description')}}" placeholder="Short description">
+                                      <textarea name="description" id="description" rows="5">{{old('description')}}</textarea>
                                   </div>
 
                                   <button type="submit" class="btn btn-success">Save</button>
@@ -97,17 +98,15 @@
 
 @endsection
 @section('js')
-    <script type="text/javascript">
-        $.fn.datepicker.defaults.format = "yyyy-mm-dd";
-        $('.input-daterange input').each(function() {
-            $(this).datepicker(function(){
-            });
-        });
-
-        $(document).ready(function () {
-            $("#shop-menu li a").removeClass("active");
-            $("#my-promotion").addClass("active");
-        });
-       
+    <script>
+    $(function() {
+    $('input[name="datetimes"]').daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        locale: {
+        format: 'YYYY-MM-DD HH:MM'
+        }
+    });
+    });
     </script>
 @endsection

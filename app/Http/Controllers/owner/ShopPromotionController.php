@@ -49,7 +49,6 @@ class ShopPromotionController extends Controller
             ->join('products','products.id','promotions.product_id')
             ->join('promotion_types','promotion_types.id','promotions.discount_type')
             ->select('products.*','promotions.*', 'promotion_types.name as promo_type', 'promotions.active as promo_active', 'promotions.id as promo_id')
-            ->where('promotions.active', 1)
             ->where('products.shop_id',$shop_id)
             ->paginate(18);
         return view('fronts.shops.promotions.index',$data);
@@ -161,10 +160,15 @@ class ShopPromotionController extends Controller
             'promotion_type' => 'required',
             'discount' => 'required',
             'number_product' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'datetimes' => 'required',
             'description' => 'nullable',
         ]);
+
+        // date formart
+        $datetime = $r->datetimes;
+        $date = explode(' - ', $datetime);
+        $start_date = Carbon::createFromFormat('Y-m-d H:i', $date[0]);
+        $end_date = Carbon::createFromFormat('Y-m-d H:i', $date[1]);
 
         $encrypted_id = $r->id;
         $decrypted_id = Crypt::decryptString($encrypted_id);
@@ -173,8 +177,8 @@ class ShopPromotionController extends Controller
                 'discount_type' => $r->promotion_type,
                 'discount' => $r->discount,
                 'number_product' => $r->number_product,
-                'start_date' => Carbon::createFromFormat('Y-m-d H:i:s', $r->start_date.date(' H:i:s')),
-                'end_date' => Carbon::createFromFormat('Y-m-d H:i:s', $r->end_date.'00:00:00'),
+                'start_date' => $start_date,
+                'end_date' => $end_date,
                 'description' => $r->description,
             );
 

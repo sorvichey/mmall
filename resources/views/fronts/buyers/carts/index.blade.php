@@ -57,7 +57,7 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <a href="{{url('/buyer/mycart/edit/'.Crypt::encryptString($cart->cart_id))}}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
-                                                <a href="{{url('/buyer/mycart/delete/'.Crypt::encryptString($cart->cart_id))}}" onclick="return confirm('Are you sure, you want to delete the item?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a> 
+                                                <a href="{{url('/buyer/mycart/delete/'.Crypt::encryptString($cart->cart_id))}}" onclick="return confirm('Are you sure, you want to remove the item?')" class="btn btn-danger btn-xs"><i class="fa fa-minus"></i></a> 
                                             </div>
                                         </div>
                                     </td>
@@ -79,7 +79,7 @@
                                     </tr>
                                     <?php $total = 0; ?>
                                     @foreach($carts as $cart)
-
+                                        <input type="hidden" name="cart[]" value="{{Crypt::encryptString($cart->cart_id)}}">
                                     <tr>
                                         <td>
                                             {{$cart->name}}

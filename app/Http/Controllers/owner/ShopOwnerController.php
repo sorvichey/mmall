@@ -701,7 +701,7 @@ class ShopOwnerController extends Controller
             ->join('shop_owners', 'shop_owners.id', 'shops.shop_owner_id')
             ->select('products.*', 'product_categories.name as cname')
             ->where('shop_owners.id', $owner_id)
-            ->where('products.quantity', '<=', 100)
+            ->where('products.quantity', '<=', 10)
             ->where('products.active', 1)
             ->orderBy('products.id', 'desc')
             ->paginate(18);

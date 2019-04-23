@@ -69,7 +69,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.short_description', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -84,7 +84,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -101,7 +101,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.short_description', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -118,7 +118,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.short_description', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -137,7 +137,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.short_description', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
             ->where('products.active',1)
@@ -159,7 +159,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name')
             ->where('products.active',1)
@@ -178,7 +178,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name')
             ->where('products.active',1)
@@ -195,7 +195,7 @@ class FrontProductListController extends Controller
             ->join('product_categories', 'product_categories.id', 'products.category_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name')
             ->where('products.active',1)
@@ -212,7 +212,7 @@ class FrontProductListController extends Controller
                 ->join('product_categories', 'product_categories.id', 'products.category_id')
                 ->leftJoin('promotions',function ($join) {
                     $join->on('promotions.product_id', '=' , 'products.id') ;
-                    $join->where('promotions.active','=',0) ;
+                    $join->where('promotions.active','=',1) ;
                 })
                 ->select('products.name', 'products.id as p_id', 'products.price', 'promotions.discount', 'products.featured_image', 'product_categories.name as category_name', 'product_categories.id as category_id')
                 ->where('products.active',1)

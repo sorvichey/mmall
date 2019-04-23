@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 31, 2019 at 10:44 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Host: localhost
+-- Generation Time: Apr 23, 2019 at 05:39 PM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.2.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -37,8 +37,8 @@ CREATE TABLE `add_to_carts` (
   `pro_qty` int(11) DEFAULT NULL,
   `total_price` float DEFAULT NULL,
   `net_total_price` float DEFAULT NULL,
-  `active` tinyint(4) NOT NULL DEFAULT '1',
-  `status` tinyint(4) NOT NULL DEFAULT '1',
+  `active` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1: active; 0 canceled',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1: not yet order; 0 ordered',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -49,11 +49,12 @@ CREATE TABLE `add_to_carts` (
 
 INSERT INTO `add_to_carts` (`id`, `buyer_id`, `size_id`, `color_id`, `product_id`, `pro_qty`, `total_price`, `net_total_price`, `active`, `status`, `created_at`, `updated_at`) VALUES
 (5, 3, 0, 0, 1, 12, 5, 5, 0, 1, '2019-01-28 16:14:51', '2019-03-07 15:14:58'),
-(6, 3, 0, 0, 2, 9, 60, 60, 1, 1, '2019-01-28 16:18:19', '2019-03-08 10:14:19'),
+(6, 3, 0, 0, 2, 3, 60, 60, 1, 1, '2019-01-28 16:18:19', '2019-04-08 12:17:36'),
 (7, 3, 0, 0, 5, 1, 89.7, 89.7, 0, 1, '2019-03-02 04:44:30', '2019-03-07 15:15:22'),
 (8, 3, 0, 0, 3, 9, 15, 15, 1, 1, '2019-03-02 04:45:15', '2019-03-08 10:22:24'),
 (9, 2, 0, 0, 4, 2, 20, 20, 1, 1, '2019-03-20 17:16:27', '2019-03-27 15:13:12'),
-(10, 2, 0, 0, 5, 4, 89.7, 89.7, 0, 1, '2019-03-27 12:03:45', '2019-03-27 15:16:16');
+(10, 2, 0, 0, 5, 4, 89.7, 89.7, 0, 1, '2019-03-27 12:03:45', '2019-03-27 15:16:16'),
+(11, 3, 0, 17, 6, 2, 45, 45, 1, 0, '2019-04-08 11:47:05', '2019-04-18 15:48:35');
 
 -- --------------------------------------------------------
 
@@ -84,7 +85,7 @@ CREATE TABLE `buyers` (
 INSERT INTO `buyers` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `create_at`, `photo`, `recovery_mode`, `verify`, `active`, `gender`, `activated`) VALUES
 (1, 'vichey', 'sor', '1', 'admin@gmail.com', '$2y$10$6QDcAGzTF8OktnLjh/coPO1aRwtd726Vk9O4Ht0Y921PvD.u52k4.', '2018-10-17 01:29:00', NULL, 0, 0, 1, 'Male', 0),
 (2, 'vichey1', 'sor', '010674459', 'sorvichey@gmail.com', '$2y$10$rLoj3tvbQUiP4OFJzoiXrucJkNrLGdnBqoSpWeYwcxPKwFwXpizWq', '2018-10-17 01:31:17', 'pro2.jpg', 0, 0, 1, 'Male', 1),
-(3, 'test1', 'test', '010674459', 'rithysam.sr@gmail.com', '$2y$10$5ZS3U9QhgxxHFgPaPrZhaOmfajr2jDB67yxiH0FCo3xWCZ4RhbqSO', '2019-01-13 14:08:48', NULL, 0, 0, 0, 'Male', 1);
+(3, 'test1', 'test', '010674459', 'rithysam.sr@gmail.com', '$2y$10$5ZS3U9QhgxxHFgPaPrZhaOmfajr2jDB67yxiH0FCo3xWCZ4RhbqSO', '2019-01-13 14:08:48', NULL, 0, 0, 1, 'Male', 1);
 
 -- --------------------------------------------------------
 
@@ -295,15 +296,30 @@ CREATE TABLE `orders` (
   `order_number` varchar(50) NOT NULL,
   `buyer_id` int(11) NOT NULL,
   `pro_id` int(11) NOT NULL,
+  `color_id` int(11) DEFAULT NULL,
+  `size_id` int(11) DEFAULT NULL,
   `pro_qty` int(11) NOT NULL,
-  `pro_discount` float NOT NULL,
+  `pro_discount` float DEFAULT NULL,
   `order_date` varchar(50) NOT NULL,
   `ship_date` varchar(50) DEFAULT NULL,
-  `order_status_id` int(11) NOT NULL,
+  `order_status_id` int(11) NOT NULL DEFAULT '1',
   `total` float NOT NULL,
+  `payment_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0=unpaid; 1=paid',
+  `payment_date` varchar(45) DEFAULT NULL,
+  `active` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `order_number`, `buyer_id`, `pro_id`, `color_id`, `size_id`, `pro_qty`, `pro_discount`, `order_date`, `ship_date`, `order_status_id`, `total`, `payment_status`, `payment_date`, `active`, `created_at`, `updated_at`) VALUES
+(5, 'PO07PU8J1555602206', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:43:26', NULL, 1, 90, 0, NULL, 0, '2019-04-18 15:43:26', NULL),
+(6, 'PO07PU8J1555602496', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:48:16', NULL, 1, 90, 0, NULL, 0, '2019-04-18 15:48:16', NULL),
+(7, 'PO07PU8J1555602515', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:48:35', NULL, 1, 90, 0, NULL, 0, '2019-04-18 15:48:35', NULL),
+(8, 'PO07PU8J1555602692', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:51:32', NULL, 1, 90, 0, NULL, 1, '2019-04-18 15:51:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -680,7 +696,10 @@ INSERT INTO `promotions` (`id`, `discount_code`, `product_id`, `number_product`,
 (13, 'P3W6B19', 3, 5, 15, '2019-03-02 20:45:02', '2019-03-08 00:00:00', 1, NULL, 0, '2019-03-01 18:43:30', NULL),
 (14, 'P607PU19', 6, 10, 10, '2019-03-31 12:57:12', '2019-05-13 00:00:00', 1, 'Khmer new year', 0, '2019-03-30 05:57:13', '2019-03-30 13:06:16'),
 (15, 'P607PU19', 6, 10, 10, '2019-03-30 13:05:33', '2019-04-14 00:00:00', 1, 'Khmer new year', 0, '2019-03-30 06:05:33', '2019-03-30 13:06:12'),
-(16, 'P607PU19', 6, 10, 10, '2019-03-30 13:21:58', '2019-04-14 00:00:00', 1, NULL, 0, '2019-03-30 06:07:40', '2019-03-30 13:22:17');
+(16, 'P607PU19', 6, 10, 10, '2019-03-30 13:21:58', '2019-04-14 00:00:00', 1, NULL, 0, '2019-03-30 06:07:40', '2019-03-30 13:22:17'),
+(17, 'P607PU19', 6, 10, 10, '2019-04-03 14:04:00', '2019-04-04 22:04:00', 1, 'Khmer New year promotion', 0, '2019-04-03 07:57:45', NULL),
+(18, 'P07PU82019-04-03', 6, 12, 12, '2019-04-03 15:04:00', '2019-04-04 23:04:00', 1, NULL, 0, '2019-04-03 08:18:59', NULL),
+(19, 'P07PU1554279681', 6, 12, 12, '2019-04-03 15:04:00', '2019-04-05 23:04:00', 1, 'Khmer New year', 0, '2019-04-03 08:21:21', NULL);
 
 -- --------------------------------------------------------
 
@@ -1286,7 +1305,8 @@ CREATE TABLE `wishes` (
 INSERT INTO `wishes` (`id`, `buyer_id`, `product_id`, `active`, `status`, `create_at`, `updated_at`) VALUES
 (1, 3, 1, 0, 0, '2019-01-15 06:51:51', '2019-03-07 14:35:39'),
 (2, 2, 5, 1, 0, '2019-03-20 17:16:15', '2019-03-27 12:03:45'),
-(3, 2, 4, 1, 0, '2019-03-20 17:16:20', '2019-03-20 17:16:27');
+(3, 2, 4, 1, 0, '2019-03-20 17:16:20', '2019-03-20 17:16:27'),
+(4, 3, 6, 1, 0, '2019-04-08 11:31:54', '2019-04-08 11:47:05');
 
 --
 -- Indexes for dumped tables
@@ -1571,7 +1591,7 @@ ALTER TABLE `wishes`
 -- AUTO_INCREMENT for table `add_to_carts`
 --
 ALTER TABLE `add_to_carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `buyers`
@@ -1625,7 +1645,7 @@ ALTER TABLE `menu_options`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -1679,25 +1699,25 @@ ALTER TABLE `product_categories`
 -- AUTO_INCREMENT for table `product_colors`
 --
 ALTER TABLE `product_colors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `product_photos`
 --
 ALTER TABLE `product_photos`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `product_sizes`
 --
 ALTER TABLE `product_sizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `promotion_types`
@@ -1829,7 +1849,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `wishes`
 --
 ALTER TABLE `wishes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

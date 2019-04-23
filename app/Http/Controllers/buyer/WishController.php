@@ -12,16 +12,16 @@ class WishController extends Controller
     // index
     public function index()
     {
-        
         $data['wishes'] = DB::table('wishes')
             ->join('products', 'products.id', 'wishes.product_id')
             ->join('buyers', 'buyers.id', 'wishes.buyer_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
-                $join->where('promotions.active','=',0) ;
+                $join->where('promotions.active','=',1) ;
             })
             ->where('wishes.buyer_id', Session::get("buyer")->id)
             ->where('wishes.active',1)
+            ->where('products.active',1)
             ->orderBy('wishes.create_at', 'desc')
             ->select('products.id as p_id', 'wishes.id as w_id', 'products.name', 'products.quantity', 'promotions.discount', 'promotions.end_date','products.price', 'products.featured_image', 'wishes.*')
             ->paginate(20);
@@ -65,7 +65,10 @@ class WishController extends Controller
      public function wishlist_count()
      {
         $buyer_id = Session::get("buyer")->id;
-        $resutl = DB::table('wishes')->where(array('buyer_id' =>$buyer_id , "active" =>1))->count();
+        $resutl = DB::table('wishes')
+        ->join('products', 'products.id', 'wishes.product_id')
+        ->where(array('buyer_id' =>$buyer_id , "wishes.active" =>1, "products.active"=>1))
+        ->count();
         
         return response()->json($resutl);
      }

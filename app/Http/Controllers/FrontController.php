@@ -20,11 +20,11 @@ class FrontController extends Controller
     }
     // disable all promotions are expired
     protected function promotion_disable(){
-        $now_date=Carbon::now()->toDateString();
+        $now_date=Carbon::now()->toDateTimeString();
         $data_update = array(
                 'active' => 0
             );
-        DB::table('promotions')->where(DB::raw('end_date >='.$now_date))->update($data_update);
+        DB::table('promotions')->where('end_date','<=', $now_date)->update($data_update);
     }
     public function index()
     {

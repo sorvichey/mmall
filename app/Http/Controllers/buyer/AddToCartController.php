@@ -27,6 +27,7 @@ class AddToCartController extends Controller
             ->where('add_to_carts.buyer_id', Session::get("buyer")->id)
             ->where('add_to_carts.active',1)
             ->where('add_to_carts.status',1)
+            ->where('products.active',1)
             ->groupBy('products.id')
             ->paginate(20);
         return view('fronts.buyers.carts.index', $data);
@@ -88,8 +89,7 @@ class AddToCartController extends Controller
                 'buyer_id' => $buyer_id,
                 'product_id' => base64_decode($r->p_id),
                 'pro_qty' => 1,
-                'total_price' => $price->price,
-                'net_total_price' =>  $price->price,
+                'total_price' => $price->price
             );
 
             $saved = DB::table('add_to_carts')->insertGetId($data);
@@ -133,6 +133,7 @@ class AddToCartController extends Controller
                         ->where('add_to_carts.buyer_id', Session::get("buyer")->id)
                         ->where('add_to_carts.active',1)
                         ->where('add_to_carts.status',1)
+                        ->where('products.active',1)
                         ->where('add_to_carts.id',$decrypted_id)
                         ->groupBy('products.id')
                         ->first();
@@ -146,7 +147,6 @@ class AddToCartController extends Controller
         $data['sizes'] = DB::table('product_sizes')
                         ->where(['active'=>1, 'product_id'=>$proudct_id])
                         ->get();
-
         
         return view("fronts.buyers.carts.edit", $data);
     }
@@ -154,7 +154,24 @@ class AddToCartController extends Controller
     //do update
     public function update(Request $r)
     {
-        // code here
+        // validation form
+        $validatedData = $r->validate([
+            'quantity' => 'required|numeric',
+            'color' => 'required',
+        ]);
+        $decrypted_id = Crypt::decryptString($r->cart_id);
+        $size = $r->size;
+        $color = Crypt::decryptString($r->color);
+        $quantity = $r->quantity;
+
+        $data = array(
+            'pro_qty' => $quantity,
+            'color_id' => $color,
+            'size_id' => $size,
+        );
+        DB::table('add_to_carts')->where(DB::raw('add_to_carts.id'),$decrypted_id)->update($data);
+
+        return redirect('/buyer/mycart');
     }
    
      // delete
@@ -171,7 +188,13 @@ class AddToCartController extends Controller
      public function cart_count()
      {
         $buyer_id = Session::get("buyer")->id;
-        $resutl = DB::table('add_to_carts')->where('buyer_id', $buyer_id)->count();
+        $resutl = DB::table('add_to_carts')
+        ->join('products','products.id','add_to_carts.product_id')
+        ->where('buyer_id', $buyer_id)
+        ->where('products.active', 1)
+        ->where('add_to_carts.active', 1)
+        ->where('add_to_carts.status', 1)
+        ->count();
         
         return response()->json($resutl);
      }
