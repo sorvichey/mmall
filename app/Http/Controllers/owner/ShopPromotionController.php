@@ -50,6 +50,7 @@ class ShopPromotionController extends Controller
             ->join('promotion_types','promotion_types.id','promotions.discount_type')
             ->select('products.*','promotions.*', 'promotion_types.name as promo_type', 'promotions.active as promo_active', 'promotions.id as promo_id')
             ->where('products.shop_id',$shop_id)
+            ->orderBY('promotions.id','DESC')
             ->paginate(18);
         return view('fronts.shops.promotions.index',$data);
     }

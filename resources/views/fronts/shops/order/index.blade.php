@@ -15,40 +15,37 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Customer Name</th>
+                                        <th>Customer</th>
                                         <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Item</th>
-                                        <th>Price</th>
+                                        <th>Delivery to</th>
+                                        <th>Order Code</th>
+                                        <th>Order Date</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>   
                                 <tbody>
-                                    @if(count($buyers) > 0)
-                                        @php $i = 0 @endphp 
-                                        @foreach($buyers as $buyer)
-                                            <!-- get data order for each buyer  -->
-                                            @php 
-                                                $total_qty = 0; 
-                                                $total_price = 0; 
-                                                $orders = DB::table('orders')->join('order_status','order_status.id','orders.order_status_id')->where('buyer_id', $buyer->id)->get();
-                                                if($orders){
-                                                    $total_price = $orders->sum('total');
-                                                    $total_qty = $orders->sum('pro_qty');
-                                                }
-                                            @endphp 
-                                                <tr>
-                                                    <td> {{ $i = $i + 1 }}</td>
-                                                    <td>{{ $buyer->first_name }} {{ $buyer->last_name }}</td>
-                                                    <td>{{ $buyer->phone }}</td>
-                                                    <td></td>
-                                                    <td>{{ $total_qty }}</td>
-                                                    <td>{{ $total_price }}</td>
-                                                    <td></td>
-                                                </tr>
-                                        @endforeach
-                                    @endif 
+                                @php $i=1; @endphp
+                                @foreach($orders as $order)
+                                   <tr>
+                                        <td>{{$i++}}</td>
+                                        <td>{{$order->first_name}} {{$order->last_name}}</td>
+                                        <td>{{$order->phone}}</td>
+                                        <td>{{$order->delivery_address}}</td>
+                                        <td>{{$order->order_number}}</td>
+                                        <td>{{$order->created_at}}</td>
+                                        <td>
+                                            @if($order->payment_status==1)
+                                                <span>{{$order->status_name}}</span>
+                                            @else
+                                                <span class="text-danger">Unpaid</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="#" title="Detail"><span class="fa fa-eye text-success"></span></a>
+                                        </td>
+                                   </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -141,7 +141,7 @@
                         				<div class="widget_shopping_cart_content">
                         					<ul class="cart_list product_list_widget ">
                                                 <li class="mini_cart_item">
-                        							<a href="{{url('my-order/'.session('buyer')->id)}}">
+                        							<a href="{{url('buyer/order/'.Crypt::encryptString(session('buyer')->id))}}">
                         					            My Orders
                         							</a>
                         						</li>

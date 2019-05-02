@@ -123,7 +123,7 @@
                  <div class="row">
                     <p class="bg-info">&nbsp;&nbsp;Promotions</p>
                     <div class="col-md-12">
-                        <a href="{{url('/owner/product/promotion/'.md5($product->id))}}"><i class="fa fa-plus"></i>Click to add promotion</a>
+                        <a href="{{url('/owner/product/promotion/'.Crypt::encryptString($product->id))}}"><i class="fa fa-plus"></i>Click to add promotion</a>
                         <p class="">Promotion Code: {{$product->discount_code}}</p>
                         <p class="">Discount: {{$product->discount}}</p>
                         <p class="">Discount Quantity: {{$product->number_product}}</p>

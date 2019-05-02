@@ -36,10 +36,10 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Promotino Code</th>
+                                        <th>Code</th>
                                         <th>Product Name</th>
-                                        <th>Product Quantity</th>
-                                        <th>Discount (%)</th>
+                                        <th>Quantity</th>
+                                        <th>Discount</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Promotino Type</th>
@@ -61,7 +61,7 @@
                                         <td title="{{$promo->description}}">{{$promo->discount_code}}</td>
                                         <td>{{$promo->name}}</td>
                                         <td>{{$promo->number_product}}</td>
-                                        <td>{{$promo->discount}}</td>
+                                        <td>{{$promo->discount}}%</td>
                                         <td>{{$promo->start_date}}</td>
                                         <td>{{$promo->end_date}}</td>
                                         <td>{{$promo->promo_type}}</td>

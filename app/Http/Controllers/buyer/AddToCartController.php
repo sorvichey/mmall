@@ -154,24 +154,28 @@ class AddToCartController extends Controller
     //do update
     public function update(Request $r)
     {
-        // validation form
-        $validatedData = $r->validate([
-            'quantity' => 'required|numeric',
-            'color' => 'required',
-        ]);
-        $decrypted_id = Crypt::decryptString($r->cart_id);
-        $size = $r->size;
-        $color = Crypt::decryptString($r->color);
-        $quantity = $r->quantity;
+        $decrypted_id = Crypt::decryptString($r->id);
+        $mycart = DB::table('add_to_carts')->where('add_to_carts.id',$decrypted_id)->first();
+        //check if add or sub
+        if($r->action=="add"){
+            $qty = $mycart->pro_qty + 1;
+        }elseif($r->action=="sub"){
+            if($mycart->pro_qty>0){
+                $qty = $mycart->pro_qty - 1;
+            }
+        }else{
+            $qty = 0;
+        }
 
         $data = array(
-            'pro_qty' => $quantity,
-            'color_id' => $color,
-            'size_id' => $size,
+            'pro_qty' => $qty
         );
-        DB::table('add_to_carts')->where(DB::raw('add_to_carts.id'),$decrypted_id)->update($data);
-
-        return redirect('/buyer/mycart');
+        $i = DB::table('add_to_carts')->where(DB::raw('add_to_carts.id'),$decrypted_id)->update($data);
+        if($i){
+            echo $qty;
+        }else{
+            echo $mycart->pro_qty;
+        }
     }
    
      // delete

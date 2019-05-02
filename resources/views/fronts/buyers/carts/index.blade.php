@@ -4,7 +4,7 @@
     <div class="container">
         <nav class="woocommerce-breadcrumb"><a href="{{url('/')}}">Home</a>
             <span class="delimiter"><i class="fa fa-angle-right"></i></span>
-            Add to Cart
+            My Cart
         </nav>
         <div class="content-area" id="primary">
             <main class="site-main" id="main">
@@ -33,88 +33,51 @@
                         @endif
 
                         <div id="yith-wcwl-messages"></div>
-                        <div class="col-md-7">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>ITEMS</td>
-                                </tr>
-                                @foreach($carts as $cart)
-                                <tr>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <img src="{{asset('uploads/products/180/'.$cart->photo)}}" class="" class="img-responsive" alt="No Image" >
-                                            </div>
-                                            <div class="col-md-6">
-                                                
-                                                <p>Name: {{$cart->name}}</p>
-                                                <p>Color: {{$cart->color}}</p>
-                                                <p>Size: {{$cart->size}}</p>
-                                                <p>Quantity: {{$cart->pro_qty}}</p>
-                                                <p>Price: {{number_format($cart->price , 2)}} $</p>
-                                                <p>Discount: @if($cart->discount!=""){{$cart->discount}} @else 0 @endif%</p>
-                                                <p>Total:  @if($cart->discount > 0)  {{number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount) , 2)}} @else {{number_format($cart->total_sales , 2)}}@endif $</p>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <a href="{{url('/buyer/mycart/edit/'.Crypt::encryptString($cart->cart_id))}}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
-                                                <a href="{{url('/buyer/mycart/delete/'.Crypt::encryptString($cart->cart_id))}}" onclick="return confirm('Are you sure, you want to remove the item?')" class="btn btn-danger btn-xs"><i class="fa fa-minus"></i></a> 
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </div>
-                        <div class="col-md-5">
+                        <div class="col-md-12">
                             <form action="{{url('buyer/product/order/create')}}" class="form-horizontal" method="post">
-                                {{csrf_field()}}
+                            {{ csrf_field() }}
+                            <div class="form-group">
+                                <button type="submit" name="btn_buy" id="btn_buy" class="btn btn-danger ">BUY (<span id="number_selected">0</span>)</button>
+                            </div>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td colspan="3"><b>ORDER SUMARY</b></td>
+                                        <td>No <input type="checkbox" id="select_all" /></td>
+                                        <td>(@php echo count($carts); @endphp) PRODUCT NAME</td>
+                                        <td>PRICE</td>
+                                        <td>QUANTITY</td>
+                                        <td>DISCOUNT</td>
+                                        <td>AMOUNT</td>
                                     </tr>
-                                    <tr>
-                                        <td>Item Name</td>
-                                        <td>Quantity</td>
-                                        <td>Price X Discount</td>
-                                    </tr>
-                                    <?php $total = 0; ?>
+                                    @php $i=1; @endphp
                                     @foreach($carts as $cart)
-                                        <input type="hidden" name="cart[]" value="{{Crypt::encryptString($cart->cart_id)}}">
+                                    <input type="hidden" name="cart[]" value="{{Crypt::encryptString($cart->cart_id)}}">
                                     <tr>
                                         <td>
-                                            {{$cart->name}}
+                                            @php echo $i++ @endphp 
+                                            <input type="checkbox" name="selected_item" class="selected_item" value="{{Crypt::encryptString($cart->cart_id)}}">
                                         </td>
                                         <td>
-                                            {{$cart->pro_qty}}
+                                            <div class="col-sm-2">
+                                                <img src="{{asset('uploads/products/180/'.$cart->photo)}}" class="" class="img-responsive" alt="No Image" >
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <i>Seller:</i> <br>
+                                                {{$cart->name}} <br>
+                                                {{$cart->color}} <br>
+                                                {{$cart->size}} 
+                                            </div>
                                         </td>
+                                        <td>${{$cart->price}}</td>
                                         <td>
-                                            <?php 
-                                                if($cart->discount > 0){
-                                                   echo number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount),2 )."$";
-                                                }else{
-                                                   echo number_format($cart->total_sales , 2)."$";
-                                                }
-
-                                                if($cart->discount > 0){
-                                                    $total += number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount),2 );
-                                                }else{
-                                                   $total +=  number_format($cart->total_sales , 2);
-                                                }
-                                            ?>
+                                            <span id="qty">{{$cart->pro_qty}}</span> 
+                                            <span class="btn btn-xs pull-right add_qty" id="{{Crypt::encryptString($cart->cart_id)}}">+</span>
+                                            <span class="btn btn-xs pull-right sub_qty" id="{{Crypt::encryptString($cart->cart_id)}}">-</span>
                                         </td>
+                                        <td>@if($cart->discount!=""){{$cart->discount}} @else 0 @endif%</td>
+                                        <td>$ @if($cart->discount > 0)  {{number_format($cart->total_sales - ($cart->total_sales / 100 * $cart->discount) , 2)}} @else {{number_format($cart->total_sales , 2)}}@endif </td>
                                     </tr>
-                                      
                                     @endforeach
-                                    <tr>
-                                        <td colspan="2" align="right">
-                                            SUB-TOTAL:
-                                        </td>
-                                        <td>
-                                            {{$total}} $
-                                        </td>
-                                    </tr>
                                 </table>
-                                <button class="btn btn-success">ORDER NOW</button>
                             </form>
                         </div>
                     </div>
@@ -123,5 +86,86 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+<script>
+    var burl = "{{url('/')}}";
+
+    // add quantity
+    $('body').on('click', '.add_qty', function (e) {
+        e.preventDefault();
+        var id = $(this).attr('id');
+        var action = " add"
+        $.ajax({
+            method: "POST",
+            url: burl+"/buyer/mycart/update",
+            data: 
+            {
+                "_token": "{{ csrf_token() }}",
+                "id": id,
+                "action": action 
+            },
+            success:function(data){
+                $("#qty").text(data);
+            }
+        });
+    });
+
+    //sub quantity
+    $('body').on('click', '.sub_qty', function (e) {
+        e.preventDefault();
+        var id = $(this).attr('id');
+        var action = "sub";
+        $.ajax({
+            method: "POST",
+            url: burl+"/buyer/mycart/update",
+            data: 
+            {
+                "_token": "{{ csrf_token() }}",
+                "id": id,
+                "action": action 
+            },
+            success:function(data){
+                $("#qty").text(data);
+            }
+        });
+    });
+
+    //select items
+    $('#select_all').on('click',function(){
+        if(this.checked){
+            $('.selected_item').each(function(){
+                this.checked = true;
+                var countCheckedCheckboxes = $('td input[class="selected_item"]').filter(':checked').length;
+                $("#number_selected").text(countCheckedCheckboxes);
+            });
+        }else{
+             $('.selected_item').each(function(){
+                this.checked = false;
+                $("#number_selected").text('0');
+            });
+        }
+    });
+    
+    $('.selected_item').on('click',function(){
+        if($('.selected_item:checked').length == $('.selected_item').length){
+            $('#select_all').prop('checked',true);
+        }else{
+            $('#select_all').prop('checked',false);
+        }
+    });
+
+    //count checked checkbox
+    var $checkboxes = $('td input[class="selected_item"]');
+
+    $checkboxes.change(function(){
+        var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
+        // var selected = countCheckedCheckboxes
+        // if(selected>0){}
+        $("#number_selected").text(countCheckedCheckboxes);
+        
+    });
+</script>
 @endsection
 

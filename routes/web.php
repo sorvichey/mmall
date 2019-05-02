@@ -34,7 +34,7 @@ Route::get('/buyer/wishlist/count/', "buyer\WishController@wishlist_count");
 //add to cart
 Route::post('/buyer/cart/save', "buyer\AddToCartController@save");
 Route::get('/buyer/mycart', "buyer\AddToCartController@index");
-Route::get('/buyer/mycart/edit/{id}', "buyer\AddToCartController@edit");
+Route::post('/buyer/mycart/edit/{id}', "buyer\AddToCartController@edit");
 Route::post('/buyer/mycart/update', "buyer\AddToCartController@update");
 Route::get('/buyer/mycart/count', "buyer\AddToCartController@cart_count");
 Route::get('/buyer/mycart/delete/{id}', "buyer\AddToCartController@delete");
@@ -99,6 +99,7 @@ Route::get('/owner/product/order', "ProductOrderController@index");
 //Buyer order
 Route::post('/buyer/product/order/create', "ProductOrderController@create");
 Route::post('/buyer/product/order/save', "ProductOrderController@save");
+Route::get('/buyer/order/{id}', "ProductOrderController@my_order");
 
 //payment
 Route::get('/product/order/payment', "PaymentController@index");
