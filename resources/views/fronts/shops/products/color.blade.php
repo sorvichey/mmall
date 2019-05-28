@@ -1,5 +1,5 @@
 
-@extends("layouts.owner")
+@extends("layouts.shop-admin")
 @section('content')  
     <div class="container">
         <div class="col-sm-12">

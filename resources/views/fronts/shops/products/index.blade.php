@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
 <?php 
     $owner_id = session('shop_owner')->id;
@@ -7,9 +7,11 @@
     ->select('shops.active as active')
     ->where('shop_owners.id', $owner_id)->first();
 ?>
-<div class="container">
+<!-- Page Heading -->
+<h3>Products</h3>
+<hr style="border: 1px solid blue;">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             @if($owner==null)
             <br>
                 <div class="alert alert-warning" role="alert">
@@ -33,14 +35,14 @@
                     </div>
                 </div>
             @else
-            <strong>Product List</strong>&nbsp;&nbsp;
-            <a href="{{url('/owner/new-product')}}"><i class="fa fa-plus"></i> New</a> 
+            
+            <a href="{{url('/owner/new-product')}}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> New</a> 
             <div class="float-right">
             <form action="{{url('/owner/my-product')}}" class="form-inline" method="get">
                 <div class="form-group">
                     <label for="name">Search&nbsp;&nbsp;</label>
                     <input type="text" class="form-control" id="q" name="q" value="{{$query}}" >
-                    <button type="submit"  style="padding:3px 8px 3px 8px;" class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
+                    <button type="submit"   class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
                 </div>
             </form>
             </div>
@@ -50,14 +52,15 @@
                 <thead>
                 <tr>
                     <th>&numero;</th>
-                    <th>Featured Image</th>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price ($)</th>
-                    <th>Items</th>
+                    <th>IMAGE</th>
+                    <th>NAME</th>
+                    <th>CATEGORY</th>
+                    <th>PRICE</th>
+                    <th>SELL PRICE</th>
+                    <th>QUANTITY</th>
                     <!-- <th>Best Deal</th>
                     <th>Best Seller</th> -->
-                    <th>Actions</th>
+                    <th>ACTIONS</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -76,7 +79,8 @@
                         </td>
                         <td>{{$c->cname}} </td>
                         <td>{{$c->price}} $</td>
-                        <td>{{$c->quantity}} </td>
+                        <td>{{$c->price}} $</td>
+                        <td width="10">{{$c->quantity}} </td>
                         <!-- <td width="30">@if($c->best_deal== 0)
                             <a class="btn btn-danger btn-xs" href="{{url('owner/product/best-deal/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('Add to best deal?')" title="your want to add to best deal?"><i class="fa fa-star-o"></i></a>
                             @else
@@ -90,11 +94,17 @@
                                 <a class="btn btn-success btn-xs" href="{{url('owner/product/best-seller/return/'.$c->id ."?page=".@$_GET["page"])}}" onclick="return confirm('you want to return simple seller?')" title="add to best seller"><i class="fa fa-check"></i></a>
                             @endif </td> -->
                         <td width="150">
-
-                            <a class="btn btn-primary btn-xs" style="background: #ff4d4d;" href="{{url('/owner/product/promotion/'.Crypt::encryptString($c->id))}}" title="Promotion"><i class="fa fa-tag"></i></a>
-                            <a class="btn btn-info btn-xs" href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id)) }}" title="Detail"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-warning btn-xs" href="{{url('/owner/edit-product/'.Crypt::encryptString($c->id))}}" title="Edit"><i class="fa fa-pencil"></i></a>
-                            <a class="btn btn-danger btn-xs" href="{{url('/owner/delete-product/'.Crypt::encryptString($c->id) ."?page=".@$_GET['page'])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                        <div class="dropdown">
+                            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{url('/owner/product/promotion/'.Crypt::encryptString($c->id))}}">Promotion</a></li>
+                                <li><a href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id)) }}">Detail</a></li>
+                                <li><a href="{{url('/owner/edit-product/'.Crypt::encryptString($c->id))}}">Edit</a></li>
+                                <li><a href="{{url('/owner/delete-product/'.Crypt::encryptString($c->id) ."?page=".@$_GET['page'])}}" onclick="return confirm('You want to delete?')">Delete</a></li>
+                            </ul>
+                            </div>
+                           
                         </td>
                     </tr>
                 @endforeach
@@ -107,7 +117,6 @@
             @endif
         </div>
     </div>
-</div>
 @endsection
 
 @section('js')

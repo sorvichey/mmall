@@ -123,6 +123,9 @@ class FrontController extends Controller
         $data['colors'] = DB::table('product_colors')
             ->where('product_id', $id)
             ->get();
+        $data['sizes'] = DB::table('product_sizes')
+            ->where('product_id', $id)
+            ->get();
         $data['reviewer'] = DB::table('review_products')
             ->where('product_id', $id)
             ->count();

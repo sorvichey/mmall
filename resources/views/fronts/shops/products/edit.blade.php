@@ -1,8 +1,10 @@
-@extends("layouts.owner")
+@extends("layouts.shop-admin")
 @section('content')
-<div class="container">
+<!-- Page Heading -->
+<h3>Products</h3>
+<hr style="border: 1px solid blue;">
     <div class="row">
-    <div class="col-lg-12">
+    <div class="col-md-12">
         <strong>Edit Product</strong>&nbsp;&nbsp;
         <a href="{{url('/owner/detail-product/'.Crypt::encryptString($product->id))}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
         <hr>
@@ -112,7 +114,7 @@
         </form>
     </div>
 </div>
-</div>
+
 @endsection
 @section('js')
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>

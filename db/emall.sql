@@ -25,10 +25,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `add_to_carts`
+-- Table structure for table `cart`
 --
 
-CREATE TABLE `add_to_carts` (
+CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `buyer_id` int(11) NOT NULL,
   `size_id` int(11) NOT NULL,
@@ -44,10 +44,10 @@ CREATE TABLE `add_to_carts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `add_to_carts`
+-- Dumping data for table `cart`
 --
 
-INSERT INTO `add_to_carts` (`id`, `buyer_id`, `size_id`, `color_id`, `product_id`, `pro_qty`, `total_price`, `net_total_price`, `active`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `cart` (`id`, `buyer_id`, `size_id`, `color_id`, `product_id`, `pro_qty`, `total_price`, `net_total_price`, `active`, `status`, `created_at`, `updated_at`) VALUES
 (5, 3, 0, 0, 1, 12, 5, 5, 0, 1, '2019-01-28 16:14:51', '2019-03-07 15:14:58'),
 (6, 3, 0, 0, 2, 3, 60, 60, 1, 1, '2019-01-28 16:18:19', '2019-04-08 12:17:36'),
 (7, 3, 0, 0, 5, 1, 89.7, 89.7, 0, 1, '2019-03-02 04:44:30', '2019-03-07 15:15:22'),
@@ -1313,9 +1313,9 @@ INSERT INTO `wishes` (`id`, `buyer_id`, `product_id`, `active`, `status`, `creat
 --
 
 --
--- Indexes for table `add_to_carts`
+-- Indexes for table `cart`
 --
-ALTER TABLE `add_to_carts`
+ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1588,9 +1588,9 @@ ALTER TABLE `wishes`
 --
 
 --
--- AUTO_INCREMENT for table `add_to_carts`
+-- AUTO_INCREMENT for table `cart`
 --
-ALTER TABLE `add_to_carts`
+ALTER TABLE `cart`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Auth;
 use DB;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -65,10 +66,17 @@ class ProductController extends Controller
             ->where('id', $data['product']->category_id)
             ->select('color')
             ->first();
+
         $data['colors'] = DB::table('product_colors')
             ->where('product_id', $id)
             ->orderBy('id', 'desc')
             ->get();
+
+        // $data['sizes'] = DB::table('product_sizes')
+        //     ->where('product_id', $id)
+        //     ->orderBy('id', 'desc')
+        //     ->get();
+
         return view('admin/products.detail', $data);
     }
     public function create()

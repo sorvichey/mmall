@@ -117,14 +117,30 @@
                                         <form action="{{url('/buyer/cart/save')}}" id="variations_form" class="variations_form cart" method="post">
                                             {{csrf_field()}}
 
-                                              @if(count($colors)>0)
+                                            @if(count($colors)>0)
                                                 <div class="row">
                                                     <div class="col-md-2"> 
                                                         Color
                                                     </div>
                                                     @foreach($colors as $c)
-                                                        <div style="float:left; padding: 1px; margin-left: 5px; border: 1px solid #000;">
-                                                            <img src="{{asset('uploads/products/colors/180/'.$c->photo)}}" style="height:30px;" alt="$c->name" title="$c->name">
+                                                        <label style="float:left; padding: 1px; margin-left: 5px; border: 1px solid #EEE;">
+                                                                <input type="radio" name="color" class="color" value="{{$c->id}}" required>
+                                                                <img src="{{asset('uploads/products/colors/180/'.$c->photo)}}" style="height:30px;" alt="$c->name" title="$c->name">
+                                                        </label>
+                                                    @endforeach
+                                                    <br>
+                                                    <br>
+                                                </div>
+                                            @endif
+                                            @if(count($sizes)>0)
+                                                <div class="row">
+                                                    <div class="col-md-2"> 
+                                                        Size
+                                                    </div>
+                                                    @foreach($sizes as $s)
+                                                        <div style="float:left; padding: 1px 10px 1px 1px; margin-left: 5px; ">
+                                                            <input type="radio" name="size" value="{{$s->id}}" required>
+                                                            <span>{{$s->name}}</span>
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -580,6 +596,8 @@
                     </div><!-- /.content-area -->
                 </div><!-- /.container -->
             </div><!-- /.site-content -->
+
+
             <script>
                 var burl = "{{url('/')}}";
             </script>

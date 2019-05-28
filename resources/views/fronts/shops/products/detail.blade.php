@@ -1,22 +1,19 @@
-@extends("layouts.owner")
+@extends("layouts.shop-admin")
 @section('content')
-<div class="container">
-    <!-- <div class="row"> -->
-    <div class="col-lg-12">
+<div class="row">
+    <div class="col-md-12">
         <strong>Product Detail</strong>&nbsp;&nbsp;
         <a href="{{url('/owner/my-product')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>&nbsp;&nbsp;
-        <a href="{{url('/owner/edit-product/'.Crypt::encryptString($product->id))}}" class="text-danger"><i class="fa fa-pencil"></i> Edit</a>&nbsp;&nbsp;
-        <a href="{{url('/owner/new-product/')}}"><i class="fa fa-plus"></i> New</a>
         <hr>
+        <a href="{{url('/owner/edit-product/'.Crypt::encryptString($product->id))}}" class="btn btn-success"><i class="fa fa-pencil"></i> Edit</a>&nbsp;&nbsp;
+        <a href="{{url('/owner/new-product/')}}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> New</a>
         <form action="#" method="post" id="frm" class="form-horizontal">
             <input type="hidden" name="id" value="{{Crypt::encryptString($product->id)}}">
-            <div class="col-md-12">
-                 <div class="row">
-                    <p class="bg-info">&nbsp;&nbsp;Basic info</p>                       
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
+            <br>
+            <div class="col-md-12 bg-info">
+                        Product Information
+                    </div>
+            <div class="col-sm-6">
                     <div class="form-group row">
                         <label for="name" class="control-label col-sm-3 lb">Product Name</label>
                         <label class="control-label col-sm-9 lb">
@@ -75,8 +72,6 @@
                         </label>
                     </div>
                     @endif
-
-                   
                 </div>
                 <div class="col-sm-6">
                         <div class="form-group row">
@@ -115,13 +110,13 @@
                             </p>
                         </div>
                     </div>
-                    
                 </div>
 
-            </div>
             <div class="col-md-12">
                  <div class="row">
-                    <p class="bg-info">&nbsp;&nbsp;Promotions</p>
+                    <div class="col-md-12 bg-info">
+                        Promotion Information
+                    </div>
                     <div class="col-md-12">
                         <a href="{{url('/owner/product/promotion/'.Crypt::encryptString($product->id))}}"><i class="fa fa-plus"></i>Click to add promotion</a>
                         <p class="">Promotion Code: {{$product->discount_code}}</p>
@@ -129,25 +124,19 @@
                         <p class="">Discount Quantity: {{$product->number_product}}</p>
                         <p class="">Promotion Date: {{$product->start_date}} to {{$product->end_date}}</p>
                     </div>
-
-                    
-                  
-
-                  
-                   
                 </div>
             </div>
+
             <div class="col-md-12">
                 <div class="row">
-                    <p class="bg-info"><strong>&nbsp;&nbsp;Description:</strong></p>
+                    <div class="col-md-12 bg-info">
+                        Product description
+                    </div>
                     <p class="col-sm-12"> {!!$product->description!!}</p>
                 </div>
                
             </div>
         </form>
-           
-             
-        <br>
     </div>
 <!-- </div> -->
 </div>

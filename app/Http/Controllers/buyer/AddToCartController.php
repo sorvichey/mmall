@@ -13,20 +13,20 @@ class AddToCartController extends Controller
     // index
     public function index()
     {
-        $data['carts'] = DB::table('add_to_carts')
-            ->join('products', 'products.id', 'add_to_carts.product_id')
-            ->join('buyers', 'buyers.id', 'add_to_carts.buyer_id')
+        $data['carts'] = DB::table('cart')
+            ->join('products', 'products.id', 'cart.product_id')
+            ->join('buyers', 'buyers.id', 'cart.buyer_id')
             ->leftJoin('product_photos', 'products.id', 'product_photos.product_id')
-            ->leftJoin('product_sizes', 'product_sizes.id', 'add_to_carts.size_id')
-            ->leftJoin('product_colors', 'product_colors.id', 'add_to_carts.color_id')
+            ->leftJoin('product_sizes', 'product_sizes.id', 'cart.size_id')
+            ->leftJoin('product_colors', 'product_colors.id', 'cart.color_id')
             ->leftJoin('promotions',function ($join) {
                 $join->on('promotions.product_id', '=' , 'products.id') ;
                 $join->where('promotions.active','=',1) ;
             })
-            ->select("products.name", "product_photos.photo", "product_sizes.name as size", "product_colors.name as color", "products.price", 'promotions.discount', 'add_to_carts.id as cart_id', 'add_to_carts.pro_qty as pro_qty', DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
-            ->where('add_to_carts.buyer_id', Session::get("buyer")->id)
-            ->where('add_to_carts.active',1)
-            ->where('add_to_carts.status',1)
+            ->select("products.name", "product_photos.photo", "product_sizes.name as size", "product_colors.name as color", "products.price", 'promotions.discount', 'cart.id as cart_id', 'cart.pro_qty as pro_qty', DB::raw('products.price*cart.pro_qty AS total_sales'))
+            ->where('cart.buyer_id', Session::get("buyer")->id)
+            ->where('cart.active',1)
+            ->where('cart.status',1)
             ->where('products.active',1)
             ->groupBy('products.id')
             ->paginate(20);
@@ -47,9 +47,7 @@ class AddToCartController extends Controller
             $qty = $r->quantity;
         }
 
-        $price = DB::table('products')->where('id', base64_decode($r->p_id))->select('products.price')->first();
-
-        $exist_pro = DB::table('add_to_carts')->where(
+        $exist_pro = DB::table('cart')->where(
             array(
                 'product_id' => base64_decode($r->p_id),
                 'buyer_id'=>$buyer_id,
@@ -59,7 +57,7 @@ class AddToCartController extends Controller
 
         if(@$exist_pro->pro_qty >= 1){
 
-            $add_qty = DB::table('add_to_carts')->where(
+            $add_qty = DB::table('cart')->where(
                 array(
                     'product_id' => base64_decode($r->p_id) ,
                     'buyer_id'=>$buyer_id,
@@ -68,7 +66,7 @@ class AddToCartController extends Controller
             )->update(['pro_qty' => @$exist_pro->pro_qty+$qty]);
 
             if($add_qty){
-                 $count_cart = DB::table('add_to_carts')
+                 $count_cart = DB::table('cart')
                 ->where('buyer_id', $buyer_id)
                 ->where('active', 1)
                 ->where('status', 1)
@@ -87,15 +85,16 @@ class AddToCartController extends Controller
 
             $data = array(
                 'buyer_id' => $buyer_id,
+                'color_id' => $r->color,
+                'size_id' => @$r->size,
                 'product_id' => base64_decode($r->p_id),
                 'pro_qty' => 1,
-                'total_price' => $price->price
             );
 
-            $saved = DB::table('add_to_carts')->insertGetId($data);
+            $saved = DB::table('cart')->insertGetId($data);
 
             if($saved){
-                $count_cart = DB::table('add_to_carts')
+                $count_cart = DB::table('cart')
                 ->where('buyer_id', $buyer_id)
                 ->where('active', 1)
                 ->where('status', 1)
@@ -119,22 +118,22 @@ class AddToCartController extends Controller
         $encrypted_id = $id;
         $decrypted_id = Crypt::decryptString($encrypted_id);
 
-        $data['cart'] = DB::table('add_to_carts')
-                        ->join('products', 'products.id', 'add_to_carts.product_id')
-                        ->join('buyers', 'buyers.id', 'add_to_carts.buyer_id')
+        $data['cart'] = DB::table('cart')
+                        ->join('products', 'products.id', 'cart.product_id')
+                        ->join('buyers', 'buyers.id', 'cart.buyer_id')
                         ->leftJoin('product_photos', 'products.id', 'product_photos.product_id')
-                        ->leftJoin('product_sizes', 'product_sizes.id', 'add_to_carts.size_id')
-                        ->leftJoin('product_colors', 'product_colors.id', 'add_to_carts.color_id')
+                        ->leftJoin('product_sizes', 'product_sizes.id', 'cart.size_id')
+                        ->leftJoin('product_colors', 'product_colors.id', 'cart.color_id')
                         ->leftJoin('promotions',function ($join) {
                             $join->on('promotions.product_id', '=' , 'products.id') ;
                             $join->where('promotions.active','=',1) ;
                         })
-                        ->select("products.id","products.name", "product_photos.photo", "product_sizes.name as size", "product_colors.name as color", "products.price", 'promotions.discount', 'add_to_carts.id as cart_id', 'add_to_carts.pro_qty as pro_qty', DB::raw('products.price*add_to_carts.pro_qty AS total_sales'))
-                        ->where('add_to_carts.buyer_id', Session::get("buyer")->id)
-                        ->where('add_to_carts.active',1)
-                        ->where('add_to_carts.status',1)
+                        ->select("products.id","products.name", "product_photos.photo", "product_sizes.name as size", "product_colors.name as color", "products.price", 'promotions.discount', 'cart.id as cart_id', 'cart.pro_qty as pro_qty', DB::raw('products.price*cart.pro_qty AS total_sales'))
+                        ->where('cart.buyer_id', Session::get("buyer")->id)
+                        ->where('cart.active',1)
+                        ->where('cart.status',1)
                         ->where('products.active',1)
-                        ->where('add_to_carts.id',$decrypted_id)
+                        ->where('cart.id',$decrypted_id)
                         ->groupBy('products.id')
                         ->first();
 
@@ -155,7 +154,7 @@ class AddToCartController extends Controller
     public function update(Request $r)
     {
         $decrypted_id = Crypt::decryptString($r->id);
-        $mycart = DB::table('add_to_carts')->where('add_to_carts.id',$decrypted_id)->first();
+        $mycart = DB::table('cart')->where('cart.id',$decrypted_id)->first();
         //check if add or sub
         if($r->action=="add"){
             $qty = $mycart->pro_qty + 1;
@@ -170,7 +169,7 @@ class AddToCartController extends Controller
         $data = array(
             'pro_qty' => $qty
         );
-        $i = DB::table('add_to_carts')->where(DB::raw('add_to_carts.id'),$decrypted_id)->update($data);
+        $i = DB::table('cart')->where(DB::raw('cart.id'),$decrypted_id)->update($data);
         if($i){
             echo $qty;
         }else{
@@ -182,7 +181,7 @@ class AddToCartController extends Controller
      public function delete($id)
      {
         $decrypted_id = Crypt::decryptString($id);
-        DB::table('add_to_carts')->where(DB::raw('add_to_carts.id'),$decrypted_id)->update(['active'=>0]);
+        DB::table('cart')->where(DB::raw('cart.id'),$decrypted_id)->update(['active'=>0]);
         return redirect('/buyer/mycart');
      }
 
@@ -192,12 +191,12 @@ class AddToCartController extends Controller
      public function cart_count()
      {
         $buyer_id = Session::get("buyer")->id;
-        $resutl = DB::table('add_to_carts')
-        ->join('products','products.id','add_to_carts.product_id')
+        $resutl = DB::table('cart')
+        ->join('products','products.id','cart.product_id')
         ->where('buyer_id', $buyer_id)
         ->where('products.active', 1)
-        ->where('add_to_carts.active', 1)
-        ->where('add_to_carts.status', 1)
+        ->where('cart.active', 1)
+        ->where('cart.status', 1)
         ->count();
         
         return response()->json($resutl);

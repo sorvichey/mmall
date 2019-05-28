@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>

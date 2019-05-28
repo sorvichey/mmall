@@ -1,4 +1,4 @@
-@extends('layouts.product')
+@extends('layouts.shop-admin')
 @section('content')
 <?php $total_products = DB::table('products')->where('active', 1)->get();?>
 <?php $total_brands = DB::table('product_brands')->where('active', 1)->get();?>

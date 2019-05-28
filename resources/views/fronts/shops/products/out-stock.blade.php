@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
 <?php 
     $owner_id = session('shop_owner')->id;

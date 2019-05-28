@@ -1,8 +1,7 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
-<div class="container">
-    <div class="row">
-    <div class="col-lg-12">
+    <div class="row" style="">
+    <div class="col-md-12">
         <strong>Create a New Product</strong>&nbsp;&nbsp;
         <a href="{{url('/owner/my-product')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
         <hr>

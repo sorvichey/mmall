@@ -9,51 +9,63 @@
         <div class="content-area" id="primary">
             <main class="site-main" id="main">
                 <article class="page type-page status-publish hentry">
-                    <div itemprop="mainContentOfPage" class="entry-content">
-                        <div id="yith-wcwl-messages"></div>
-                        <div class="col-md-12">
+                    <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
                             <table class="table table-bordered">
-                                <tr>
-                                    <th>No</th>
-                                    <th>PRODUCT NAME</th>
-                                    <th>PRICE</th>
-                                    <th>Quantity</th>
-                                    <th>AMOUNT</th>
-                                    <th>ORDER DATE</th>
-                                    <th>STATUS</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                                @php $i= 1; @endphp
-                                @foreach($my_orders as $order)
-                                <tr>
-                                    <td>{{$i++}}</td>
-                                    <td>
-                                        <div class="col-sm-2">
-                                        <img src="{{asset('uploads/products/180/'.$order->photo)}}" class="" class="img-responsive" alt="No Image" >
-                                        </div>
-                                        <div class="col-sm-10">
-                                            {{$order->name}} <br>
-                                            {{$order->order_number}} <br>
-                                        </div>
-                                    </td>
-                                    <td>${{$order->price}}</td>
-                                    <td>{{$order->quantity}}</td>
-                                    <td>${{$order->amount}}</td>
-                                    <td>{{$order->order_date}}</td>
-                                    <td>
-                                        @if($order->payment_status==1)
-                                            {{$order->status_name}}
-                                        @else
-                                            {{'Unpaid'}}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-xs btn-info"><span class="fa fa-eye"></span></a>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                <thead>
+                                    <tr>
+                                        <!-- <th>No</th> -->
+                                        <!-- <th>ORDER CODE</th> -->
+                                        <th>PRODUCT</th>
+                                        <th>QUANTITY</th>
+                                        <th>PRICE</th>
+                                        <th>DISCOUNT(%)</th>
+                                        <th>AMOUNT</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php $i=1; @endphp
+                                    @foreach($orders as $order)
+                                    <tr>
+                                        <!-- <td>{{$i++}}</td> -->
+                                        <!-- <td>{{$order->order_code}}</td> -->
+                                        <td>
+                                            <div class="col-xs-2">
+                                            @if($order->color!="")
+                                            <img src="{{asset('uploads/colors/180/'.$order->color)}}" class="" class="img-responsive" alt="IMG" >
+                                            @else
+                                            <img src="{{asset('uploads/products/180/'.$order->color)}}" class="" class="img-responsive" alt="IMG" >
+                                            @endif
+                                            </div>
+                                            <div class="col-xs-10">
+                                                {{$order->name}}
+                                                <br>
+                                                @if($order->size!=""){
+                                                    Size: {{$order->size}}
+                                                }
+                                                @endif
+                                                
+                                            </div>
+                                        </td>
+                                        <td>{{$order->quantity}}</td>
+                                        <td>${{$order->price}}</td>
+                                        <td>{{$order->discount}}</td>
+                                        <td>${{$order->amount}}</td>
+                                        <td>
+                                            @if($order->order_status=="To Review")
+                                                <a href="#" class="btn btn-xs btn-warning">Ready to Review</a>
+                                            @else
+                                            {{$order->order_status}}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
-                        </div>  
+                        </div>
+                    </div>
                     </div>
                 </article>
             </main>

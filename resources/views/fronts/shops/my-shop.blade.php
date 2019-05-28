@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
     
 <?php 
@@ -31,9 +31,11 @@
         $active = "";
     }
  ?>
- <div class="container">
-    <div class="card">
-        <div class="card-body">
+<!-- Page Heading -->
+<h3>Store informantions</h3>
+<hr style="border: 1px solid blue;">
+<!-- Content Row -->
+<div class="row">
                 <br>
             @if($active == 0)
             <div class="alert alert-success" role="alert">
@@ -122,8 +124,7 @@
         </div>
     </div>
 </div>       
-</div>
-</div>
+
 
 @endsection
 @section('js')

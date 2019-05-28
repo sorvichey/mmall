@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
 <?php 
      $shop_category = DB::table('product_categories')->where('parent_id',0)->where('active',1)->get();

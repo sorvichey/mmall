@@ -39,6 +39,22 @@ Route::post('/buyer/mycart/update', "buyer\AddToCartController@update");
 Route::get('/buyer/mycart/count', "buyer\AddToCartController@cart_count");
 Route::get('/buyer/mycart/delete/{id}', "buyer\AddToCartController@delete");
 
+//shipping info
+Route::get('/buyer/shipping-info/create', "buyer\ShippingController@create");
+Route::post('/buyer/shipping-info/save', "buyer\ShippingController@save");
+Route::get('/buyer/shipping-info/edit/{id}', "buyer\ShippingController@edit");
+Route::post('/buyer/shipping-info/update', "buyer\ShippingController@update");
+
+//Credit card
+Route::get('/buyer/credit-card/create', "buyer\CreditController@create");
+Route::post('/buyer/credit-card/save', "buyer\CreditController@save");
+Route::get('/buyer/credit-card/edit/{id}', "buyer\CreditController@edit");
+Route::post('/buyer/credit-card/update', "buyer\CreditController@update");
+
+//payment
+Route::get('/buyer/payment/create', "buyer\PaymentController@create");
+Route::post('/buyer/payment/save', "buyer\PaymentController@save");
+
 // Product category
 Route::get('product/category/{id}', "FrontProductListController@product_by_category");
 Route::get('product/category/list-view/{id}', "FrontProductListController@product_by_category_list_view");
@@ -93,13 +109,17 @@ Route::get('/owner/product/promotion/edit/{id}', "owner\ShopPromotionController@
 Route::post('/owner/product/promotion/update', "owner\ShopPromotionController@update");
 Route::get('/owner/product/promotion/delete/{id}', "owner\ShopPromotionController@delete");
 
-// Product order
-Route::get('/owner/product/order', "ProductOrderController@index");
+// Product order owner
+Route::get('/owner/product/order', "owner\OwnerOrderController@index");
+Route::get('/owner/product/order/detail/{id}', "owner\OwnerOrderController@detail");
+Route::get('/owner/product/order/edit/{id}', "owner\OwnerOrderController@edit");
+Route::post('/owner/product/order/update', "owner\OwnerOrderController@update");
 
 //Buyer order
 Route::post('/buyer/product/order/create', "ProductOrderController@create");
 Route::post('/buyer/product/order/save', "ProductOrderController@save");
-Route::get('/buyer/order/{id}', "ProductOrderController@my_order");
+Route::get('/my-order', "ProductOrderController@my_order");
+Route::get('/buyer/order/success/{id}', "ProductOrderController@success");
 
 //payment
 Route::get('/product/order/payment', "PaymentController@index");
