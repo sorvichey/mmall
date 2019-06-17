@@ -51,7 +51,7 @@
                                     <input type="number" min="1" class="form-control" name="phone" placeholder="010674459" id="phone">
                                 </div>
 
-                                <button type="submit" name="btn_update" class="btn btn-info">Continue</button>
+                                <button type="submit" name="btn_update" class="btn btn-primary form-control">Continue</button>
                             </form>
                         </div>  
                     </div>

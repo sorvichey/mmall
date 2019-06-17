@@ -146,13 +146,12 @@
                                                 </div>
                                             @endif
 
-
                                             <div class="single_variation_wrap">
                                                 <div class="woocommerce-variation single_variation"></div>
                                                 <div class="woocommerce-variation-add-to-cart variations_button">
                                                     <div class="quantity">
                                                         <label>Quantity:</label>
-                                                        <input type="number" name="quantity" value="1" title="Qty" class="input-text qty text"/>
+                                                        <input type="number" max="{{$product->quantity}}" name="quantity" value="1" title="Qty" class="input-text qty text"/>
                                                     </div>
                                                     <button type="submit" class="single_add_to_cart_button button" onclick="add_to_cart_m(this, event)">Add to cart</button>
 
@@ -554,7 +553,7 @@
                                                 <div class="product-outer">
                                                     <div class="product-inner">
                                                         <span class="loop-product-categories"><a href="product-category.html" rel="tag">{{$new_arrival->category_name}}</a></span>
-                                                        <a href="{{url('product/detail/'.$new_arrival->p_id)}}">
+                                                        <a href="{{url('product/detail/'.base64_encode($new_arrival->p_id))}}">
                                                             <h3>{{$new_arrival->name}}</h3>
                                                             <div class="product-thumbnail">
                                                                 <img src="{{asset('uploads/products/featured_images/250/'.$new_arrival->featured_image)}}" data-echo="{{asset('uploads/products/featured_images/250/'.$new_arrival->featured_image)}}" class="img-responsive" alt="">

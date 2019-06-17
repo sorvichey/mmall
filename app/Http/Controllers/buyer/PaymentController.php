@@ -91,23 +91,29 @@ class PaymentController extends Controller
 
                 $inserted_item_id = DB::table('order_items')->insertGetId($order_item);
 
-                //payment
-                $data = array(
-                    "order_id"=>$inserted_order_id,
-                    "payment_type_id"=>$r->payment_method,
-                );
-                DB::table('payments')->insert($data);
-
                 //clear cart
                 DB::table('cart')->where('id',$cart_id)->update(array('active'=>0));
-
-                //TODO:  stock ...
-
+                // //clear cut stock
+                // $product_quantity = DB::table('products')->where('id',$carts->product_id)->first();
+                // $cut_stock = $product_quantity->quantity - $carts->pro_qty;
+                // DB::table('products')->where('id',$carts->product_id)->update(array('quantity'=>$cut_stock));
             }
-            //create invoic
+
+            //payment
+            $data = array(
+                "order_id"=>$inserted_order_id,
+                "payment_type_id"=>$r->payment_method,
+            );
+            DB::table('payments')->insert($data);
+
+            //unset order data sessiio
+            Session::forget('order');
+
+            //-----create invoice------
             //last order id
             $inv_last_row = DB::table('orders')->orderBy('id', 'DESC')->first();
             $inv_last_id="";
+            
             //check if null
             if($inv_last_row===NULL){
                 $inv_last_id=1;

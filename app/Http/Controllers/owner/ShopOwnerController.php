@@ -433,6 +433,7 @@ class ShopOwnerController extends Controller
         //validation
         $validatedData = $r->validate([
             'price' => 'required',
+            'original_price' => 'required',
             'name' => 'required',
             'category' => 'required',
             'quantity' => 'required',
@@ -453,6 +454,7 @@ class ShopOwnerController extends Controller
                     'condiction' => $r->condiction,
                     'brand_id' => $r->brand,
                     'price' => $r->price,
+                    'original_price' => $r->original_price,
                     'quantity' => $r->quantity,
                     'description' => $r->description,
                     'short_description'=> $r->short_description,
@@ -589,6 +591,7 @@ class ShopOwnerController extends Controller
                 'condiction' => $r->condiction,
                 'brand_id' => $r->brand,
                 'price' => $r->price,
+                'original_price' => $r->original_price,
                 'quantity' => $r->quantity,
                 'description' => $r->description,
                 'short_description'=> $r->short_description

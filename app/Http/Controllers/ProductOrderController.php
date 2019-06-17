@@ -62,7 +62,7 @@ class ProductOrderController extends Controller
     if (empty($shipping_address)) { 
       return redirect("/buyer/shipping-info/create");
     }else{
-      return redirect("/buyer/shipping-info/edit/".$shipping_address->id);
+      return redirect("/buyer/shipping-info/edit/".base64_encode($shipping_address->id));
     }
   }
 

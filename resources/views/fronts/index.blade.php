@@ -1125,7 +1125,7 @@
                                                             <div class="product-outer">
                                                                 <div class="product-inner" style="height: 335px;">
                                                                     <span class="loop-product-categories"><a href="product-category.html" rel="tag">{{$best_deal->category_name}}</a></span>
-                                                                    <a href="{{url('product/detail/'.$best_deal->p_id)}}">
+                                                                    <a href="{{url('product/detail/'.base64_encode($best_deal->p_id))}}">
                                                                         <h3>{{$best_deal->name}}</h3>
                                                                         <div class="product-thumbnail">
                                                                             <img src="{{asset('uploads/products/featured_images/250/'.$best_deal->featured_image)}}" data-echo="{{asset('uploads/products/featured_images/250/'.$best_deal->featured_image)}}" class="img-responsive" alt="">

@@ -51,7 +51,8 @@ class AddToCartController extends Controller
             array(
                 'product_id' => base64_decode($r->p_id),
                 'buyer_id'=>$buyer_id,
-                'status'=>1
+                'status'=>1,
+                'active'=>1
             )
         )->first();
 
@@ -78,7 +79,7 @@ class AddToCartController extends Controller
                 return $count_cart;
             }else{
                 $r->session()->flash("sms", "Your item has been added to cart successfully!");
-                return redirect("/product/detail/".base64_decode($r->p_id));
+                return redirect("/product/detail/".$r->p_id);
             }
 
         }else{
@@ -88,7 +89,7 @@ class AddToCartController extends Controller
                 'color_id' => $r->color,
                 'size_id' => @$r->size,
                 'product_id' => base64_decode($r->p_id),
-                'pro_qty' => 1,
+                'pro_qty' => $qty,
             );
 
             $saved = DB::table('cart')->insertGetId($data);
@@ -101,12 +102,16 @@ class AddToCartController extends Controller
                 ->count();
                 $updated = DB::table('wishes')->where(['product_id'=>base64_decode($r->p_id), 'buyer_id'=>$buyer_id])->update(['status'=>0]);
             }
+            //cut stock
+            $product_quantity = DB::table('products')->where('id',base64_decode($r->p_id))->first();
+            $cut_stock = $product_quantity->quantity - $qty;
+            DB::table('products')->where('id',base64_decode($r->p_id))->update(array('quantity'=>$cut_stock));
 
             if($r->ajax()){
                 return $qty;
             }else{
                 $r->session()->flash("sms", "Your item has been added to cart successfully!");
-                return redirect("/product/detail/".base64_decode($r->p_id));
+                return redirect("/product/detail/".$r->p_id);
             }
         }
         

@@ -51,16 +51,16 @@ class ShippingController extends Controller
 
         $res = DB::table('shipping_address')->insert($data);
         if($res){
-            return redirect("/buyer/payment/edit/");
+            return redirect("/buyer/payment/create/");
         }
     }
 
     // edit shipping info
     public function edit($id){
-        var_dump($_SESSION[]);
+        $shipping_id = base64_decode($id);
         //select shipping address
-        $data['shipping'] = DB::table('shipping_address')->where('active',1)->where('id',$id)->first();
-        // return view('fronts.buyers.shipping.edit', $data);
+        $data['shipping'] = DB::table('shipping_address')->where('active',1)->where('id',$shipping_id)->first();
+        return view('fronts.buyers.shipping.edit', $data);
     }
 
     // do edit shipping info

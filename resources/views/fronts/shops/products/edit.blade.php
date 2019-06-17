@@ -62,7 +62,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="price" class="control-label col-sm-3 lb">Price $<span class="text-danger">*</span></label>
+                        <label for="price" class="control-label col-sm-3 lb">Original Price $<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="original_price" name="original_price"  value="{{$product->original_price}}" step="0.1"  min="0" value="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="price" class="control-label col-sm-3 lb">Selling Price $<span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="price" name="price"  value="{{$product->price}}" step="0.1"  min="0" value="0" required>
                         </div>
