@@ -8,10 +8,10 @@
 <div class="row">
 
     <!-- Total products -->
-    @php 
-        $shop_id = Session::get("shop")->id;
+    <?php 
+        $shop_id = @Session::get("shop")->id;
         $products = DB::table('products')->where('active',1)->where('shop_id',$shop_id)->count();
-    @endphp
+    ?>
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">

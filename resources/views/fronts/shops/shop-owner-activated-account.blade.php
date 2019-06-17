@@ -21,7 +21,7 @@
                                             <input type="hidden" name="code" id="code" value="{{ collect(request()->segments())->last() }}">
                                             <p class="form-row">
                                                 
-                                                <input class="btn btn-success" style="background: green" type="submit" value="Activated Account">
+                                                <input class="btn btn-success" style="background: green" type="submit" value="Click here to activate your account">
                                             </p>
                                         </form>
                                     </div>

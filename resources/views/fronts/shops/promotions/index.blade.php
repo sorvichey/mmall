@@ -65,8 +65,8 @@
                             @endif
                         </td>
                         <td>
-                            <a class="text-primary" href="{{url('/owner/product/promotion/edit/'.Crypt::encryptString($promo->promo_id))}}" title="Edit"><i class="fa fa-edit"></i></a>
-                            <a class="text-danger" href="{{url('/owner/product/promotion/delete/'.Crypt::encryptString($promo->promo_id) ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            <a class="text-primary" href="{{url('/owner/product/promotion/edit/'.base64_encode($promo->promo_id))}}" title="Edit"><i class="fa fa-edit"></i></a>
+                            <a class="text-danger" href="{{url('/owner/product/promotion/delete/'.base64_encode($promo->promo_id) ."?page=".@$_GET["page"])}}" onclick="return confirm('You want to delete?')" title="Delete"><i class="fa fa-trash-o"></i></a>
                         </td>
                         
                     </tr>

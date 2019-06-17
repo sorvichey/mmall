@@ -19,7 +19,7 @@
                 <article class="page type-page status-publish hentry">
                     <div itemprop="mainContentOfPage" class="entry-content">
                         <div id="yith-wcwl-messages"></div>
-                        <div class="col-md-6">
+                        <div class="col-sm-6">
                             <form action="{{url('buyer/shipping-info/update')}}" method="post">
                                 {{csrf_field()}}
                                 <input type="hidden" name="id" value="{{$shipping->id}}">
@@ -55,6 +55,23 @@
                                 <button type="submit" name="btn_update" class="form-control btn btn-primary">Continue</button>
                             </form>
                         </div>  
+                        <div class="col-sm-6 ">
+                        <br>
+                        <div class="card">
+                        <table class="table">
+                                <tr>
+                                    <th colspan="4">ORDER SUMARRY</th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                            
+                        </div>
                     </div>
                 </article>
             </main>

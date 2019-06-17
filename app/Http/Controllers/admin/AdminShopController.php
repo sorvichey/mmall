@@ -65,12 +65,16 @@ class AdminShopController extends Controller
         'subscription.name',
         'shop_subscriptions.status',
         'shop_subscriptions.created_at',
-        'shop_subscriptions.subscription_id',
-        DB::raw("(SELECT shops.subscription_id  FROM shops WHERE subscription.id = shops.subscription_id) as current_subscription")
+        'shop_subscriptions.subscription_id'
         )
       ->where('shop_subscriptions.shop_id', $id)
       ->orderBy('shop_subscriptions.created_at', 'desc')
       ->get();
+
+      $data['shop']=DB::table('shops')
+        ->select('shops.subscription_id')
+        ->where('shops.id',$id)
+        ->first();
 
     return view('admin/shops.detail', $data);
   }

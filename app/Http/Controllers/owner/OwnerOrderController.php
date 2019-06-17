@@ -23,7 +23,7 @@ class OwnerOrderController extends Controller
     }
     // view list of order
     public function index() {
-        $shop_id = Session::get("shop")->id;
+        $shop_id = @Session::get("shop")->id;
         $data['orders']=DB::table('invoices')
         ->join('orders','orders.id','invoices.order_id')
         ->join('order_items','order_items.order_id','orders.id')
@@ -53,7 +53,7 @@ class OwnerOrderController extends Controller
 
     //order detail
     public function detail($id){
-        $shop_id = Session::get("shop")->id;
+        $shop_id = @Session::get("shop")->id;
         //invoice head
         $data['invoice']=DB::table('invoices')
         ->join('orders','orders.id','invoices.order_id')
@@ -75,7 +75,7 @@ class OwnerOrderController extends Controller
             'shipping_address.postcode',
             'shipping_address.phone'
         )
-        ->where('orders.id', $id)
+        ->where('orders.id', base64_decode($id))
         ->where('products.shop_id', $shop_id)
         ->first();
         //buyer 
@@ -100,7 +100,7 @@ class OwnerOrderController extends Controller
 
     //edit order
     public function edit($id){
-        $shop_id = Session::get("shop")->id;
+        $shop_id = @Session::get("shop")->id;
         //invoice head
         $data['invoice']=DB::table('invoices')
         ->join('orders','orders.id','invoices.order_id')
@@ -125,7 +125,7 @@ class OwnerOrderController extends Controller
             'shipping_address.postcode',
             'shipping_address.phone'
         )
-        ->where('orders.id', $id)
+        ->where('orders.id', base64_decode($id))
         ->where('products.shop_id', $shop_id)
         ->first();
        

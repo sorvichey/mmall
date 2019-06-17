@@ -45,10 +45,10 @@
                             <td>{{$order->payment_type}}</td>
                             <td>{{$order->order_status}}</td>
                             <td>
-                                <a href="{{url('owner/product/order/edit/'.$order->id)}}" class="btn btn-xs text-success" title="Edit">
+                                <a href="{{url('owner/product/order/edit/'.base64_encode($order->id))}}" class="btn btn-xs text-success" title="Edit">
                                     <span class="fa fa-edit"></span>
                                 </a>
-                                <a href="{{url('owner/product/order/detail/'.$order->id)}}" class="btn btn-xs text-info" title="Detial">
+                                <a href="{{url('owner/product/order/detail/'.base64_encode($order->id))}}" class="btn btn-xs text-info" title="Detial">
                                     <span class="fa fa-eye"></span>
                                 </a>
                             </td>

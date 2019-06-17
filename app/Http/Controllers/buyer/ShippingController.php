@@ -57,9 +57,10 @@ class ShippingController extends Controller
 
     // edit shipping info
     public function edit($id){
+        var_dump($_SESSION[]);
         //select shipping address
         $data['shipping'] = DB::table('shipping_address')->where('active',1)->where('id',$id)->first();
-        return view('fronts.buyers.shipping.edit', $data);
+        // return view('fronts.buyers.shipping.edit', $data);
     }
 
     // do edit shipping info

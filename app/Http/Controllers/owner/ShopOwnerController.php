@@ -21,6 +21,7 @@ class ShopOwnerController extends Controller
     // index
     public function login()
     {
+        
         return view("fronts.shops.shop-owner-login");
     }
 
@@ -28,8 +29,7 @@ class ShopOwnerController extends Controller
         // check the email if it is valid or not
         if (!filter_var($r->email, FILTER_VALIDATE_EMAIL)) {
         
-                $r->session()->flash('sms1', "Your email is invalid. Check it again!");
-
+            $r->session()->flash('sms1', "Your email is invalid. Check it again!");
             return redirect('/owner/login')->withInput();
         }
         $email = DB::table('shop_owners')
@@ -198,35 +198,52 @@ class ShopOwnerController extends Controller
     }
 
     public function my_shop() {
-        $owner_id = Session::get("shop_owner")->id;
+        $owner_id = @Session::get("shop_owner")->id;
+        $owner_id;
 
         $data['my_shop'] = DB::table('shops')->where('shop_owner_id', $owner_id)->count();
        
         if($data['my_shop']==1){
             $shop_id = DB::table('shops')->where('shop_owner_id', $owner_id)->first();
-            $data['shop_active'] = $shop_id->active;
-            $data['shop_info'] = DB::table('shops')
+            // echo $shop_id->id;
+            // exit();
+            // $data['shop_active'] = $shop_id->active;
+            // $data['shop_info'] = DB::table('shops')
+            //     ->join('product_categories', 'product_categories.id', 'shops.shop_category')
+            //     ->join('subscription','subscription.id', 'shops.subscription_id')
+            //     ->select('shops.*', 'shops.id as id', 'product_categories.name as shop_category_name', 'product_categories.id as shop_category_id', 'subscription.name as current_subscribe')
+            //     ->first();
+            // $data['pedding_sub']=DB::table('shop_subscriptions')
+            // ->join('subscription', 'subscription.id', 'shop_subscriptions.subscription_id')
+            // ->select('subscription.name as sub_name')
+            // ->where('shop_id', $shop_id->id)
+            // ->where('status', 0)
+            // ->first();
+            //get shop info
+            $data['shop']=DB::table('shops')
                 ->join('product_categories', 'product_categories.id', 'shops.shop_category')
                 ->join('subscription','subscription.id', 'shops.subscription_id')
                 ->select('shops.*', 'shops.id as id', 'product_categories.name as shop_category_name', 'product_categories.id as shop_category_id', 'subscription.name as current_subscribe')
+                ->where('shops.shop_owner_id',$owner_id)
                 ->first();
-            $data['pedding_sub']=DB::table('shop_subscriptions')
-            ->join('subscription', 'subscription.id', 'shop_subscriptions.subscription_id')
-            ->select('subscription.name as sub_name')
-            ->where('shop_id', $shop_id->id)
-            ->where('status', 0)
-            ->first();
+            //get pending subscription
+            $data['pending_subscription']=DB::table('shop_subscriptions')
+                ->join('subscription', 'subscription.id', 'shop_subscriptions.subscription_id')
+                ->select('subscription.name as sub_name')
+                ->where('shop_id', $shop_id->id)
+                ->where('status', 0)
+                ->first();
         }
         return view("fronts.shops.my-shop", $data);
     }
 
     public function create_shop(Request $r) {
-
         return view("fronts.shops.create-shop");
     }
 
     public function do_create_shop(Request $r) {
         $owner_id = Session::get("shop_owner")->id;
+        $owner_id;
         $find_shop = DB::table('shops')->where('name', $r->shop_name)->count();
         $shop = DB::table('shops')->orderBy('id', 'DESC')->first();
          if($shop==null){
@@ -246,7 +263,7 @@ class ShopOwnerController extends Controller
             'shop_owner_id' => $owner_id,
         );
 
-        if($find_shop>=1){
+        if($find_shop>0){
              $r->session()->flash('sms1', 'Shop name ['.$r->shop_name.'] is already exist!');
             return redirect('/owner/my-shop');
         }else{
@@ -390,7 +407,7 @@ class ShopOwnerController extends Controller
                 ->where('shop_owners.id', $owner_id)
                 ->where('products.active', 1)
                 ->orderBy('products.id', 'desc')
-                ->paginate(18);
+                ->paginate(10);
         }
         
         return view("fronts.shops.products.index",$data);
@@ -413,6 +430,14 @@ class ShopOwnerController extends Controller
     }
 
     public function save_product(Request $r){
+        //validation
+        $validatedData = $r->validate([
+            'price' => 'required',
+            'name' => 'required',
+            'category' => 'required',
+            'quantity' => 'required',
+            'condiction' => 'required'
+        ]);
         $owner_id = Session::get("shop_owner")->id;
         $shops  = DB::table('shops')->where('shop_owner_id',$owner_id)->where('active',1)->first();
         $i = DB::table('products')->where('brand_id',$r->brand)->where('name', $r->name)->where('shop_id', $shops->id)->where('active',1)->count();
@@ -435,7 +460,7 @@ class ShopOwnerController extends Controller
             }
     
         $id = DB::table('products')->insertGetId($data);
-        $i = Crypt::encryptString($id);
+        $i = $id;
         if($i)
         {
             if($r->hasFile('photo'))
@@ -466,7 +491,7 @@ class ShopOwnerController extends Controller
                 DB::table('products')->where('id', $i)->update(['featured_image'=>$file_name, 'qr_code_link' => $qr_code_link]);
             }
             $r->session()->flash('sms', 'New product has been create successfully!');
-            return redirect('/owner/detail-product/'.$i);
+            return redirect('/owner/detail-product/'.base64_encode($i));
         }
         else{
             $r->session()->flash('sms1', 'Fail to create new product. Please check your input again!');
@@ -481,7 +506,7 @@ class ShopOwnerController extends Controller
         // }
 
         $encrypted_id = $id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
 
         $data['product'] = DB::table('products')
             ->join('product_categories', 'products.category_id', 'product_categories.id')
@@ -527,7 +552,7 @@ class ShopOwnerController extends Controller
 
     function edit_product($id){
         $encrypted_id = $id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
         $shop_category = Session::get("shop")->shop_category;
          $data['product'] = DB::table('products')
             ->leftJoin('promotions',function ($join) {
@@ -552,7 +577,7 @@ class ShopOwnerController extends Controller
 
     public function do_edit_product(Request $r){
         $encrypted_id = $r->id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
          $i = DB::table('products')->where('brand_id',$r->brand)->where('name', $r->name)->where('active',1)->where('id', '!=', $decrypted_id)->count();
         if($i>0) {
             $r->session()->flash('sms1', 'Fail to save change product! your product has been posted.');
@@ -654,7 +679,7 @@ class ShopOwnerController extends Controller
 
     public function delete_product($id){
         $encrypted_id = $id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
         DB::table('products')->where('id', $decrypted_id)->update(["active"=>0]);
         $page = @$_GET['page'];
         if ($page>0)
@@ -753,7 +778,7 @@ class ShopOwnerController extends Controller
                 $r->session()->flash("sms3", "You've reset successfully. Please login with your new password!");
             
             } else {
-                $r->session()->flash("sms3", "អ្នកទើបតែប្តូរលេខសម្ងាត់ សូមចូលក្នុងប្រព័ន្ធជាមួយនឹងលេខសម្ងាត់ថ្មីរបស់អ្នក!");
+                $r->session()->flash("sms3", "you just changed your passoword, please enter your new password!");
             }
             return redirect('/owner/login');
         } else {
@@ -761,7 +786,7 @@ class ShopOwnerController extends Controller
                 $r->session()->flash("sms4", "You've fail reset password. Please try to reset again!");
             
             } else {
-                $r->session()->flash("sms4", "អ្នកមិនអាចផ្លាស់ប្តូលេខសំងាត់បានទេ. សូមព្យាយាមម្តងទៀត!");
+                $r->session()->flash("sms4", "You have no change!");
             }
             return redirect('/owner/service/reset/'.$r->id);
         }
@@ -771,7 +796,7 @@ class ShopOwnerController extends Controller
 
     public function shop_owner_activated_account() {
         
-        return view("fronts.shop-owner-activated-account");
+        return view("fronts.shops.shop-owner-activated-account");
     }
 
     public function shop_owner_activated_save(Request $r) {
@@ -783,14 +808,14 @@ class ShopOwnerController extends Controller
                 $r->session()->flash("sms3", "Activated Successfully!");
             
             } else {
-                $r->session()->flash("sms3", "អាប្រើប្រាស់បាន!");
+                $r->session()->flash("sms3", "Your activation is successfully!");
             }
         } else {
             if ($r->session()->get('lang')=='en') {
                 $r->session()->flash("sms2", "Your has activated already! Please login");
             
             } else {
-                $r->session()->flash("sms2", "មិនអាប្រើប្រាស់បាន!");
+                $r->session()->flash("sms2", "Your activation is not successfully!");
             } 
         }
         return redirect('owner/login/');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 23, 2019 at 05:39 PM
+-- Generation Time: Jun 17, 2019 at 08:11 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.2.16
 
@@ -25,40 +25,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cart`
---
-
-CREATE TABLE `cart` (
-  `id` int(11) NOT NULL,
-  `buyer_id` int(11) NOT NULL,
-  `size_id` int(11) NOT NULL,
-  `color_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `pro_qty` int(11) DEFAULT NULL,
-  `total_price` float DEFAULT NULL,
-  `net_total_price` float DEFAULT NULL,
-  `active` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1: active; 0 canceled',
-  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1: not yet order; 0 ordered',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `cart`
---
-
-INSERT INTO `cart` (`id`, `buyer_id`, `size_id`, `color_id`, `product_id`, `pro_qty`, `total_price`, `net_total_price`, `active`, `status`, `created_at`, `updated_at`) VALUES
-(5, 3, 0, 0, 1, 12, 5, 5, 0, 1, '2019-01-28 16:14:51', '2019-03-07 15:14:58'),
-(6, 3, 0, 0, 2, 3, 60, 60, 1, 1, '2019-01-28 16:18:19', '2019-04-08 12:17:36'),
-(7, 3, 0, 0, 5, 1, 89.7, 89.7, 0, 1, '2019-03-02 04:44:30', '2019-03-07 15:15:22'),
-(8, 3, 0, 0, 3, 9, 15, 15, 1, 1, '2019-03-02 04:45:15', '2019-03-08 10:22:24'),
-(9, 2, 0, 0, 4, 2, 20, 20, 1, 1, '2019-03-20 17:16:27', '2019-03-27 15:13:12'),
-(10, 2, 0, 0, 5, 4, 89.7, 89.7, 0, 1, '2019-03-27 12:03:45', '2019-03-27 15:16:16'),
-(11, 3, 0, 17, 6, 2, 45, 45, 1, 0, '2019-04-08 11:47:05', '2019-04-18 15:48:35');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `buyers`
 --
 
@@ -71,6 +37,7 @@ CREATE TABLE `buyers` (
   `password` varchar(250) NOT NULL,
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `photo` varchar(100) DEFAULT NULL,
+  `address` text NOT NULL,
   `recovery_mode` tinyint(4) DEFAULT '0',
   `verify` int(4) DEFAULT '0',
   `active` tinyint(4) NOT NULL DEFAULT '1',
@@ -82,10 +49,10 @@ CREATE TABLE `buyers` (
 -- Dumping data for table `buyers`
 --
 
-INSERT INTO `buyers` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `create_at`, `photo`, `recovery_mode`, `verify`, `active`, `gender`, `activated`) VALUES
-(1, 'vichey', 'sor', '1', 'admin@gmail.com', '$2y$10$6QDcAGzTF8OktnLjh/coPO1aRwtd726Vk9O4Ht0Y921PvD.u52k4.', '2018-10-17 01:29:00', NULL, 0, 0, 1, 'Male', 0),
-(2, 'vichey1', 'sor', '010674459', 'sorvichey@gmail.com', '$2y$10$rLoj3tvbQUiP4OFJzoiXrucJkNrLGdnBqoSpWeYwcxPKwFwXpizWq', '2018-10-17 01:31:17', 'pro2.jpg', 0, 0, 1, 'Male', 1),
-(3, 'test1', 'test', '010674459', 'rithysam.sr@gmail.com', '$2y$10$5ZS3U9QhgxxHFgPaPrZhaOmfajr2jDB67yxiH0FCo3xWCZ4RhbqSO', '2019-01-13 14:08:48', NULL, 0, 0, 1, 'Male', 1);
+INSERT INTO `buyers` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `create_at`, `photo`, `address`, `recovery_mode`, `verify`, `active`, `gender`, `activated`) VALUES
+(1, 'vichey', 'sor', '1', 'admin@gmail.com', '$2y$10$6QDcAGzTF8OktnLjh/coPO1aRwtd726Vk9O4Ht0Y921PvD.u52k4.', '2018-10-17 01:29:00', NULL, '', 0, 0, 1, 'Male', 0),
+(2, 'vichey1', 'sor', '010674459', 'sorvichey@gmail.com', '$2y$10$rLoj3tvbQUiP4OFJzoiXrucJkNrLGdnBqoSpWeYwcxPKwFwXpizWq', '2018-10-17 01:31:17', 'pro2.jpg', '', 0, 0, 1, 'Male', 1),
+(3, 'test1', 'test', '010674459', 'rithysam.sr@gmail.com', '$2y$10$5ZS3U9QhgxxHFgPaPrZhaOmfajr2jDB67yxiH0FCo3xWCZ4RhbqSO', '2019-01-13 14:08:48', NULL, '', 0, 0, 1, 'Male', 1);
 
 -- --------------------------------------------------------
 
@@ -233,6 +200,33 @@ INSERT INTO `career_locations_r_careers` (`id`, `name`, `active`, `career_id`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `buyer_id` int(11) NOT NULL,
+  `size_id` int(11) DEFAULT NULL,
+  `color_id` int(11) DEFAULT NULL,
+  `product_id` int(11) NOT NULL,
+  `pro_qty` int(11) DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1: active; 0 canceled',
+  `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1: not yet order; 0 ordered',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `buyer_id`, `size_id`, `color_id`, `product_id`, `pro_qty`, `active`, `status`, `created_at`, `updated_at`) VALUES
+(3, 3, 8, 18, 8, 1, 0, 1, '2019-05-07 12:18:49', '2019-05-21 17:29:18'),
+(4, 3, NULL, 17, 6, 1, 1, 1, '2019-05-07 15:46:07', '2019-05-21 17:23:01');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contact_infos`
 --
 
@@ -248,6 +242,31 @@ CREATE TABLE `contact_infos` (
 
 INSERT INTO `contact_infos` (`id`, `address`, `active`) VALUES
 (1, '#64 ABC Street 348 Sangkat Tuol Svay Prey 1, Khan Chamkarmorn Phnom Penh, Cambodia', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `credit_cards`
+--
+
+CREATE TABLE `credit_cards` (
+  `id` int(11) NOT NULL,
+  `buyer_id` int(11) NOT NULL,
+  `card_number` int(11) NOT NULL,
+  `expiry` varchar(50) NOT NULL,
+  `cvv` varchar(50) NOT NULL,
+  `holder_name` varchar(50) NOT NULL,
+  `active` int(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `credit_cards`
+--
+
+INSERT INTO `credit_cards` (`id`, `buyer_id`, `card_number`, `expiry`, `cvv`, `holder_name`, `active`, `created_at`, `updated_at`) VALUES
+(1, 3, 3849, '12/2020', '123', 'Rithy SAM', 1, '2019-05-16 07:05:44', '2019-05-16 12:02:48');
 
 -- --------------------------------------------------------
 
@@ -275,6 +294,29 @@ INSERT INTO `department_categories` (`id`, `name`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `invoices`
+--
+
+CREATE TABLE `invoices` (
+  `id` int(11) NOT NULL,
+  `invoice_code` varchar(45) NOT NULL,
+  `total_amount` float NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `acitve` int(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `invoices`
+--
+
+INSERT INTO `invoices` (`id`, `invoice_code`, `total_amount`, `order_id`, `acitve`, `created_at`, `updated_at`) VALUES
+(6, 'INV9KDTA0', 45, 19, 1, '2019-05-22 07:45:19', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menu_options`
 --
 
@@ -293,18 +335,10 @@ CREATE TABLE `menu_options` (
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
-  `order_number` varchar(50) NOT NULL,
+  `order_code` varchar(50) NOT NULL,
   `buyer_id` int(11) NOT NULL,
-  `pro_id` int(11) NOT NULL,
-  `color_id` int(11) DEFAULT NULL,
-  `size_id` int(11) DEFAULT NULL,
-  `pro_qty` int(11) NOT NULL,
-  `pro_discount` float DEFAULT NULL,
-  `order_date` varchar(50) NOT NULL,
-  `ship_date` varchar(50) DEFAULT NULL,
   `order_status_id` int(11) NOT NULL DEFAULT '1',
-  `total` float NOT NULL,
-  `payment_status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0=unpaid; 1=paid',
+  `shipping_address_id` int(11) DEFAULT NULL,
   `payment_date` varchar(45) DEFAULT NULL,
   `active` int(11) NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -315,11 +349,37 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `order_number`, `buyer_id`, `pro_id`, `color_id`, `size_id`, `pro_qty`, `pro_discount`, `order_date`, `ship_date`, `order_status_id`, `total`, `payment_status`, `payment_date`, `active`, `created_at`, `updated_at`) VALUES
-(5, 'PO07PU8J1555602206', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:43:26', NULL, 1, 90, 0, NULL, 0, '2019-04-18 15:43:26', NULL),
-(6, 'PO07PU8J1555602496', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:48:16', NULL, 1, 90, 0, NULL, 0, '2019-04-18 15:48:16', NULL),
-(7, 'PO07PU8J1555602515', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:48:35', NULL, 1, 90, 0, NULL, 0, '2019-04-18 15:48:35', NULL),
-(8, 'PO07PU8J1555602692', 3, 6, 17, 0, 2, NULL, '2019-04-18 22:51:32', NULL, 1, 90, 0, NULL, 1, '2019-04-18 15:51:32', NULL);
+INSERT INTO `orders` (`id`, `order_code`, `buyer_id`, `order_status_id`, `shipping_address_id`, `payment_date`, `active`, `created_at`, `updated_at`) VALUES
+(19, 'ORDNXA6HB', 3, 3, 5, NULL, 1, '2019-05-31 10:59:43', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `promotion_id` int(11) DEFAULT NULL,
+  `color_id` int(11) DEFAULT NULL,
+  `size_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `discount` float DEFAULT NULL,
+  `amount` float NOT NULL,
+  `price` float DEFAULT NULL,
+  `active` int(11) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `promotion_id`, `color_id`, `size_id`, `quantity`, `discount`, `amount`, `price`, `active`, `created_at`, `updated_at`) VALUES
+(18, 19, 6, NULL, 17, NULL, 1, NULL, 45, 45, 1, '2019-05-22 07:45:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -339,11 +399,12 @@ CREATE TABLE `order_status` (
 --
 
 INSERT INTO `order_status` (`id`, `status_name`, `active`, `created_at`) VALUES
-(1, 'Waiting to prepare', 1, '2019-03-08 08:44:12'),
-(2, 'Preparing', 1, '2019-03-08 08:44:12'),
-(3, 'To be delivery', 1, '2019-03-08 08:44:12'),
-(4, 'On the way', 1, '2019-03-08 08:44:12'),
-(5, 'Arrived', 1, '2019-03-08 09:02:14');
+(1, 'Preparring', 1, '2019-03-08 08:44:12'),
+(2, 'To be delivery', 1, '2019-03-08 08:44:12'),
+(3, 'On the way', 1, '2019-03-08 08:44:12'),
+(4, 'Arrived', 1, '2019-03-08 08:44:12'),
+(5, 'Confirm', 1, '2019-03-08 09:02:14'),
+(6, 'To Review', 1, '2019-05-22 09:48:57');
 
 -- --------------------------------------------------------
 
@@ -381,6 +442,27 @@ INSERT INTO `pages` (`id`, `photo`, `title`, `description`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `payment_type_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `order_id`, `payment_type_id`, `created_at`, `updated_at`) VALUES
+(16, 19, 1, '2019-05-22 07:45:19', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment_types`
 --
 
@@ -388,7 +470,7 @@ CREATE TABLE `payment_types` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `photo` varchar(200) DEFAULT NULL,
-  `url` varchar(250) DEFAULT NULL,
+  `url` varchar(50) DEFAULT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   `order` tinyint(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -398,10 +480,10 @@ CREATE TABLE `payment_types` (
 --
 
 INSERT INTO `payment_types` (`id`, `name`, `photo`, `url`, `active`, `order`) VALUES
-(1, 'Master Card', '1.png', '#', 0, 1),
-(2, 'Visa', '2.png', '#', 1, 1),
-(3, 'Master Card', '3.png', '/page/1', 1, 2),
-(4, 'Paypal', '4.png', '/page/1', 1, 3);
+(1, 'Cash on Delivery', 'default.png', NULL, 1, 1),
+(2, 'Visa', 'default.png', NULL, 1, 1),
+(3, 'Master Card', 'default.png', NULL, 1, 2),
+(4, 'Paypal', 'default.png', NULL, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -488,7 +570,15 @@ INSERT INTO `products` (`id`, `name`, `shop_id`, `category_id`, `price`, `featur
 (4, 'Kids ware', 5, 2, 20, 'pro4.jpg', '<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry.<strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry.<strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry.<strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry.<strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry.</p>', 0, '2019-03-02 01:38:40', 20, 0, 'Second Hand', 2, 0, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', NULL, 'detail-product/4'),
 (5, 'Adidas Shoe for men', 6, 8, 89.7, '5.jpg', '<p>We use <em>should</em> and shouldn\'t to give advice or to talk about what we think is right or wrong. ... When you regret <em>not</em> doing something in the past, you can say:.We use <em>should</em> and shouldn\'t to give advice or to talk about what we think is right or wrong. ... When you regret <em>not</em> doing something in the past, you can say:.</p>', 0, '2019-03-02 02:36:36', 14, 0, 'New', 2, 0, 'We use should and shouldn\'t to give advice or to talk about', NULL, 'detail-product/5'),
 (6, 'Men\'s Watch Good and value', 7, 6, 45, '6.jpg', NULL, 1, '2019-03-29 15:57:18', 61, 0, 'New', 27, 0, 'Good for gentlemen', NULL, 'detail-product/6'),
-(7, 'NAVIFORCE Brand new watch for man', 7, 6, 55, 'default.png', NULL, 0, '2019-03-29 16:02:58', 10, 0, 'New', 28, 0, 'NAVIFORCE Brand new watch for men', NULL, NULL);
+(7, 'NAVIFORCE Brand new watch for man', 7, 6, 55, 'default.png', NULL, 0, '2019-03-29 16:02:58', 10, 0, 'New', 28, 0, 'NAVIFORCE Brand new watch for men', NULL, NULL),
+(8, 'iWatch serie 2', 7, 6, 378, 'pro8.jpeg', '<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>', 1, '2019-05-01 08:18:03', 20, 0, 'New', 2, 0, 'Original iWatch from apple 123', NULL, NULL),
+(9, 'Rose', 7, 6, 0, 'default.png', NULL, 0, '2019-06-04 02:12:38', 1, 0, 'New', 2, 0, NULL, NULL, NULL),
+(10, 'Black', 7, 6, 1000, 'default.png', NULL, 0, '2019-06-04 02:14:34', 1, 0, 'New', 2, 0, 'dfs', NULL, NULL),
+(11, 'Silver', 7, 6, 100, '11.png', NULL, 0, '2019-06-04 02:17:42', 1, 0, 'New', 2, 0, 'sdf', NULL, 'detail-product/11'),
+(12, 'teting', 7, 6, 0, '12.png', NULL, 1, '2019-06-04 02:19:51', 1, 0, 'New', 2, 0, NULL, NULL, 'detail-product/12'),
+(13, 'ttt', 7, 6, 0, '13.png', NULL, 1, '2019-06-04 02:20:22', 1, 0, 'New', 2, 0, NULL, NULL, 'detail-product/13'),
+(14, 'sgaf', 7, 6, 0, '14.png', NULL, 1, '2019-06-04 02:29:59', 1, 0, 'New', 2, 0, NULL, NULL, 'detail-product/14'),
+(15, 'df;skf', 7, 6, 12, '15.png', NULL, 0, '2019-06-04 02:31:54', 100, 0, 'New', 2, 0, NULL, NULL, 'detail-product/15');
 
 -- --------------------------------------------------------
 
@@ -509,10 +599,10 @@ CREATE TABLE `product_brands` (
 --
 
 INSERT INTO `product_brands` (`id`, `name`, `top_brand`, `active`, `icon`) VALUES
-(1, 'Xiaomi', 1, 1, NULL),
+(1, 'Xiaomi', 0, 1, NULL),
 (2, 'Adidas', 1, 1, NULL),
-(26, 'Dark', 1, 1, NULL),
-(27, 'iWatch', 1, 1, NULL),
+(26, 'Dark', 0, 1, NULL),
+(27, 'iWatch', 0, 1, NULL),
 (28, 'NAVIFORCE', 0, 1, NULL);
 
 -- --------------------------------------------------------
@@ -584,7 +674,10 @@ INSERT INTO `product_colors` (`id`, `name`, `photo`, `product_id`, `active`, `cr
 (13, '2222222', '13.jpg', 77, 1, '2019-03-27 16:28:30'),
 (14, 'Testing', '14.jpg', 2, 1, '2019-03-27 16:28:30'),
 (15, 'Silver', '15.jpg', 0, 1, '2019-03-29 17:17:03'),
-(17, 'Silver', '17.jpg', 6, 1, '2019-03-29 17:35:49');
+(17, 'Silver', '17.jpg', 6, 1, '2019-03-29 17:35:49'),
+(18, 'Black', '18.jpeg', 8, 1, '2019-05-01 08:20:31'),
+(19, 'Rose', '19.jpeg', 8, 1, '2019-05-01 08:20:54'),
+(20, 'Silver', '20.jpeg', 8, 1, '2019-05-01 08:21:07');
 
 -- --------------------------------------------------------
 
@@ -649,7 +742,9 @@ INSERT INTO `product_photos` (`id`, `photo`, `product_id`) VALUES
 (54, '54.jpg', 4),
 (55, '55.jpg', 6),
 (56, '56.jpg', 6),
-(57, '57.jpg', 7);
+(57, '57.jpg', 7),
+(59, '59.jpeg', 8),
+(60, '60.jpeg', 8);
 
 -- --------------------------------------------------------
 
@@ -665,6 +760,20 @@ CREATE TABLE `product_sizes` (
   `active` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_sizes`
+--
+
+INSERT INTO `product_sizes` (`id`, `name`, `photo`, `product_id`, `active`, `created_at`) VALUES
+(1, 'M', NULL, 0, 0, '2019-05-01 08:21:35'),
+(2, 'L', NULL, 0, 0, '2019-05-01 08:21:39'),
+(3, 'XL', NULL, 0, 0, '2019-05-01 08:21:42'),
+(6, 'S', NULL, 8, 0, '2019-05-07 11:23:01'),
+(7, 'XS', NULL, 8, 0, '2019-05-07 11:23:07'),
+(8, 'M', NULL, 8, 0, '2019-05-07 11:23:12'),
+(9, 'L', NULL, 8, 0, '2019-05-07 11:23:15'),
+(10, 'XL', NULL, 8, 0, '2019-05-07 11:23:18');
 
 -- --------------------------------------------------------
 
@@ -699,7 +808,12 @@ INSERT INTO `promotions` (`id`, `discount_code`, `product_id`, `number_product`,
 (16, 'P607PU19', 6, 10, 10, '2019-03-30 13:21:58', '2019-04-14 00:00:00', 1, NULL, 0, '2019-03-30 06:07:40', '2019-03-30 13:22:17'),
 (17, 'P607PU19', 6, 10, 10, '2019-04-03 14:04:00', '2019-04-04 22:04:00', 1, 'Khmer New year promotion', 0, '2019-04-03 07:57:45', NULL),
 (18, 'P07PU82019-04-03', 6, 12, 12, '2019-04-03 15:04:00', '2019-04-04 23:04:00', 1, NULL, 0, '2019-04-03 08:18:59', NULL),
-(19, 'P07PU1554279681', 6, 12, 12, '2019-04-03 15:04:00', '2019-04-05 23:04:00', 1, 'Khmer New year', 0, '2019-04-03 08:21:21', NULL);
+(19, 'P07PU1554279681', 6, 12, 12, '2019-04-03 15:04:00', '2019-04-05 23:04:00', 1, 'Khmer New year', 0, '2019-04-03 08:21:21', NULL),
+(20, 'P1EJV1556699184', 8, 20, 10, '2019-05-01 15:05:00', '2019-05-31 00:05:00', 1, NULL, 0, '2019-05-01 08:26:24', NULL),
+(21, 'P1EJV1559613856', 8, 12, 37, '2019-06-04 09:06:00', '2019-06-05 23:06:00', 2, 'Testing', 0, '2019-06-04 02:04:16', NULL),
+(22, 'P1MQO1559617131', 14, 1, 10, '2019-06-04 09:06:00', '2019-06-05 09:06:00', 2, NULL, 0, '2019-06-04 02:58:51', '2019-06-04 10:04:29'),
+(23, 'PP5KV1559617232', 12, 1, 1, '2019-06-04 10:06:00', '2019-06-05 10:06:00', 2, NULL, 0, '2019-06-04 03:00:32', '2019-06-04 10:04:13'),
+(24, 'P1MQO1559617629', 14, 1, 10, '2019-06-04 10:06:00', '2019-06-05 10:06:00', 2, '123', 0, '2019-06-04 03:07:09', NULL);
 
 -- --------------------------------------------------------
 
@@ -815,6 +929,33 @@ INSERT INTO `role_permissions` (`id`, `role_id`, `permission_id`, `list`, `inser
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `shipping_address`
+--
+
+CREATE TABLE `shipping_address` (
+  `id` int(11) NOT NULL,
+  `buyer_id` int(11) DEFAULT NULL,
+  `address` varchar(250) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `contry` varchar(45) DEFAULT NULL,
+  `postcode` int(11) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `active` int(4) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `shipping_address`
+--
+
+INSERT INTO `shipping_address` (`id`, `buyer_id`, `address`, `city`, `state`, `contry`, `postcode`, `phone`, `active`, `created_at`, `updated_at`) VALUES
+(5, 3, '#45', 'Phnom Penh', 'Phnom Penh', 'Cambodia', 12000, '010674459', 1, '2019-05-16 05:55:31', '2019-05-16 12:12:22');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shops`
 --
 
@@ -841,7 +982,8 @@ CREATE TABLE `shops` (
 --
 
 INSERT INTO `shops` (`id`, `code`, `name`, `shop_category`, `address`, `phone`, `email`, `website`, `logo`, `shop_owner_id`, `subscription_id`, `active`, `create_at`, `description`, `location`) VALUES
-(7, NULL, 'HELLO ONLINE SHOP', 6, 'Phnom Penh', '010674459', 'rithysam.sr@gmail.com', NULL, 'pro1.jpg', 4, 1, 1, '2019-03-29 15:36:56', 'Hello online shop help you to be modern and valuable.\r\nOur values is your time!!', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7817.388743368863!2d104.91771359999996!3d11.573753699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1spnc!5e0!3m2!1skm!2skh!4v1546409981204\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>');
+(7, NULL, 'HELLO ONLINE SHOP', 6, 'Phnom Penh', '010674459', 'rithysam.sr@gmail.com', NULL, 'pro1.jpg', 4, 1, 1, '2019-03-29 15:36:56', 'Hello online shop help you to be modern and valuable.\r\nOur values is your time!!', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d7817.388743368863!2d104.91771359999996!3d11.573753699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1spnc!5e0!3m2!1skm!2skh!4v1546409981204\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>'),
+(10, NULL, 'Men\'s clothes', 2, '#45', '010674459', 'rithysam2019@gmail.com', 'google.com', 'pro8.png', 7, 2, 1, '2019-06-03 15:40:42', 'testing', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3909.0035303151!2d104.8820204148407!3d11.551604047565034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDMzJzA1LjgiTiAxMDTCsDUzJzAzLjIiRQ!5e0!3m2!1sen!2skh!4v1559575089835!5m2!1sen!2skh\" width=\"600\" height=\"450\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>');
 
 -- --------------------------------------------------------
 
@@ -895,7 +1037,9 @@ INSERT INTO `shop_owners` (`id`, `first_name`, `last_name`, `gender`, `email`, `
 (1, 'Rithy', 'Sam', 'Male', 'rithysam@gmail.com', '010674459', 'default.png', NULL, '$2y$10$Z61gGzui9GoXPxkzIX03COMK9PKgfs1yVrOx2Jf76DTGg48fq8REm', 1, 0, '2018-10-25 15:25:49', 1, 'Normal Account'),
 (3, 'Rithy', 'Sam', 'Male', 'rithysam.sr@gmail.com', '010674459', 'pro3.png', 'rithysam.sr@gmail.com', '$2y$10$Z61gGzui9GoXPxkzIX03COMK9PKgfs1yVrOx2Jf76DTGg48fq8REm', 1, 1, '2018-10-25 15:34:57', 1, 'Normal Account'),
 (4, 'vichey', 'sor', 'Male', 'sorvichey@gmail.com', '0962555209', 'pro4.jpg', 'sorvichey@gmail.com', '$2y$10$p5t7ON8TpjDKX3en8VCC2eeyd6LANFhI4bcx1K/OA.xpVwDTwl7iq', 1, 1, '2018-12-14 13:56:02', 1, 'Normal Account'),
-(5, 'Rithy', 'Rithy', 'Male', 'rithysam@uhs.edu.kh', '085674459', 'pro5.png', '', '$2y$10$rQ5yX40q4lV8NcHKoNaSouHDguv4b0D7DohVupszq41/5kvwa/eC.', 1, 1, '2019-03-02 02:00:53', 1, 'Free Account');
+(5, 'Rithy', 'Rithy', 'Male', 'rithysam@uhs.edu.kh', '085674459', 'pro5.png', '', '$2y$10$rQ5yX40q4lV8NcHKoNaSouHDguv4b0D7DohVupszq41/5kvwa/eC.', 1, 1, '2019-03-02 02:00:53', 1, 'Free Account'),
+(6, 'Rithy', 'sam', 'Male', 'rithysam@ush.edu.kh', '085673535', 'default.png', NULL, '$2y$10$rXmhn5nPDfjl46gjAhNoN.vFLJT8WEO9H4G41EuATexH4SaXu5HOC', 0, 0, '2019-06-03 13:23:59', 1, 'Free Account'),
+(7, 'Rithy1', 'sam1', 'Male', 'rithysam2019@gmail.com', '10674459', 'default.png', NULL, '$2y$10$.O3y/g5H6Wk3Tf6qLk07guXQM6t5/dAz43jaDlaBdlud2EDPJP5ES', 0, 1, '2019-06-03 13:33:50', 1, 'Free Account');
 
 -- --------------------------------------------------------
 
@@ -964,7 +1108,12 @@ INSERT INTO `shop_subscriptions` (`id`, `shop_id`, `subscription_id`, `status`, 
 (8, 5, 3, 1, '2019-01-08 23:11:03', '2019-03-20 16:10:35'),
 (9, 5, 3, 1, '2019-01-08 23:12:24', '2019-03-20 16:10:35'),
 (10, 6, 1, 1, '2019-03-02 09:09:43', NULL),
-(11, 7, 1, 1, '2019-03-29 22:36:57', NULL);
+(11, 7, 1, 1, '2019-03-29 22:36:57', NULL),
+(12, 8, 1, 1, '2019-05-03 23:38:57', NULL),
+(13, 8, 1, 1, '2019-06-03 22:18:49', NULL),
+(14, 9, 1, 1, '2019-06-03 22:28:39', NULL),
+(15, 10, 1, 1, '2019-06-03 22:40:42', NULL),
+(19, 10, 2, 1, '2019-06-03 23:38:47', '2019-06-03 16:39:36');
 
 -- --------------------------------------------------------
 
@@ -1279,7 +1428,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `photo`, `role_id`, `first_name`, `last_name`, `gender`, `phone`, `active`, `api_token`) VALUES
-(1, 'admin', 'admin@gmail.com', '$2y$10$Z61gGzui9GoXPxkzIX03COMK9PKgfs1yVrOx2Jf76DTGg48fq8REm', 'O1iwlSdW0oobJMMp3zbCmunbVtiwl6FaHeTiR1uBOkdCHnOCZObhvyBkR9Bu', '2017-05-27 22:35:52', '2017-05-27 22:35:52', '0.jpeg', 1, 'sor', 'vichey', 'Male', '01028339', 1, '5j1dPP09govoEL70bI63XofRHmlxKojbdv4E+QanCjY='),
+(1, 'admin', 'admin@gmail.com', '$2y$10$Z61gGzui9GoXPxkzIX03COMK9PKgfs1yVrOx2Jf76DTGg48fq8REm', 'tZyVAZ3rPtAGs2I7eqKKN3c2aGZyncsBnAY8MhDcZJs5ssOpCfmUdlB7h4Ws', '2017-05-27 22:35:52', '2017-05-27 22:35:52', '0.jpeg', 1, 'sor', 'vichey', 'Male', '01028339', 1, '5j1dPP09govoEL70bI63XofRHmlxKojbdv4E+QanCjY='),
 (9, 'rithy', 'rithysam.sr@gmail.com', '$2y$10$mrKlR2AOICnOFPlj3wUuzOPhy.Jh3b6TVM6VABgWD8HFLzV1OPu0.', NULL, NULL, NULL, 'default.png', 1, 'Rithy', 'Sam', 'Male', '0112024938434', 1, NULL);
 
 -- --------------------------------------------------------
@@ -1313,12 +1462,6 @@ INSERT INTO `wishes` (`id`, `buyer_id`, `product_id`, `active`, `status`, `creat
 --
 
 --
--- Indexes for table `cart`
---
-ALTER TABLE `cart`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `buyers`
 --
 ALTER TABLE `buyers`
@@ -1349,15 +1492,33 @@ ALTER TABLE `career_locations_r_careers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `contact_infos`
 --
 ALTER TABLE `contact_infos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `credit_cards`
+--
+ALTER TABLE `credit_cards`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `department_categories`
 --
 ALTER TABLE `department_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `invoices`
+--
+ALTER TABLE `invoices`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1373,6 +1534,12 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `order_status`
 --
 ALTER TABLE `order_status`
@@ -1382,6 +1549,12 @@ ALTER TABLE `order_status`
 -- Indexes for table `pages`
 --
 ALTER TABLE `pages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1466,6 +1639,12 @@ ALTER TABLE `roles`
 -- Indexes for table `role_permissions`
 --
 ALTER TABLE `role_permissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `shipping_address`
+--
+ALTER TABLE `shipping_address`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1588,12 +1767,6 @@ ALTER TABLE `wishes`
 --
 
 --
--- AUTO_INCREMENT for table `cart`
---
-ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
 -- AUTO_INCREMENT for table `buyers`
 --
 ALTER TABLE `buyers`
@@ -1624,9 +1797,21 @@ ALTER TABLE `career_locations_r_careers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `contact_infos`
 --
 ALTER TABLE `contact_infos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `credit_cards`
+--
+ALTER TABLE `credit_cards`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -1634,6 +1819,12 @@ ALTER TABLE `contact_infos`
 --
 ALTER TABLE `department_categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `invoices`
+--
+ALTER TABLE `invoices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `menu_options`
@@ -1645,19 +1836,31 @@ ALTER TABLE `menu_options`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `order_status`
 --
 ALTER TABLE `order_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `pages`
 --
 ALTER TABLE `pages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `payment_types`
@@ -1681,7 +1884,7 @@ ALTER TABLE `phone_support`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `product_brands`
@@ -1699,25 +1902,25 @@ ALTER TABLE `product_categories`
 -- AUTO_INCREMENT for table `product_colors`
 --
 ALTER TABLE `product_colors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `product_photos`
 --
 ALTER TABLE `product_photos`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `product_sizes`
 --
 ALTER TABLE `product_sizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `promotion_types`
@@ -1744,10 +1947,16 @@ ALTER TABLE `role_permissions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
+-- AUTO_INCREMENT for table `shipping_address`
+--
+ALTER TABLE `shipping_address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `shops`
 --
 ALTER TABLE `shops`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `shop_categories`
@@ -1759,7 +1968,7 @@ ALTER TABLE `shop_categories`
 -- AUTO_INCREMENT for table `shop_owners`
 --
 ALTER TABLE `shop_owners`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `shop_sellers`
@@ -1777,7 +1986,7 @@ ALTER TABLE `shop_seller_documents`
 -- AUTO_INCREMENT for table `shop_subscriptions`
 --
 ALTER TABLE `shop_subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `slides`

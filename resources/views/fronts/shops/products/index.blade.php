@@ -75,7 +75,7 @@
                         <td width="20">{{$i++}}</td>
                         <td width="100"><img src="{{asset('uploads/products/featured_images/180/'.$c->featured_image)}}" alt="" width="50"></td>
                         <td>
-                            <a href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id))}}">{{$c->name}}</a>
+                            <a href="{{url('/owner/detail-product/'.base64_encode($c->id))}}">{{$c->name}}</a>
                         </td>
                         <td>{{$c->cname}} </td>
                         <td>{{$c->price}} $</td>
@@ -98,10 +98,10 @@
                             <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Actions
                             <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="{{url('/owner/product/promotion/'.Crypt::encryptString($c->id))}}">Promotion</a></li>
-                                <li><a href="{{url('/owner/detail-product/'.Crypt::encryptString($c->id)) }}">Detail</a></li>
-                                <li><a href="{{url('/owner/edit-product/'.Crypt::encryptString($c->id))}}">Edit</a></li>
-                                <li><a href="{{url('/owner/delete-product/'.Crypt::encryptString($c->id) ."?page=".@$_GET['page'])}}" onclick="return confirm('You want to delete?')">Delete</a></li>
+                                <li><a href="{{url('/owner/product/promotion/'.base64_encode($c->id))}}">Promotion</a></li>
+                                <li><a href="{{url('/owner/detail-product/'.base64_encode($c->id)) }}">Detail</a></li>
+                                <li><a href="{{url('/owner/edit-product/'.base64_encode($c->id))}}">Edit</a></li>
+                                <li><a href="{{url('/owner/delete-product/'.base64_encode($c->id) ."?page=".@$_GET['page'])}}" onclick="return confirm('You want to delete?')">Delete</a></li>
                             </ul>
                             </div>
                            

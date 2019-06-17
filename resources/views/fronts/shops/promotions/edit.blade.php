@@ -71,10 +71,9 @@
                                     </div> -->
                                     <input type="text" name="datetimes" value="{{$promotion->start_date.' - '.$promotion->end_date}}" class="form-control" required/>
                                   </div>
-
                                   <div class="form-group">
                                       <label for="description">Description:</label>
-                                      <textarea name="description" id="description" rows="5">{{old('description')}}</textarea>
+                                      <textarea name="description" id="description" rows="5">{{$promotion->description}}</textarea>
                                   </div>
 
                                   <button type="submit" class="btn btn-success">Save</button>

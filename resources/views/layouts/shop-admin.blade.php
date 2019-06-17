@@ -124,7 +124,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="{{url('owner/my-shop')}}">
           <i class="fa fa-bank"></i>
-          <span>My Store</span></a>
+          <span>My Shop</span></a>
       </li>
 
 
