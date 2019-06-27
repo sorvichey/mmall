@@ -79,21 +79,8 @@
                     <strong><i class="fa fa-cogs"></i> Settings</strong>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/product-category')}}" id="menu_product_status">Product Category</a>
+                    <a class="nav-link" href="{{url('/admin/menu-one')}}" id="menu_main_menu">Main menu</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/product-status')}}" id="menu_product_status">Product Status</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/brand')}}" id="menu_product_brand">Brand</a>
-                </li>
-                <li class="nav-item">
-                    <!-- <a class="nav-link" href="{{url('/admin/main-menu')}}" id="menu_main_menu">Main menu</a> -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url('/admin/shop-category')}}" id="menu_shop_category">Shop Category</a>
-                </li>
-               
             </ul>
         </nav>
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">

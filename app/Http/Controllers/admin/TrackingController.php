@@ -38,7 +38,7 @@ class TrackingController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(12);
         }
-        return view('trackings.index', $data);
+        return view('admin.trackings.index', $data);
     }
     // load create form
     public function create()
@@ -131,7 +131,7 @@ class TrackingController extends Controller
             ->where('active', 1)
             ->where('id',$id)
             ->first();
-        return view('trackings.edit', $data);
+        return view('admin.trackings.edit', $data);
     }
 
     public function update(Request $r)
@@ -180,7 +180,7 @@ class TrackingController extends Controller
             ->where('active', 1)
             ->where('id',$id)
             ->first();
-        return view('trackings.detail', $data);
+        return view('admin.trackings.detail', $data);
     }
      // save new page
      public function sub_tracking_save(Request $r)

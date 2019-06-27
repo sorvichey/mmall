@@ -212,12 +212,22 @@ Route::post("/admin/scholarship/save", "admin\ScholarshipController@store");
 Route::post("/admin/scholarship/update", "admin\ScholarshipController@update");
 
 // main menu
-Route::get("/admin/main-menu", "admin\MainMenuController@index");
-Route::get("/admin/main-menu/create", "admin\MainMenuController@create");
-Route::get("/admin/main-menu/edit/{id}", "admin\MainMenuController@edit");
-Route::get("/admin/main-menu/delete/{id}", "admin\MainMenuController@destroy");
-Route::post("/admin/main-menu/save", "admin\MainMenuController@save");
-Route::post("/admin/main-menu/update", "admin\MainMenuController@update");
+Route::get("/admin/menu-one", "admin\MenuOneController@index");
+Route::get("/admin/menu-one/create", "admin\MenuOneController@create");
+Route::get("/admin/menu-one/edit/{id}", "admin\MenuOneController@edit");
+Route::get("/admin/menu-one/delete/{id}", "admin\MenuOneController@destroy");
+Route::post("/admin/menu-one/save", "admin\MenuOneController@save");
+Route::post("/admin/menu-one/update", "admin\MenuOneController@update");
+
+Route::get("/admin/menu-two/edit/{id}", "admin\MenuOneController@edit_sub1");
+Route::get("/admin/menu-two/delete/{id}", "admin\MenuOneController@destroy_sub1");
+Route::post("/admin/menu-two/save", "admin\MenuOneController@save_sub1");
+Route::post("/admin/menu-two/update", "admin\MenuOneController@update_sub1");
+
+Route::get("/admin/menu-three/edit/{id}", "admin\MenuOneController@edit_sub2");
+Route::get("/admin/menu-three/delete/{id}", "admin\MenuOneController@destroy_sub2");
+Route::post("/admin/menu-three/save", "admin\MenuOneController@save_sub2");
+Route::post("/admin/menu-three/update", "admin\MenuOneController@update_sub2");
 
 // shop category
 Route::get("/admin/shop-category", "admin\ShopCategoryController@index");

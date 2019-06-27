@@ -92,6 +92,12 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{url('/admin/subscription')}}" id="menu_subscription">Subscriptions</a>
                 </li>
+                <li class="nav-item">
+                    <strong><i class="fa fa-cogs"></i> Settings</strong>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url('/admin/shop-category')}}" id="menu_shop_category">Shop Category</a>
+                </li>
             </ul>
         </nav>
         <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2">

@@ -22,7 +22,7 @@ class TrackingLocationController extends Controller
         $data['locations'] = DB::table('tracking_locations')
             ->orderBy('id', 'desc')
             ->paginate(12);
-        return view('tracking-locations.index', $data);
+        return view('admin.tracking-locations.index', $data);
     }
     // load create form
     public function create()
@@ -31,7 +31,7 @@ class TrackingLocationController extends Controller
         // {
         //     return view('permissions.no');
         // }
-        return view('tracking-locations.create');
+        return view('admin.tracking-locations.create');
     }
     // save new page
     public function save(Request $r)
@@ -80,7 +80,7 @@ class TrackingLocationController extends Controller
         // }
         $data['origin'] = DB::table('tracking_locations')
             ->where('id',$id)->first();
-        return view('tracking-locations.edit', $data);
+        return view('admin.tracking-locations.edit', $data);
     }
 
     public function update(Request $r)

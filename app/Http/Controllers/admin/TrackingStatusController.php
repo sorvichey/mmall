@@ -22,7 +22,7 @@ class TrackingStatusController extends Controller
         $data['status'] = DB::table('tracking_status')
             ->orderBy('id', 'desc')
             ->paginate(12);
-        return view('tracking-status.index', $data);
+        return view('admin.tracking-status.index', $data);
     }
     // load create form
     public function create()
@@ -31,7 +31,7 @@ class TrackingStatusController extends Controller
         // {
         //     return view('permissions.no');
         // }
-        return view('tracking-status.create');
+        return view('admin.tracking-status.create');
     }
     // save new page
     public function save(Request $r)
@@ -80,7 +80,7 @@ class TrackingStatusController extends Controller
         // }
         $data['status'] = DB::table('tracking_status')
             ->where('id',$id)->first();
-        return view('tracking-status.edit', $data);
+        return view('admin.tracking-status.edit', $data);
     }
 
     public function update(Request $r)

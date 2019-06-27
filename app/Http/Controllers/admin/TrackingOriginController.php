@@ -22,7 +22,7 @@ class TrackingOriginController extends Controller
         $data['origins'] = DB::table('tracking_origins')
             ->orderBy('id', 'desc')
             ->paginate(18);
-        return view('tracking-origins.index', $data);
+        return view('admin.tracking-origins.index', $data);
     }
     // load create form
     public function create()
@@ -80,7 +80,7 @@ class TrackingOriginController extends Controller
         // }
         $data['origin'] = DB::table('tracking_origins')
             ->where('id',$id)->first();
-        return view('tracking-origins.edit', $data);
+        return view('admin.tracking-origins.edit', $data);
     }
 
     public function update(Request $r)
