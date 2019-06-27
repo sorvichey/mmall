@@ -14,6 +14,7 @@
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/style.css')}}" media="all" />
         <link rel="stylesheet" type="text/css" href="{{asset('fronts/assets/css/colors/black.css')}}" media="all" />
 		<link rel="stylesheet" href="{{asset('fronts/assets/css/scroll-to-top.css')}}"  media="all">
+		<link rel="stylesheet" href="{{asset('fronts/assets/css/progressbar.css')}}"  media="all">
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,800,800italic,600italic,400italic,300italic' rel='stylesheet' type='text/css'>
 
         <link rel="shortcut icon" href="{{asset('front/assets/images/fav-icon.png')}}">
@@ -141,7 +142,7 @@
                         				<div class="widget_shopping_cart_content">
                         					<ul class="cart_list product_list_widget ">
                                                 <li class="mini_cart_item">
-                        							<a href="{{url('buyer/order/'.Crypt::encryptString(session('buyer')->id))}}">
+                        							<a href="{{url('my-order/')}}">
                         					            My Orders
                         							</a>
                         						</li>

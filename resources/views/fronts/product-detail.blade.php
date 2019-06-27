@@ -117,26 +117,41 @@
                                         <form action="{{url('/buyer/cart/save')}}" id="variations_form" class="variations_form cart" method="post">
                                             {{csrf_field()}}
 
-                                              @if(count($colors)>0)
+                                            @if(count($colors)>0)
                                                 <div class="row">
                                                     <div class="col-md-2"> 
                                                         Color
                                                     </div>
                                                     @foreach($colors as $c)
-                                                        <div style="float:left; padding: 1px; margin-left: 5px; border: 1px solid #000;">
-                                                            <img src="{{asset('uploads/products/colors/180/'.$c->photo)}}" style="height:30px;" alt="$c->name" title="$c->name">
+                                                        <label style="float:left; padding: 1px; margin-left: 5px; border: 1px solid #EEE;">
+                                                                <input type="radio" name="color" class="color" value="{{$c->id}}" required>
+                                                                <img src="{{asset('uploads/products/colors/180/'.$c->photo)}}" style="height:30px;" alt="$c->name" title="$c->name">
+                                                        </label>
+                                                    @endforeach
+                                                    <br>
+                                                    <br>
+                                                </div>
+                                            @endif
+                                            @if(count($sizes)>0)
+                                                <div class="row">
+                                                    <div class="col-md-2"> 
+                                                        Size
+                                                    </div>
+                                                    @foreach($sizes as $s)
+                                                        <div style="float:left; padding: 1px 10px 1px 1px; margin-left: 5px; ">
+                                                            <input type="radio" name="size" value="{{$s->id}}" required>
+                                                            <span>{{$s->name}}</span>
                                                         </div>
                                                     @endforeach
                                                 </div>
                                             @endif
-
 
                                             <div class="single_variation_wrap">
                                                 <div class="woocommerce-variation single_variation"></div>
                                                 <div class="woocommerce-variation-add-to-cart variations_button">
                                                     <div class="quantity">
                                                         <label>Quantity:</label>
-                                                        <input type="number" name="quantity" value="1" title="Qty" class="input-text qty text"/>
+                                                        <input type="number" max="{{$product->quantity}}" name="quantity" value="1" title="Qty" class="input-text qty text"/>
                                                     </div>
                                                     <button type="submit" class="single_add_to_cart_button button" onclick="add_to_cart_m(this, event)">Add to cart</button>
 
@@ -538,7 +553,7 @@
                                                 <div class="product-outer">
                                                     <div class="product-inner">
                                                         <span class="loop-product-categories"><a href="product-category.html" rel="tag">{{$new_arrival->category_name}}</a></span>
-                                                        <a href="{{url('product/detail/'.$new_arrival->p_id)}}">
+                                                        <a href="{{url('product/detail/'.base64_encode($new_arrival->p_id))}}">
                                                             <h3>{{$new_arrival->name}}</h3>
                                                             <div class="product-thumbnail">
                                                                 <img src="{{asset('uploads/products/featured_images/250/'.$new_arrival->featured_image)}}" data-echo="{{asset('uploads/products/featured_images/250/'.$new_arrival->featured_image)}}" class="img-responsive" alt="">
@@ -580,6 +595,8 @@
                     </div><!-- /.content-area -->
                 </div><!-- /.container -->
             </div><!-- /.site-content -->
+
+
             <script>
                 var burl = "{{url('/')}}";
             </script>

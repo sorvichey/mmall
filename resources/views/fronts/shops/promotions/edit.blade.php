@@ -1,15 +1,7 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
-<div class="container">
     <div class="row">
-        <br>
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Create Promotion  &nbsp;&nbsp;&nbsp;<a class="" href="{{ URL::previous() }}"><i class="fa fa-chevron-left "></i>Go Back</a>
-                </div>
-                <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                    <div class="card-body">
                         <div class="table-responsive">
                             <div class="col-md-12">
                                 @if ($errors->any())
@@ -79,10 +71,9 @@
                                     </div> -->
                                     <input type="text" name="datetimes" value="{{$promotion->start_date.' - '.$promotion->end_date}}" class="form-control" required/>
                                   </div>
-
                                   <div class="form-group">
                                       <label for="description">Description:</label>
-                                      <textarea name="description" id="description" rows="5">{{old('description')}}</textarea>
+                                      <textarea name="description" id="description" rows="5">{{$promotion->description}}</textarea>
                                   </div>
 
                                   <button type="submit" class="btn btn-success">Save</button>
@@ -92,9 +83,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
 @endsection
 @section('js')

@@ -1,11 +1,14 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
+@php
+    $id = Crypt::decryptString(request()->route('id'));
+@endphp
 
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
         <strong>List product images</strong>&nbsp;&nbsp;
-        <a href="{{url('/owner/detail-product/')}}/{{request()->route('id')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>&nbsp;&nbsp;
+        <a href="{{url('/owner/detail-product/')}}/{{base64_encode($id)}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>&nbsp;&nbsp;
         
             <hr>
             <div>

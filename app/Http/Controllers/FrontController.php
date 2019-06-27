@@ -92,6 +92,7 @@ class FrontController extends Controller
     }
 
     public function product_detail($id) {
+        $id = base64_decode($id);
         $data['product'] = DB::table('products')
             ->join('product_categories', 'products.category_id', 'product_categories.id')
             ->leftJoin('promotions',function ($join) {
@@ -121,6 +122,9 @@ class FrontController extends Controller
             ->orderBy('id', 'desc')
             ->get();
         $data['colors'] = DB::table('product_colors')
+            ->where('product_id', $id)
+            ->get();
+        $data['sizes'] = DB::table('product_sizes')
             ->where('product_id', $id)
             ->get();
         $data['reviewer'] = DB::table('review_products')

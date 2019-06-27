@@ -37,7 +37,7 @@
                             <form action="{{url('buyer/product/order/create')}}" class="form-horizontal" method="post">
                             {{ csrf_field() }}
                             <div class="form-group">
-                                <button type="submit" name="btn_buy" id="btn_buy" class="btn btn-danger ">BUY (<span id="number_selected">0</span>)</button>
+                                <button type="submit" name="btn_buy" id="btn_buy" class="btn btn-info ">Proceed To Checkout (<span id="number_selected">0</span>)</button>
                             </div>
                                 <table class="table table-bordered">
                                     <tr>
@@ -50,11 +50,13 @@
                                     </tr>
                                     @php $i=1; @endphp
                                     @foreach($carts as $cart)
-                                    <input type="hidden" name="cart[]" value="{{Crypt::encryptString($cart->cart_id)}}">
+                                    <!-- <input type="hidden" name="cart[]" value="{{Crypt::encryptString($cart->cart_id)}}"> -->
                                     <tr>
                                         <td>
                                             @php echo $i++ @endphp 
-                                            <input type="checkbox" name="selected_item" class="selected_item" value="{{Crypt::encryptString($cart->cart_id)}}">
+                                            <input type="checkbox" name="selected_item[]" class="selected_item" value="{{Crypt::encryptString($cart->cart_id)}}">
+                                            &nbsp;
+                                            <a href="{{url('buyer/mycart/delete/')}}/{{Crypt::encryptString($cart->cart_id)}}" title="Remove"><span class='fa fa-trash text-danger'></span></a>
                                         </td>
                                         <td>
                                             <div class="col-sm-2">
@@ -62,9 +64,9 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <i>Seller:</i> <br>
-                                                {{$cart->name}} <br>
-                                                {{$cart->color}} <br>
-                                                {{$cart->size}} 
+                                                Name:{{$cart->name}} <br>
+                                                Color:  {{$cart->color}} <br>
+                                                Size: {{$cart->size}} 
                                             </div>
                                         </td>
                                         <td>${{$cart->price}}</td>

@@ -1,4 +1,4 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -61,7 +61,7 @@
                                   <div class="form-group">
                                     <label for="Product_Name">Product Name (Selected Product):</label>
                                     <input type="text" class="form-control" style="background:#fff;"  value="{{$product->name}}" required readonly>
-                                    <input type="hidden" id="product_id" name="product_id" value="{{Crypt::encryptString($product->id)}}" required>
+                                    <input type="hidden" id="product_id" name="product_id" value="{{base64_encode($product->id)}}" required>
                                  
                                   </div>
 

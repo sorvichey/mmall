@@ -1,60 +1,67 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
-    
-<div class="container">
+<!-- Page Heading -->
+<h3>Product Orders</h3>
+<hr style="border: 1px solid blue;">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Product Order
-                </div>
-                <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Customer</th>
-                                        <th>Phone</th>
-                                        <th>Delivery to</th>
-                                        <th>Order Code</th>
-                                        <th>Order Date</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>   
-                                <tbody>
-                                @php $i=1; @endphp
-                                @foreach($orders as $order)
-                                   <tr>
-                                        <td>{{$i++}}</td>
-                                        <td>{{$order->first_name}} {{$order->last_name}}</td>
-                                        <td>{{$order->phone}}</td>
-                                        <td>{{$order->delivery_address}}</td>
-                                        <td>{{$order->order_number}}</td>
-                                        <td>{{$order->created_at}}</td>
-                                        <td>
-                                            @if($order->payment_status==1)
-                                                <span>{{$order->status_name}}</span>
-                                            @else
-                                                <span class="text-danger">Unpaid</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <a href="#" title="Detail"><span class="fa fa-eye text-success"></span></a>
-                                        </td>
-                                   </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="float-right">
+                <form action="{{url('/owner/product/order')}}" class="form-inline" method="get">
+                    <div class="form-group">
+                        <label for="name">Search&nbsp;&nbsp;</label>
+                        <input type="text" class="form-control" id="q" name="q" value="" >
+                        <button type="submit"   class="btn btn-primary btn-flat"><i class="fa fa-search"></i></button>
                     </div>
-                </div>
+                </form>
+                <br>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>&numero;</th>
+                            <th>ORDER CODE</th>
+                            <th>ORDER BY</th>
+                            <th>ORDERED DATE</th>
+                            <th>PAYMENT METHOD</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>   
+                    <tbody>
+                    <?php
+                        $pagex = @$_GET['page'];
+                        if(!$pagex)
+                            $pagex = 1;
+                        $i = 20 * ($pagex - 1) + 1;
+                    ?>
+                    @php $i=1; @endphp
+                    @foreach($orders as $order)
+                        <tr>
+                            <td>{{$i++}}</td>
+                            <td>{{$order->order_code}}</td>
+                            <td>{{$order->first_name." ".$order->last_name}}</td>
+                            <td>{{$order->order_date}}</td>
+                            <td>{{$order->payment_type}}</td>
+                            <td>{{$order->order_status}}</td>
+                            <td>
+                                <a href="{{url('owner/product/order/edit/'.base64_encode($order->id))}}" class="btn btn-xs text-success" title="Edit">
+                                    <span class="fa fa-edit"></span>
+                                </a>
+                                <a href="{{url('owner/product/order/detail/'.base64_encode($order->id))}}" class="btn btn-xs text-info" title="Detial">
+                                    <span class="fa fa-eye"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+                <nav>
+                    {{$orders->links()}}
+                </nav>
             </div>
         </div>
     </div>
-</div>
 
 @endsection
 @section('js')

@@ -44,7 +44,7 @@ class ShopPromotionController extends Controller
 
     // view list of promotion
     public function index() {
-        $shop_id = Session::get("shop")->id;
+        $shop_id = @Session::get("shop")->id;
         $data['promotions']=DB::table('promotions')
             ->join('products','products.id','promotions.product_id')
             ->join('promotion_types','promotion_types.id','promotions.discount_type')
@@ -60,7 +60,7 @@ class ShopPromotionController extends Controller
     {
         //decrypt id
         $encrypted_id = $id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
 
         // check if promtion already exist
         $active_promotion = DB::table('promotions')->where('product_id', $decrypted_id)->where('active',1)->first();
@@ -86,7 +86,7 @@ class ShopPromotionController extends Controller
     {
         //decrypt id 
         $encrypted_id = $r->product_id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
 
         // check if promtion already exist
         $active_promotion = DB::table('promotions')->where('product_id', $decrypted_id)->where('active',1)->first();
@@ -139,7 +139,7 @@ class ShopPromotionController extends Controller
     // edit promotion
     public function edit($id){
         $encrypted_id = $id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
 
         $data['promotion'] = DB::table('promotions')
             ->join('products', 'products.id', 'promotions.product_id')
@@ -172,7 +172,7 @@ class ShopPromotionController extends Controller
         $end_date = Carbon::createFromFormat('Y-m-d H:i', $date[1]);
 
         $encrypted_id = $r->id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
         // prepare data to insert
          $data = array(
                 'discount_type' => $r->promotion_type,
@@ -205,7 +205,7 @@ class ShopPromotionController extends Controller
         // date_default_timezone_set('Asia/Phnom_Penh');
         // prepare data to insert
         $encrypted_id = $id;
-        $decrypted_id = Crypt::decryptString($encrypted_id);
+        $decrypted_id = base64_decode($encrypted_id);
          $data = array(
                 'active' => 0,
                 'updated_at' => date('Y-m-d H:i:s'),

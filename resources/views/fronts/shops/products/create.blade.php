@@ -1,8 +1,7 @@
-@extends('layouts.owner')
+@extends('layouts.shop-admin')
 @section('content')
-<div class="container">
-    <div class="row">
-    <div class="col-lg-12">
+    <div class="row" style="">
+    <div class="col-md-12">
         <strong>Create a New Product</strong>&nbsp;&nbsp;
         <a href="{{url('/owner/my-product')}}" class="text-success"><i class="fa fa-arrow-left"></i> Back</a>
         <hr>
@@ -58,8 +57,16 @@
                             <input type="number" class="form-control" id="quantity" name="quantity" step="1" value="1" required>
                         </div>
                     </div>
+
                     <div class="form-group row">
-                        <label for="price" class="control-label col-sm-3 lb">Price $<span class="text-danger">*</span></label>
+                        <label for="price" class="control-label col-sm-3 lb">Original Price $<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="original_price" name="original_price"  step="0.1"  min="0" value="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="price" class="control-label col-sm-3 lb">Selling Price $<span class="text-danger">*</span></label>
                         <div class="col-sm-9">
                             <input type="number" class="form-control" id="price" name="price"  step="0.1"  min="0" value="0" required>
                         </div>

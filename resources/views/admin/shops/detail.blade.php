@@ -95,9 +95,9 @@
                                         <td>{{$i++}}</td>
                                         <td>{{$sub->name}}</td>
                                         <td>
-                                            @if($sub->status==1 && $sub->subscription_id==$sub->current_subscription)
+                                            @if($sub->status==1 && $sub->subscription_id==$shop->subscription_id)
                                                 <i class="text-success">Current</i>
-                                            @elseif($sub->status==1 && $sub->subscription_id!=$sub->current_subscription)
+                                            @elseif($sub->status==1 && $sub->subscription_id!=$shop->subscription_id)
                                                 <i class="text-danger">Past</i>
                                             @elseif($sub->status==0)
                                                 <a href="{{url('/admin/shop-subscription')}}" class="text-warning">Pending</a>
