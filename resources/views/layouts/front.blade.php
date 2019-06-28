@@ -43,9 +43,8 @@
                     <nav>
                         <ul id="menu-top-bar-right" class="nav nav-inline pull-right animate-dropdown flip">
                             <li class="menu-item animate-dropdown"><a title="Store Locator" href="{{url('/career')}}"><i class="ec ec-list-view"></i>Career</a></li>
-                            <li class="menu-item animate-dropdown"><a title="Track Your Order" href="track-your-order.html"><i class="ec ec-transport"></i>Track Your Order</a></li>
+                            <li class="menu-item animate-dropdown"><a title="Track Your Order" href="{{url('/tracking')}}"><i class="ec ec-transport"></i>Track Your Order</a></li>
                             <li class="menu-item animate-dropdown"><a title="Shop" href="{{url('owner/login')}}"><i class="ec ec-shopping-bag"></i>{{trans("labels.shop")}}</a></li>
-						
 							<li class="menu-item animate-dropdown">
 								<a href="#" onclick="chLang(event,'en')">
 									<img src="{{asset('uploads/flags/en.png')}}" alt="" width="25" style="margin-right: 5px;">
